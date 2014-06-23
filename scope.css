@@ -1,0 +1,28 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+body {
+	margin:0;
+	padding:0;
+	overflow:hidden;
+	background:#000;
+}
+
+#scope {
+	cursor:url(cross_cursor.png) 10 10, crosshair;
+}
+
+#previewArea {
+	pointer-events:none;
+	font-weight:bold;
+	font-size:14;
+	text-transform:uppercase;
+	position:fixed;
+	top:28%;
+	left:7%;
+	right:0;
+	color:green;
+	font-family:Monaco, sans-serif;
+}
