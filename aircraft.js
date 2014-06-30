@@ -22,6 +22,7 @@ function Aircraft(aircraftString) {
 	this._history = [];
 	this._performance = new AircraftPerformance();
 	this._autopilot = new Autopilot(this);
+	this._controlled = false;
 	this._assignments = {
 		// altitude: {
 		// 	value: 5000,
@@ -36,10 +37,24 @@ function Aircraft(aircraftString) {
 		// 	delay: 5500
 		// }
 	};
+	this._styles = {
+		uncontrolled: '#0f0',
+		controlled: '#fff',
+		selected: '#0ff',
+		pointout: '#ff0'
+	};
 
 	if (typeof aircraftString == 'string')
 		this.loadFromString(aircraftString);
 }
+
+Aircraft.prototype.initiateControl = function() {
+	this._controlled = true;
+};
+
+Aircraft.prototype.terminateControl = function() {
+	this._controlled = false;
+};
 
 Aircraft.prototype.updateElapsed = function(elapsedSituation) {
 	this._elapsed = elapsedSituation - this._lastSimulated;
@@ -392,6 +407,14 @@ Aircraft.prototype.airspeed = function(groundspeed, altitude) {
   return groundspeed ? (groundspeed - (altitude ? altitude : this._altitude) / 200) : this._speed;// - correction;
 };
 
+Aircraft.prototype.targetColor = function() {
+	return this._controlled ? this._styles.controlled : this._styles.uncontrolled;
+};
+
+Aircraft.prototype.targetCode = function() {
+	return this._controlled ? 'A' : '*';
+};
+
 Aircraft.prototype.select = function() {
 	this._selected = true;
 };
@@ -425,7 +448,6 @@ Aircraft.prototype.renderTarget = function(r) {
 	var acPos = r.gtoc(this._lat, this._lon);
 	var radarCenter = r.radarCenter();
 	var theta = r.angleBetween(acPos.x, acPos.y, radarCenter.x, radarCenter.y) + Math.PI / 2;
-
 	// Draw the beacon line
 	var lineL = r.rotate(-beaconWidth, 0, 0, 0, theta);
 	var lineR = r.rotate(beaconWidth, 0, 0, 0, theta);
@@ -435,7 +457,6 @@ Aircraft.prototype.renderTarget = function(r) {
 	r.context().strokeStyle = '#1e582f';
 	r.context().lineWidth = 2;
 	r.context().stroke();
-
 	// Draw the beacon target
 	var boxBL = r.rotate(-beaconWidth / 2, 0, 0, 0, theta);
 	var boxTL = r.rotate(-beaconWidth / 2, 9, 0, 0, theta);
@@ -458,14 +479,14 @@ Aircraft.prototype.renderPosition = function(r) {
 	r.context().textBaseline = 'middle';
 	r.context().strokeStyle = '#000';
 	r.context().lineWidth = 2;
-	r.context().strokeText('A', acPos.x, acPos.y);
-	r.context().fillStyle = '#fff';
-	r.context().fillText('A', acPos.x, acPos.y);
+	r.context().strokeText(this.targetCode(), acPos.x, acPos.y);
+	r.context().fillStyle = this.targetColor();
+	r.context().fillText(this.targetCode(), acPos.x, acPos.y);
 };
 
 Aircraft.prototype.renderDataBlock = function(r, elapsed) {
 	var acPos = r.gtoc(this._lat, this._lon);
-	var renderColor = this._conflicting ? '#f00' : (this._selected ? '#ff0' : '#fff');
+	var renderColor = this._conflicting ? '#f00' : this.targetColor();
 	// Draw the leader line
 	r.context().beginPath();
 	r.context().moveTo(acPos.x + 10, acPos.y + -10);

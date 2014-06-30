@@ -17,9 +17,11 @@ function Scope() {
 Scope.prototype.select = function(x, y) {
 	var aircraft = this._situation.select(x, y, this._renderer);
 	if (aircraft) {
-		this._textOverlay.clearPreview();
-		this._textOverlay.addPreviewChar(aircraft.callsign());
-		this._textOverlay.addPreviewChar(' ');
+		if (!this._textOverlay.processPreviewArea(aircraft)) {
+			this._textOverlay.clearPreview();
+			this._textOverlay.addPreviewChar(aircraft.callsign());
+			this._textOverlay.addPreviewChar(' ');
+		} 
 		this.render();
 		return true;
 	}

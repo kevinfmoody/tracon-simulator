@@ -29,14 +29,12 @@ TextOverlay.prototype.aircraftSelect = function() {
   }
 };
 
-TextOverlay.prototype.processPreviewArea = function() {
+TextOverlay.prototype.processPreviewArea = function(aircraft) {
   if (this._preview.length == 3) {
     var aircraft = this._scope.situation().aircraft(this._preview[0]);
     var command = this._preview[1];
     var parameter = this._preview[2];
-    console.log('a');
     if (aircraft && !isNaN(parameter)) {
-      console.log('b');
       switch (command) {
         case 'TL':
         case 'TR':
@@ -44,7 +42,7 @@ TextOverlay.prototype.processPreviewArea = function() {
           if (0 <= parameter && parameter <= 360) {
             aircraft.assignHeading(parameter, this._scope.situation().elapsed(), 0);
             this.clearPreview();
-            return;
+            return true;
           }
           break;
         case 'CM':
@@ -52,7 +50,7 @@ TextOverlay.prototype.processPreviewArea = function() {
           if (0 <= parameter && parameter <= 99999) {
             aircraft.assignAltitude(parameter, this._scope.situation().elapsed(), 0);
             this.clearPreview();
-            return;
+            return true;
           }
           break;
         case 'SPD':
@@ -60,13 +58,32 @@ TextOverlay.prototype.processPreviewArea = function() {
           if (0 <= parameter && parameter <= 9999) {
             aircraft.assignSpeed(parameter, this._scope.situation().elapsed(), 0);
             this.clearPreview();
-            return;
+            return true;
           }
           break;
       }
     }
+  } else if (this._preview.length == 1) {
+    var command = this._preview[0];
+    if (aircraft) {
+      switch (command) {
+        case 'IC':
+          aircraft.initiateControl();
+          this.clearPreview();
+          return true;
+        case 'TC':
+          aircraft.terminateControl();
+          this.clearPreview();
+          return true;
+      }
+    }
   }
-  this._formatError = true;
+  if (this._preview[0] == '')
+    return false;
+  else {
+    this._formatError = true;
+    return true;
+  }
 };
 
 TextOverlay.prototype.clearPreview = function() {

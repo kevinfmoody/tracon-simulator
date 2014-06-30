@@ -116,7 +116,21 @@ function initKeyDetection(scope) {
 	$(document).keydown(function(e) {
 		keys[e.which] = true;
 		console.log(e.which);
-		if (keys[17] && keys[82])
+    if (keys[27]) {
+      scope.textOverlay().clearPreview();
+      scope.render();
+    }
+    else if (keys[114]) {
+      scope.textOverlay().clearPreview();
+      scope.textOverlay().addPreviewChar('IC');
+      scope.render();
+    }
+    else if (keys[115]) {
+      scope.textOverlay().clearPreview();
+      scope.textOverlay().addPreviewChar('TC');
+      scope.render();
+    }
+		else if (keys[17] && keys[82])
 			scope.situation().run();
 		else if (keys[17] && keys[80])
 			scope.situation().pause();
