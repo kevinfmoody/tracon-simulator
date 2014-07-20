@@ -11,27 +11,28 @@ function TextOverlay(scope) {
 	}, 1000);
 }
 
-TextOverlay.prototype.aircraftSelect = function() {
+TextOverlay.prototype.targetSelect = function() {
   if (this._preview.length == 1) {
-    var aircraft;
-    for (var callsign in this._scope.situation().aircraft()) {
-      if (callsign.lastIndexOf(this._preview[0]) + this._preview[0].length == callsign.length) {
-        if (aircraft)
+    var targets = this._scope._targetManager.getAllTargets(),
+        target;
+    for (var i in targets) {
+      if (targets[i].callsign().lastIndexOf(this._preview[0]) + this._preview[0].length == targets[i].callsign().length) {
+        if (target)
           return;
         else
-          aircraft = this._scope.situation().aircraft(callsign);
+          target = targets[i];
       }
     }
-    if (aircraft) {
-      this._preview[0] = aircraft.callsign();
+    if (target) {
+      this._preview[0] = target.callsign();
       this.addPreviewChar(' ');
     }
   }
 };
 
-TextOverlay.prototype.processPreviewArea = function(aircraft) {
+TextOverlay.prototype.processPreviewArea = function(aircraft, controller) {
   if (this._preview.length == 3) {
-    var aircraft = this._scope.situation().aircraft(this._preview[0]);
+    var aircraft = this._scope._targetManager.getTargetByCallsign(this._preview[0]);
     var command = this._preview[1];
     var parameter = this._preview[2];
     if (aircraft && !isNaN(parameter)) {
@@ -64,17 +65,26 @@ TextOverlay.prototype.processPreviewArea = function(aircraft) {
       }
     }
   } else if (this._preview.length == 1) {
-    var command = this._preview[0];
+    var command = this._preview[0],
+        coneCommand = /^\*P\d+$/,
+        jRingCommand = /^\*J\d+$/;
     if (aircraft) {
-      switch (command) {
-        case 'IC':
-          aircraft.initiateControl();
-          this.clearPreview();
-          return true;
-        case 'TC':
-          aircraft.terminateControl();
-          this.clearPreview();
-          return true;
+      if (command == 'IC') {
+        aircraft.setController(controller);
+        this.clearPreview();
+        return true;
+      } else if (command == 'TC') {
+        aircraft.setController(null);
+        this.clearPreview();
+        return true;
+      } else if (coneCommand.test(command.substr(1))) {
+        aircraft.enableCone(parseInt(command.substr(3)));
+        this.clearPreview();
+        return true;
+      } else if (jRingCommand.test(command.substr(1))) {
+        aircraft.enableJRing(parseInt(command.substr(3)));
+        this.clearPreview();
+        return true;
       }
     }
   }

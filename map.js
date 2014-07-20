@@ -6,6 +6,10 @@ function Map(filename, r, callback) {
 		this.loadFromFile(filename, r, callback);
 }
 
+Map.prototype.setBrite = function(brite) {
+	this._brite = brite;
+};
+
 Map.prototype.loadFromFile = function(filename, r, callback) {
 	var map = this;
 	$.get(filename, function(data) {

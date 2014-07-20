@@ -281,6 +281,12 @@ Renderer.prototype.ctop = function(x, y) {
 	return new LatLon(lat, lon);
 };
 
+Renderer.prototype.distanceToPixels = function(position, course, distance) {
+	var pos = this.gtoc(position._lat, position._lon),
+			dest = position.destinationPoint(course, distance / 0.539957),
+			nPos = this.gtoc(dest._lat, dest._lon);
+	return Math.sqrt(Math.pow(nPos.x - pos.x, 2) + Math.pow(nPos.y - pos.y, 2));
+};
 
 Renderer.prototype.setPreset = function(slot) {
 	this._presets[slot] = {

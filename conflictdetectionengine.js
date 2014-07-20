@@ -50,63 +50,63 @@ ConflictDetectionEngine.prototype.manageAlarm = function() {
   }
 };
 
-ConflictDetectionEngine.prototype.singleAircraftInConflict = function(aircraft) {
-  if (this._conflicts[aircraft.callsign()])
+ConflictDetectionEngine.prototype.singleTargetInConflict = function(target) {
+  if (this._conflicts[target.callsign()])
     return true;
   else return false;
 };
 
-ConflictDetectionEngine.prototype.detect = function(aircraft) {
-  var callsigns = Object.keys(aircraft);
-  var numAircraft = callsigns.length;
-  for (var i = 0; i < numAircraft; i++) {
-    for (var j = i + 1; j < numAircraft; j++) {
-      var localAircraft = aircraft[callsigns[i]];
-      var foreignAircraft = aircraft[callsigns[j]];
-      if (this.inConflict(localAircraft, foreignAircraft))
-        this.addConflict(localAircraft, foreignAircraft);
+ConflictDetectionEngine.prototype.detect = function(targets) {
+  var callsigns = Object.keys(targets);
+  var numTarget = callsigns.length;
+  for (var i = 0; i < numTarget; i++) {
+    for (var j = i + 1; j < numTarget; j++) {
+      var localTarget = targets[callsigns[i]];
+      var foreignTarget = targets[callsigns[j]];
+      if (this.inConflict(localTarget, foreignTarget))
+        this.addConflict(localTarget, foreignTarget);
       else
-        this.removeConflict(localAircraft, foreignAircraft);
+        this.removeConflict(localTarget, foreignTarget);
     }
   }
 };
 
-ConflictDetectionEngine.prototype.addConflict = function(localAircraft, foreignAircraft) {
-  var identifier = this.aircraftToIdentifier(localAircraft, foreignAircraft);
+ConflictDetectionEngine.prototype.addConflict = function(localTarget, foreignTarget) {
+  var identifier = this.targetsToIdentifier(localTarget, foreignTarget);
   if (!this._conflictStates[identifier] || this._conflictStates[identifier] == this._conflictState.NONE) {
     this._conflictStates[identifier] = this._conflictState.ACTIVE;
-    if (!this._conflicts[localAircraft.callsign()])
-      this._conflicts[localAircraft.callsign()] = 0;
-    this._conflicts[localAircraft.callsign()]++;
-    if (!this._conflicts[foreignAircraft.callsign()])
-      this._conflicts[foreignAircraft.callsign()] = 0;
-    this._conflicts[foreignAircraft.callsign()]++;
+    if (!this._conflicts[localTarget.callsign()])
+      this._conflicts[localTarget.callsign()] = 0;
+    this._conflicts[localTarget.callsign()]++;
+    if (!this._conflicts[foreignTarget.callsign()])
+      this._conflicts[foreignTarget.callsign()] = 0;
+    this._conflicts[foreignTarget.callsign()]++;
     this._audibleConflicts++;
   }
 };
 
-ConflictDetectionEngine.prototype.removeConflict = function(localAircraft, foreignAircraft) {
-  var identifier = this.aircraftToIdentifier(localAircraft, foreignAircraft);
+ConflictDetectionEngine.prototype.removeConflict = function(localTarget, foreignTarget) {
+  var identifier = this.targetsToIdentifier(localTarget, foreignTarget);
   if (this._conflictStates[identifier] == this._conflictState.ACTIVE) {
     this._conflictStates[identifier] = this._conflictState.NONE;
-    this._conflicts[localAircraft.callsign()]--;
-    this._conflicts[foreignAircraft.callsign()]--;
+    this._conflicts[localTarget.callsign()]--;
+    this._conflicts[foreignTarget.callsign()]--;
     this._audibleConflicts--;
   } else if (this._conflictStates[identifier] == this._conflictState.MUTED) {
     this._conflictStates[identifier] = this._conflictState.NONE;
-    this._conflicts[localAircraft.callsign()]--;
-    this._conflicts[foreignAircraft.callsign()]--;
+    this._conflicts[localTarget.callsign()]--;
+    this._conflicts[foreignTarget.callsign()]--;
   }
 };
 
-ConflictDetectionEngine.prototype.muteAircraft = function(localAircraft, aircraft) {
+ConflictDetectionEngine.prototype.muteTarget = function(localTarget, targets) {
   if (this._audibleConflicts > 0)
-    for (var i in aircraft)
-      this.muteConflict(localAircraft, aircraft[i]);
+    for (var i in targets)
+      this.muteConflict(localTarget, targets[i]);
 };
 
-ConflictDetectionEngine.prototype.muteConflict = function(localAircraft, foreignAircraft) {
-  var identifier = this.aircraftToIdentifier(localAircraft, foreignAircraft);
+ConflictDetectionEngine.prototype.muteConflict = function(localTarget, foreignTarget) {
+  var identifier = this.targetsToIdentifier(localTarget, foreignTarget);
   if (this._conflictStates[identifier] == this._conflictState.ACTIVE) {
     this._conflictStates[identifier] = this._conflictState.MUTED;
     this._audibleConflicts--;
@@ -114,8 +114,8 @@ ConflictDetectionEngine.prototype.muteConflict = function(localAircraft, foreign
   }
 };
 
-ConflictDetectionEngine.prototype.unmuteConflict = function(localAircraft, foreignAircraft) {
-  var identifier = this.aircraftToIdentifier(localAircraft, foreignAircraft);
+ConflictDetectionEngine.prototype.unmuteConflict = function(localTarget, foreignTarget) {
+  var identifier = this.targetsToIdentifier(localTarget, foreignTarget);
   if (this._conflictStates[identifier] == this._conflictState.MUTED) {
     this._conflictStates[identifier] = this._conflictState.ACTIVE;
     this._audibleConflicts++;
@@ -123,13 +123,13 @@ ConflictDetectionEngine.prototype.unmuteConflict = function(localAircraft, forei
   }
 };
 
-ConflictDetectionEngine.prototype.aircraftToIdentifier = function(localAircraft, foreignAircraft) {
-  var aircraft = [localAircraft.callsign(), foreignAircraft.callsign()];
-  aircraft.sort();
-  return aircraft.join('*');
+ConflictDetectionEngine.prototype.targetsToIdentifier = function(localTarget, foreignTarget) {
+  var targets = [localTarget.callsign(), foreignTarget.callsign()];
+  targets.sort();
+  return targets.join('*');
 };
 
-ConflictDetectionEngine.prototype.classifyMinima = function(localAircraft, foreignAircraft) {
+ConflictDetectionEngine.prototype.classifyMinima = function(localTarget, foreignTarget) {
   var minima = {
     lateral: 0,
     vertical: 0
@@ -142,11 +142,11 @@ ConflictDetectionEngine.prototype.classifyMinima = function(localAircraft, forei
       && (!m.anchor
         || m.anchor)
       && (!m.minAltitude 
-        || (localAircraft.altitude() >= m.minAltitude 
-          || foreignAircraft.altitude() >= m.minAltitude))
+        || (localTarget.altitude() >= m.minAltitude 
+          || foreignTarget.altitude() >= m.minAltitude))
       && (!m.maxAltitude
-        || (localAircraft.altitude() <= m.maxAltitude
-          || foreignAircraft.altitude() <= m.maxAltitude))
+        || (localTarget.altitude() <= m.maxAltitude
+          || foreignTarget.altitude() <= m.maxAltitude))
     ) {
       minima.lateral = Math.max(m.lateral, minima.lateral);
       minima.vertical = Math.max(m.vertical, minima.vertical);
@@ -155,13 +155,13 @@ ConflictDetectionEngine.prototype.classifyMinima = function(localAircraft, forei
   return minima;
 };
 
-ConflictDetectionEngine.prototype.inConflict = function(localAircraft, foreignAircraft) {
-  var minima = this.classifyMinima(localAircraft, foreignAircraft);
-    if (Math.abs(localAircraft.altitude() - foreignAircraft.altitude()) >= minima.vertical)
+ConflictDetectionEngine.prototype.inConflict = function(localTarget, foreignTarget) {
+  var minima = this.classifyMinima(localTarget, foreignTarget);
+    if (Math.abs(localTarget.altitude() - foreignTarget.altitude()) >= minima.vertical)
     return false;
-  var localPosition = new LatLon(localAircraft.lat(), localAircraft.lon());
-  var foreignAircraft = new LatLon(foreignAircraft.lat(), foreignAircraft.lon());
-   if (localPosition.distanceTo(foreignAircraft) * 0.539957 >= minima.lateral)
+  var localPosition = new LatLon(localTarget.lat(), localTarget.lon());
+  var foreignTarget = new LatLon(foreignTarget.lat(), foreignTarget.lon());
+   if (localPosition.distanceTo(foreignTarget) * 0.539957 >= minima.lateral)
     return false;
   return true;
 };

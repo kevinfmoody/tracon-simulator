@@ -21,7 +21,6 @@ function Autopilot(aircraft) {
 Autopilot.prototype.engageILS = function(runway) {
   this._runway = runway;
   this._currentAction = this._action.ILS_APPROACH;
-  this._currentState = this._state.AWAITING;
 };
 
 Autopilot.prototype.engageVisualApproach = function(runway) {
@@ -33,7 +32,7 @@ Autopilot.prototype.fly = function(r) {
   switch (this._currentAction) {
     case this._action.ILS_APPROACH:
       this.flyILS(r);
-      return true;
+      return false;
     case this._action.VISUAL_APPROACH:
       this.flyVisualApproach();
       return true;
@@ -42,30 +41,25 @@ Autopilot.prototype.fly = function(r) {
   }
 };
 
-var hdg = 257;
-
 Autopilot.prototype.flyILS = function(r) {
-  switch (this._currentState) {
-    case this._state.AWAITING:
-      var distanceInKm = this._aircraft.position().distanceTo(this._runway.position());
-      var distanceInFeet = distanceInKm * 3280.84;
-      console.log(this._runway.course(), r.magVar(), (this._runway.course() + r.magVar() + 180) % 360);
-      var pos = this._runway.position().destinationPoint(hdg + 180, distanceInKm);
-      this._aircraft.setLat(pos._lat);
-      this._aircraft.setLon(pos._lon);
-      var gsAltitude = Math.tan(3 * Math.PI / 180) * (distanceInFeet);
+  var acTrack = this._aircraft.position().bearingTo(this._runway.position()),
+      rwyTrack = this._runway.course() + r.magVar(),
+      delta = this.angleBetween(rwyTrack, acTrack);
+  if (delta < 3) {
+    var hdgDelta = this.angleBetween(this._aircraft.heading(), this._runway.course()),
+        maxInterceptAngle = delta * 10,
+        sign = acTrack - rwyTrack < 0 ? -1 : 1,
+        interceptAngle = Math.min(hdgDelta, maxInterceptAngle),
+        trackHeading = this._runway.course() + interceptAngle * sign,
+        distanceInKm = this._aircraft.position().distanceTo(this._runway.position()),
+        distanceInFeet = distanceInKm * 3280.84,
+        distanceInNm = distanceInFeet * 0.000164579,
+        gsAltitude = Math.tan(3 * Math.PI / 180) * (distanceInFeet);
+    this._aircraft.assignHeading(trackHeading, this._aircraft._lastSimulated, 0);
+    if (gsAltitude < this._aircraft.altitude() && this._aircraft.altitude() - gsAltitude < 300)
       this._aircraft.setAltitude(gsAltitude);
-      // await loc capture
-      break;
-    case this._state.ESTABLISHED_LOC:
-      // await GS capture
-      break;
-    case this._state.ESTABLISHED_GS:
-      // maintain locked on the gs and loc with inbound speed
-      break;
-    case this._state.MISSED:
-      // issue climb to 3000 agl at rwy heading and go inactive
-      break;
+    if (distanceInNm < 5)
+      this._aircraft.assignSpeed(this._aircraft.performance().vref() + 5, this._aircraft._lastSimulated, 0);
   }
 };
 
@@ -85,4 +79,9 @@ Autopilot.prototype.flyVisualApproach = function() {
       // issue climb to 3000 agl at rwy heading and go inactive
       break;
   }
+};
+
+Autopilot.prototype.angleBetween = function(primaryHeading, secondaryHeading) {
+  var gap = Math.abs(primaryHeading - secondaryHeading);
+  return Math.min(gap, 360 - gap);
 };

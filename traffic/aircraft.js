@@ -156,6 +156,16 @@ Aircraft.prototype.fly = function(r, elapsedSituation) {
 	}
 };
 
+Aircraft.prototype.flyQuick = function(elapsedSituation, r) {
+	this.updateElapsed(elapsedSituation);
+	this._lastSimulated = elapsedSituation;
+	if (!this._autopilot.fly(r)) {
+		this.updateHistory();
+		this.updatePosition(this.updateHeading(), this.updateSpeed(), this.updateAltitude(), r);
+		this.updateAssignments();
+	}
+};
+
 Aircraft.prototype.updateHistory = function() {
 	this._history.unshift({
 		lat: this._lat,
@@ -167,6 +177,15 @@ Aircraft.prototype.updateHistory = function() {
 
 Aircraft.prototype.updatePosition = function(pastHeading, pastSpeed, pastAltitude, r) {
 	var averageHeading = (this._heading + pastHeading) / 2 + r.magVar();
+	var averageSpeed = this.groundspeed((this._speed + pastSpeed) / 2, (this._altitude + pastAltitude) / 2);
+	var distance = averageSpeed * this._elapsed * 1.852 / 3600000;
+	var destination = new LatLon(this._lat, this._lon).destinationPoint(averageHeading, distance);
+	this._lat = destination._lat;
+	this._lon = destination._lon;
+};
+
+Aircraft.prototype.updatePositionQuick = function(pastHeading, pastSpeed, pastAltitude) {
+	var averageHeading = (this._heading + pastHeading) / 2;
 	var averageSpeed = this.groundspeed((this._speed + pastSpeed) / 2, (this._altitude + pastAltitude) / 2);
 	var distance = averageSpeed * this._elapsed * 1.852 / 3600000;
 	var destination = new LatLon(this._lat, this._lon).destinationPoint(averageHeading, distance);
@@ -253,6 +272,10 @@ Aircraft.prototype.update = function(aircraft, aircraftList, elapsedSituation) {
     this._altitude = aircraft.altitude();
     this._speed = aircraft.speed();
   }
+};
+
+Aircraft.prototype.mode = function() {
+	return 1;
 };
 
 Aircraft.prototype.callsign = function() {
@@ -427,89 +450,89 @@ Aircraft.prototype.setConflicting = function(conflicting) {
 	this._conflicting = conflicting;
 };
 
-Aircraft.prototype.renderHistory = function(r) {
-	if (r.targetHistory()) {
-		r.context().fillStyle = '#00f';
-		for (var i in this._history) {
-			var historyPos = r.gtoc(this._history[i].lat, this._history[i].lon);
-			r.context().beginPath();
-			r.context().arc(historyPos.x, historyPos.y, 5 - Math.floor(i / 2), 0, 2 * Math.PI);
-			r.context().globalAlpha = .5 - i / 10;
-			r.context().fill();
-		}
-		r.context().globalAlpha = 1;
-	}
-};
+// Aircraft.prototype.renderHistory = function(r) {
+// 	if (r.targetHistory()) {
+// 		r.context().fillStyle = '#00f';
+// 		for (var i in this._history) {
+// 			var historyPos = r.gtoc(this._history[i].lat, this._history[i].lon);
+// 			r.context().beginPath();
+// 			r.context().arc(historyPos.x, historyPos.y, 5 - Math.floor(i / 2), 0, 2 * Math.PI);
+// 			r.context().globalAlpha = .5 - i / 10;
+// 			r.context().fill();
+// 		}
+// 		r.context().globalAlpha = 1;
+// 	}
+// };
 
-Aircraft.prototype.renderTarget = function(r) {
-	// Determine size of beacon based on distance from radar site
-	var radarDistance = r.radarCenterPosition().distanceTo(this.position()) * 0.539957;
-	var beaconWidth = Math.min(Math.max(4 * Math.sqrt(radarDistance), 4), 32);
-	var acPos = r.gtoc(this._lat, this._lon);
-	var radarCenter = r.radarCenter();
-	var theta = r.angleBetween(acPos.x, acPos.y, radarCenter.x, radarCenter.y) + Math.PI / 2;
-	// Draw the beacon line
-	var lineL = r.rotate(-beaconWidth, 0, 0, 0, theta);
-	var lineR = r.rotate(beaconWidth, 0, 0, 0, theta);
-	r.context().beginPath();
-	r.context().moveTo(acPos.x + lineL.x, acPos.y + lineL.y);
-	r.context().lineTo(acPos.x + lineR.x, acPos.y + lineR.y);
-	r.context().strokeStyle = '#1e582f';
-	r.context().lineWidth = 2;
-	r.context().stroke();
-	// Draw the beacon target
-	var boxBL = r.rotate(-beaconWidth / 2, 0, 0, 0, theta);
-	var boxTL = r.rotate(-beaconWidth / 2, 9, 0, 0, theta);
-	var boxTR = r.rotate(beaconWidth / 2, 9, 0, 0, theta);
-	var boxBR = r.rotate(beaconWidth / 2, 0, 0, 0, theta);
-	r.context().beginPath();
-	r.context().moveTo(acPos.x + boxBL.x, acPos.y + boxBL.y);
-	r.context().lineTo(acPos.x + boxTL.x, acPos.y + boxTL.y);
-	r.context().lineTo(acPos.x + boxTR.x, acPos.y + boxTR.y);
-	r.context().lineTo(acPos.x + boxBR.x, acPos.y + boxBR.y);
-	r.context().fillStyle = '#2d82ed';
-	r.context().fill();
-};
+// Aircraft.prototype.renderTarget = function(r) {
+// 	// Determine size of beacon based on distance from radar site
+// 	var radarDistance = r.radarCenterPosition().distanceTo(this.position()) * 0.539957;
+// 	var beaconWidth = Math.min(Math.max(4 * Math.sqrt(radarDistance), 4), 32);
+// 	var acPos = r.gtoc(this._lat, this._lon);
+// 	var radarCenter = r.radarCenter();
+// 	var theta = r.angleBetween(acPos.x, acPos.y, radarCenter.x, radarCenter.y) + Math.PI / 2;
+// 	// Draw the beacon line
+// 	var lineL = r.rotate(-beaconWidth, 0, 0, 0, theta);
+// 	var lineR = r.rotate(beaconWidth, 0, 0, 0, theta);
+// 	r.context().beginPath();
+// 	r.context().moveTo(acPos.x + lineL.x, acPos.y + lineL.y);
+// 	r.context().lineTo(acPos.x + lineR.x, acPos.y + lineR.y);
+// 	r.context().strokeStyle = '#1e582f';
+// 	r.context().lineWidth = 2;
+// 	r.context().stroke();
+// 	// Draw the beacon target
+// 	var boxBL = r.rotate(-beaconWidth / 2, 0, 0, 0, theta);
+// 	var boxTL = r.rotate(-beaconWidth / 2, 9, 0, 0, theta);
+// 	var boxTR = r.rotate(beaconWidth / 2, 9, 0, 0, theta);
+// 	var boxBR = r.rotate(beaconWidth / 2, 0, 0, 0, theta);
+// 	r.context().beginPath();
+// 	r.context().moveTo(acPos.x + boxBL.x, acPos.y + boxBL.y);
+// 	r.context().lineTo(acPos.x + boxTL.x, acPos.y + boxTL.y);
+// 	r.context().lineTo(acPos.x + boxTR.x, acPos.y + boxTR.y);
+// 	r.context().lineTo(acPos.x + boxBR.x, acPos.y + boxBR.y);
+// 	r.context().fillStyle = '#2d82ed';
+// 	r.context().fill();
+// };
 
-Aircraft.prototype.renderPosition = function(r) {
-	var acPos = r.gtoc(this._lat, this._lon);
-	r.context().beginPath();
-	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
-	r.context().textAlign = 'center';
-	r.context().textBaseline = 'middle';
-	r.context().strokeStyle = '#000';
-	r.context().lineWidth = 2;
-	r.context().strokeText(this.targetCode(), acPos.x, acPos.y);
-	r.context().fillStyle = this.targetColor();
-	r.context().fillText(this.targetCode(), acPos.x, acPos.y);
-};
+// Aircraft.prototype.renderPosition = function(r) {
+// 	var acPos = r.gtoc(this._lat, this._lon);
+// 	r.context().beginPath();
+// 	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+// 	r.context().textAlign = 'center';
+// 	r.context().textBaseline = 'middle';
+// 	r.context().strokeStyle = '#000';
+// 	r.context().lineWidth = 2;
+// 	r.context().strokeText(this.targetCode(), acPos.x, acPos.y);
+// 	r.context().fillStyle = this.targetColor();
+// 	r.context().fillText(this.targetCode(), acPos.x, acPos.y);
+// };
 
-Aircraft.prototype.renderDataBlock = function(r, elapsed) {
-	var acPos = r.gtoc(this._lat, this._lon);
-	var renderColor = this._conflicting ? '#f00' : this.targetColor();
-	// Draw the leader line
-	r.context().beginPath();
-	r.context().moveTo(acPos.x + 10, acPos.y + -10);
-	r.context().lineTo(acPos.x + 30, acPos.y + -30);
-	r.context().lineWidth = 1;
-	r.context().strokeStyle = renderColor;
-	r.context().stroke();
-	// Draw the target callsign
-	r.context().beginPath();
-	r.context().imageSmoothingEnabled= false;
-	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
-	r.context().textAlign = 'left';
-	r.context().textBaseline = 'middle';
-	r.context().fillStyle = renderColor;
-	r.context().fillText(this._callsign, acPos.x + 35, acPos.y + -35);
-	r.context().imageSmoothingEnabled = true;
-	// Draw the target aircraft, altitude, and speed data block
-	r.context().beginPath();
-	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
-	r.context().textAlign = 'left';
-	r.context().textBaseline = 'middle';
-	r.context().fillStyle = renderColor;
-	var scopeSpeed = Math.floor(this.groundspeed() / 10);
-	var scopeAltitude = Math.floor(this._altitude / 100);
-	r.context().fillText(r.pad(scopeAltitude, 3) + '  ' + (elapsed % 4000 < 2000 ? r.pad(scopeSpeed, 2) : this._type), acPos.x + 35, acPos.y + -20);
-};
+// Aircraft.prototype.renderDataBlock = function(r, elapsed) {
+// 	var acPos = r.gtoc(this._lat, this._lon);
+// 	var renderColor = this._conflicting ? '#f00' : this.targetColor();
+// 	// Draw the leader line
+// 	r.context().beginPath();
+// 	r.context().moveTo(acPos.x + 10, acPos.y + -10);
+// 	r.context().lineTo(acPos.x + 30, acPos.y + -30);
+// 	r.context().lineWidth = 1;
+// 	r.context().strokeStyle = renderColor;
+// 	r.context().stroke();
+// 	// Draw the target callsign
+// 	r.context().beginPath();
+// 	r.context().imageSmoothingEnabled= false;
+// 	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+// 	r.context().textAlign = 'left';
+// 	r.context().textBaseline = 'middle';
+// 	r.context().fillStyle = renderColor;
+// 	r.context().fillText(this._callsign, acPos.x + 35, acPos.y + -35);
+// 	r.context().imageSmoothingEnabled = true;
+// 	// Draw the target aircraft, altitude, and speed data block
+// 	r.context().beginPath();
+// 	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+// 	r.context().textAlign = 'left';
+// 	r.context().textBaseline = 'middle';
+// 	r.context().fillStyle = renderColor;
+// 	var scopeSpeed = Math.floor(this.groundspeed() / 10);
+// 	var scopeAltitude = Math.floor(this._altitude / 100);
+// 	r.context().fillText(r.pad(scopeAltitude, 3) + '  ' + (elapsed % 4000 < 2000 ? r.pad(scopeSpeed, 2) : this._type), acPos.x + 35, acPos.y + -20);
+// };

@@ -4,6 +4,10 @@ function Compass() {
 	this._notchLength = 12;
 }
 
+Compass.prototype.setBrite = function(brite) {
+	this._brite = brite;
+};
+
 Compass.prototype.render = function(r) {
 	if (this._display) {
 		r.context().strokeStyle = r.brite(this._brite);

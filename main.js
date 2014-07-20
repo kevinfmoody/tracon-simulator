@@ -2,32 +2,38 @@ var scope = new Scope;
 
 $(document).ready(function() {
 	initScope(scope);
-  	initBostonAirport(scope);
+  initBostonAirport(scope);
   	//initSanFransiscoAirport(scope);
 	initScopeZoom(scope);
 	initScopeResize(scope);
 	initScopeDrag(scope);
 	initKeyDetection(scope);
 	initSlewDetection(scope);
+  initSettings(scope);
 });
 
 function initScope(scope) {
 	scope.bind('#scope');
-	scope.addMap('a90.map', function() {
+	scope.addMap('maps/a90.map', function() {
 		scope.render();
 		setInterval(function() {
 			scope.render();
-		}, 1000);
+		}, 1000 / 30);
 	});
-	scope.setSituation('crda.sit');
-	scope.situation().run();
+	//scope.setSituation('situations/a90.sit');
+  scope._radar.setPosition(new LatLon(42.3629722, -71.0064167));
+  scope._trafficSimulator.loadSituation('situations/crda.sit', function() {
+    scope._trafficSimulator.run(scope.renderer());
+    scope.turnOn();
+  });
+	//scope.situation().run();
 }
 
 function initSanFransiscoAirport(scope) {
   var KSFO = new Airport('KSFO', 'SFO', 37.6191050, -122.3752372, 13);
   scope.addAirport(KSFO);
-  scope.situation().setSlaveFeed(new RWTraffic(KSFO, scope.situation(), scope.renderer()));
-  scope.situation().enableSlaveMode();
+  //scope.situation().setSlaveFeed(new RWTraffic(KSFO, scope.situation(), scope.renderer()));
+  //scope.situation().enableSlaveMode();
   scope.renderer().setRadarCenter(KSFO.lat(), KSFO.lon());
 }
 
@@ -43,8 +49,8 @@ function initBostonAirport(scope) {
   KBOS.addRunway(R9, R27);
   KBOS.addRunway(R4R, R22L);
   scope.addAirport(KBOS);
-  var R27R22L = new CRDA(scope.airport('KBOS'), '27', '22L', scope.renderer());
-  scope.situation().setCRDA(R27R22L);
+  var R27R22L = new CRDA(scope.airport('KBOS'), '27', '22L');
+  scope.setCRDA(R27R22L);
   //var R4R27 = new CRDA(KBOS, '4R', '27', scope.renderer());
   //scope.situation().setCRDA(R4R27);
   //scope.situation().setSlaveFeed(new RWTraffic(KBOS, scope.situation(), scope.renderer()));
@@ -100,13 +106,13 @@ function initSlewDetection(scope) {
 		var x = e.clientX;
 		var y = e.clientY;
 		if (!scope.select(x, y)) {
-      var pos = scope.renderer().ctop(x, y);
-      console.log(scope._flow.altitude(pos));
-      scope._textOverlay.clearPreview();
-      scope._textOverlay.addPreviewChar(pos._lat);
-      scope._textOverlay.addPreviewChar(' ');
-      scope._textOverlay.addPreviewChar(pos._lon);
-      scope.render();
+      // var pos = scope.renderer().ctop(x, y);
+      // console.log(scope._flow.altitude(pos));
+      // scope._textOverlay.clearPreview();
+      // scope._textOverlay.addPreviewChar(pos._lat);
+      // scope._textOverlay.addPreviewChar(' ');
+      // scope._textOverlay.addPreviewChar(pos._lon);
+      // scope.render();
     }
 	});
 }
@@ -130,10 +136,12 @@ function initKeyDetection(scope) {
       scope.textOverlay().addPreviewChar('TC');
       scope.render();
     }
+    else if (keys[17] && keys[83])
+      $('.settings-modal').toggle();
 		else if (keys[17] && keys[82])
-			scope.situation().run();
+			return;//scope.situation().run();
 		else if (keys[17] && keys[80])
-			scope.situation().pause();
+			return;//scope.situation().pause();
 		else if (keys[17] && keys[18] && keys[49])
 			scope.renderer().setPreset(1);
 		else if (keys[17] && keys[49]) {
@@ -152,16 +160,20 @@ function initKeyDetection(scope) {
 			scope.renderer().selectPreset(3);
 			scope.render();
 		}
+    else if (keys[16] && keys[56]) {
+      scope.textOverlay().addPreviewChar('*');
+      scope.render();
+    }
 		else if (keys[8]) {
 			scope.textOverlay().removePreviewChar();
 			scope.render();
 		}
 		else if (keys[9]) {
-			scope.textOverlay().aircraftSelect();
+			scope.textOverlay().targetSelect();
 			scope.render();
 		}
 		else if (keys[13]) {
-			scope.textOverlay().processPreviewArea();
+			scope.textOverlay().processPreviewArea(null, scope._controller);
 			scope.render();
 		}
 		else {
@@ -175,4 +187,18 @@ function initKeyDetection(scope) {
 		keys[e.which] = false;
 		return false;
 	});
+}
+
+function initSettings(scope) {
+  $(document).ready(function() {
+    $('#setting-compass-brightness').change(function(e) {
+      scope.compass().setBrite($(this).val());
+      scope.render();
+    });
+    $('#setting-map-brightness').change(function(e) {
+      for (var i in scope.maps())
+        scope.maps()[i].setBrite($(this).val());
+      scope.render();
+    });
+  });
 }

@@ -1,0 +1,33 @@
+.settings-modal {
+  position: fixed;
+  width: 400px;
+  top: 50px;
+  bottom: 50px;
+  left: 50%;
+  margin-left: -200px;
+  background: #000;
+  font-family: Helvetica, sans-serif;
+  color: #fff;
+  border: 1px solid #222;
+  overflow: auto;
+}
+
+.settings-modal h1 {
+  margin: 20px 20px 0 20px;
+  padding-bottom: 20px;
+}
+
+.settings-modal .setting-group {
+  margin: 0 20px 20px 20px;
+  padding-top: 20px;
+  overflow: hidden;
+  border-top: 1px solid #222;
+}
+
+.settings-modal .setting-group .setting-label {
+  float: left;
+}
+
+.settings-modal .setting-group .setting-control {
+  float: right;
+}

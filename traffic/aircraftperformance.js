@@ -4,6 +4,7 @@ function AircraftPerformance(category) {
 	this._accelerationRate = 1; // knots per second
 	this._bankAngle = 25; // degrees
 	this._smoothAltitude = 18000;
+	this._vref = 140;
 
 	if (typeof category == 'string')
 		this.loadFromCategory(category);
@@ -32,4 +33,8 @@ AircraftPerformance.prototype.accelerationRate = function() {
 AircraftPerformance.prototype.bankAngle = function(alt) {
 	var altitude = alt || 0;
 	return alt >= this._smoothAltitude ? this._bankAngle * .4 : this._bankAngle;
+};
+
+AircraftPerformance.prototype.vref = function() {
+	return this._vref;
 };

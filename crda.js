@@ -1,45 +1,50 @@
-function CRDA(airport, masterRunwayID, slaveRunwayID, r) {
-  this._r = r;
+function CRDA(airport, masterRunwayID, slaveRunwayID) {
   this._airport = airport;
   this._master = airport.runway(masterRunwayID);
   this._slave = airport.runway(slaveRunwayID);
 }
 
-CRDA.prototype.ghostAircraft = function(aircraft) {
-  if (this._master && this.inMasterZone(aircraft))
-    this.renderGhost(aircraft, this.ghostPosition(aircraft));
+CRDA.prototype.ghostTargets = function(targetManager, r) {
+  var targets = targetManager.getAllTargets();
+  for (var i in targets)
+    this.ghostTarget(targets[i], r);
 };
 
-CRDA.prototype.ghostPosition = function(aircraft) {
-  var bearingOffset = 360 - (this._master.course() + this._r.magVar()) + this._master.position().bearingTo(aircraft.position());
-  var distance = this._master.position().distanceTo(aircraft.position());
-  return this._slave.position().destinationPoint(this._slave.course() + this._r.magVar() + bearingOffset, distance);
+CRDA.prototype.ghostTarget = function(target, r) {
+  if (this._master && this.inMasterZone(target, r))
+    this.renderGhost(target, this.ghostPosition(target, r), r);
 };
 
-CRDA.prototype.renderGhost = function(aircraft, position) {
-  var acPos = this._r.gtoc(position._lat, position._lon);
-  this._r.context().fillStyle = '#ff0';
-  this._r.context().strokeStyle = '#ff0';
+CRDA.prototype.ghostPosition = function(target, r) {
+  var bearingOffset = 360 - (this._master.course() + r.magVar()) + this._master.position().bearingTo(target.position());
+  var distance = this._master.position().distanceTo(target.position());
+  return this._slave.position().destinationPoint(this._slave.course() + r.magVar() + bearingOffset, distance);
+};
+
+CRDA.prototype.renderGhost = function(target, position, r) {
+  var acPos = r.gtoc(position._lat, position._lon);
+  r.context().fillStyle = '#ff0';
+  r.context().strokeStyle = '#ff0';
   // Render position
-  this._r.context().beginPath();
-  this._r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
-  this._r.context().textAlign = 'center';
-  this._r.context().textBaseline = 'middle';
-  this._r.context().fillText('0', acPos.x, acPos.y);
+  r.context().beginPath();
+  r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+  r.context().textAlign = 'center';
+  r.context().textBaseline = 'middle';
+  r.context().fillText('0', acPos.x, acPos.y);
   // Draw the leader line
-  this._r.context().beginPath();
-  this._r.context().moveTo(acPos.x - 10, acPos.y);
-  this._r.context().lineTo(acPos.x - 40, acPos.y);
-  this._r.context().lineWidth = 1;
-  this._r.context().stroke();
+  r.context().beginPath();
+  r.context().moveTo(acPos.x - 10, acPos.y);
+  r.context().lineTo(acPos.x - 40, acPos.y);
+  r.context().lineWidth = 1;
+  r.context().stroke();
   // Draw the target altitude and speed data block
-  this._r.context().beginPath();
-  this._r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
-  this._r.context().textAlign = 'right';
-  this._r.context().textBaseline = 'middle';
-  var scopeSpeed = Math.floor(aircraft.groundspeed() / 10);
-  var scopeAltitude = Math.floor(aircraft.altitude() / 100);
-  this._r.context().fillText(this._r.pad(scopeSpeed, 2), acPos.x - 45, acPos.y);
+  r.context().beginPath();
+  r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+  r.context().textAlign = 'right';
+  r.context().textBaseline = 'middle';
+  var scopeSpeed = Math.floor(target.speed() / 10);
+  var scopeAltitude = Math.floor(target.altitude() / 100);
+  r.context().fillText(r.pad(scopeSpeed, 2), acPos.x - 45, acPos.y);
 };
 
 CRDA.prototype.setMaster = function(runway) {
@@ -62,13 +67,15 @@ CRDA.prototype.airport = function() {
   return this._airport;
 };
 
-CRDA.prototype.inMasterZone = function(aircraft) {
-  var distanceInFeet = aircraft.position().distanceTo(this._master.position()) * 3280.84;
-  var radioAltitude = aircraft.altitude() - this._master.elevation();
+CRDA.prototype.inMasterZone = function(target, r) {
+  if (target.course() == -1)
+    return false;
+  var distanceInFeet = target.position().distanceTo(this._master.position()) * 3280.84;
+  var radioAltitude = target.altitude() - this._master.elevation();
   var gsAltitude = Math.tan(3 * Math.PI / 180) * distanceInFeet;
-  if (aircraft.altitude() < gsAltitude + 1000
-      && this.angleBetween(aircraft.heading(), this._master.course()) < 90
-      && this.inMasterFunnel(aircraft))
+  if (target.altitude() < gsAltitude + 1000
+      && this.angleBetween(target.course(), this._master.course()) < 90
+      && this.inMasterFunnel(target, r))
     return true;
   return false;
 };
@@ -78,8 +85,8 @@ CRDA.prototype.angleBetween = function(primaryHeading, secondaryHeading) {
   return Math.min(gap, 360 - gap);
 };
 
-CRDA.prototype.inMasterFunnel = function(aircraft) {
-  var bearingOffset = (360 - (this._master.course() + this._r.magVar()) + this._master.position().bearingTo(aircraft.position())) % 360;
-  var distance = this._master.position().distanceTo(aircraft.position()) * 0.539957;
+CRDA.prototype.inMasterFunnel = function(target, r) {
+  var bearingOffset = (360 - (this._master.course() + r.magVar()) + this._master.position().bearingTo(target.position())) % 360;
+  var distance = this._master.position().distanceTo(target.position()) * 0.539957;
   return 150 <= bearingOffset && bearingOffset <= 210 && distance <= 30;
 };
