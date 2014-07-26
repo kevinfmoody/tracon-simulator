@@ -30,7 +30,7 @@ function Target(callsign) {
 }
 
 Target.prototype.updateFromBlip = function(blip) {
-  this.update(blip.callsign(), blip.mode(), blip.type(), blip.arrival(), blip.position(), blip.altitude(), blip.speed(), blip.squawk());
+  this.update(blip.callsign, blip.mode, blip.type, blip.arrival, blip.position, blip.altitude, blip.speed, blip.squawk);
 };
 
 Target.prototype.update = function(callsign, mode, type, arrival, position, altitude, speed, squawk) {
@@ -63,8 +63,9 @@ Target.prototype.setArrival = function(arrival) {
 };
 
 Target.prototype.setPosition = function(position) {
+  position = new LatLon(position._lat, position._lon);
   if (this._position)
-    this.addHistory(this._position);
+    this.addHistory(position);
   this._position = position;
 };
 
@@ -139,7 +140,6 @@ Target.prototype.course = function() {
 };
 
 Target.prototype.enableCone = function(size) {
-  debugger
   this._coneSize = size;
   this._isDisplayingCone = true;
 };
@@ -153,7 +153,6 @@ Target.prototype.isDisplayingCone = function() {
 };
 
 Target.prototype.enableJRing = function(size) {
-  debugger
   this._jRingSize = size;
   this._isDisplayingJRing = true;
 };
@@ -274,18 +273,35 @@ Target.prototype.renderCone = function(r) {
   if (this.isDisplayingCone()) {
     var magCourse = this.course() - r.magVar(),
         len = r.distanceToPixels(this.position(), this.course(), this._coneSize),
-        width = r.distanceToPixels(this.position(), this.course(), .3),
+        width = r.distanceToPixels(this.position(), this.course(), .5),
         pos = r.gtoc(this.position()._lat, this.position()._lon),
-        leadLeft = r.rotate(-width / 2, len, 0, 0, magCourse * Math.PI / 180),
-        leadRight = r.rotate(width / 2, len, 0, 0, magCourse * Math.PI / 180);
+        theta = -magCourse * Math.PI / 180,
+        minLeft = r.rotate(-width / 2 * .4, -len * .4, 0, 0, theta),
+        minRight = r.rotate(width / 2 * .4, -len * .4, 0, 0, theta),
+        midLeft = r.rotate(-width / 2 * .6, -len * .6, 0, 0, theta),
+        midRight = r.rotate(width / 2 * .6, -len * .6, 0, 0, theta),
+        maxLeft = r.rotate(-width / 2, -len, 0, 0, theta),
+        maxRight = r.rotate(width / 2, -len, 0, 0, theta),
+        distanceLabel = r.rotate(0, -len / 2, 0, 0, theta);
     r.context().strokeStyle = '#369';
     r.context().lineWidth = 1;
     r.context().beginPath();
-    r.context().moveTo(pos.x, pos.y);
-    r.context().lineTo(pos.x + leadLeft.x, pos.y + leadLeft.y);
-    r.context().lineTo(pos.x + leadRight.x, pos.y + leadRight.y);
+    r.context().moveTo(pos.x + minLeft.x, pos.y + minLeft.y);
     r.context().lineTo(pos.x, pos.y);
+    r.context().lineTo(pos.x + minRight.x, pos.y + minRight.y);
     r.context().stroke();
+    r.context().beginPath();
+    r.context().moveTo(pos.x + midLeft.x, pos.y + midLeft.y);
+    r.context().lineTo(pos.x + maxLeft.x, pos.y + maxLeft.y);
+    r.context().lineTo(pos.x + maxRight.x, pos.y + maxRight.y);
+    r.context().lineTo(pos.x + midRight.x, pos.y + midRight.y);
+    r.context().stroke();
+    r.context().beginPath();
+    r.context().font = 'bold ' + width + 'px Oxygen Mono';
+    r.context().textAlign = 'center';
+    r.context().textBaseline = 'middle';
+    r.context().fillStyle = '#369';
+    r.context().fillText('' + this._coneSize, pos.x + distanceLabel.x, pos.y + distanceLabel.y);
   }
 };
 

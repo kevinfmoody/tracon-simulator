@@ -1,3 +1,10 @@
+var fs,
+    Aircraft;
+if (typeof module !== 'undefined' && module.exports) {
+  fs = require('fs');
+  Aircraft = require('./aircraft.js');
+}
+
 function TrafficSimulator() {
   this._aircraft = [];
   this._lastRun = 0;
@@ -13,7 +20,9 @@ function TrafficSimulator() {
  * returns all targets in the simulation.
  */
 TrafficSimulator.prototype.blips = function() {
-  return this.getAllAircraft();
+  return this._aircraft.map(function(aircraft) {
+    return aircraft.blip();
+  });
 };
 
 TrafficSimulator.prototype.getBlipByCallsign = function(callsign) {
@@ -33,13 +42,25 @@ TrafficSimulator.prototype.getAircraftByCallsign = function(callsign) {
 };
 
 TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
-  $.get(filename, function(data) {
-    var situation = data.split('\n');
-    this._aircraft = [];
-    for (var i in situation)
-      this._aircraft.push(new Aircraft(situation[i]));
-    loadedFn();
-  }.bind(this));
+  if (typeof module !== 'undefined' && module.exports) {
+    fs.readFile(filename, function(err, data) {
+      if (err)
+        return console.log(err);
+      var situation = data.toString().split('\n');
+      this._aircraft = [];
+      for (var i in situation)
+        this._aircraft.push(new Aircraft(situation[i]));
+      loadedFn();
+    }.bind(this));
+  } else {
+    $.get(filename, function(data) {
+      var situation = data.split('\n');
+      this._aircraft = [];
+      for (var i in situation)
+        this._aircraft.push(new Aircraft(situation[i]));
+      loadedFn();
+    }.bind(this));
+  }
 };
 
 TrafficSimulator.prototype.elapsed = function() {
@@ -64,3 +85,8 @@ TrafficSimulator.prototype.pause = function() {
     this._elapsed += new Date().getTime() - this._lastRun;
   }
 };
+
+// For Node.js
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = TrafficSimulator;
+}

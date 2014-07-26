@@ -428,3 +428,7 @@ if (typeof String.prototype.trim == 'undefined') {
 
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = LatLon;
+}

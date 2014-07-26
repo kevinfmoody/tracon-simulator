@@ -11,6 +11,18 @@ function TextOverlay(scope) {
 	}, 1000);
 }
 
+TextOverlay.prototype.lines = function() {
+  return this._preview.length;
+};
+
+TextOverlay.prototype.formatError = function() {
+  this._formatError = true;
+};
+
+TextOverlay.prototype.previewSegments = function() {
+  return this._preview;
+};
+
 TextOverlay.prototype.targetSelect = function() {
   if (this._preview.length == 1) {
     var targets = this._scope._targetManager.getAllTargets(),
@@ -32,7 +44,7 @@ TextOverlay.prototype.targetSelect = function() {
 
 TextOverlay.prototype.processPreviewArea = function(aircraft, controller) {
   if (this._preview.length == 3) {
-    var aircraft = this._scope._targetManager.getTargetByCallsign(this._preview[0]);
+    var aircraft = this._scope._trafficSimulator.getAircraftByCallsign(this._preview[0]);
     var command = this._preview[1];
     var parameter = this._preview[2];
     if (aircraft && !isNaN(parameter)) {
@@ -41,7 +53,7 @@ TextOverlay.prototype.processPreviewArea = function(aircraft, controller) {
         case 'TR':
         case 'FH':
           if (0 <= parameter && parameter <= 360) {
-            aircraft.assignHeading(parameter, this._scope.situation().elapsed(), 0);
+            aircraft.assignHeading(parameter, this._scope._trafficSimulator.elapsed(), 0);
             this.clearPreview();
             return true;
           }
@@ -49,7 +61,7 @@ TextOverlay.prototype.processPreviewArea = function(aircraft, controller) {
         case 'CM':
         case 'DM':
           if (0 <= parameter && parameter <= 99999) {
-            aircraft.assignAltitude(parameter, this._scope.situation().elapsed(), 0);
+            aircraft.assignAltitude(parameter, this._scope._trafficSimulator.elapsed(), 0);
             this.clearPreview();
             return true;
           }
@@ -57,7 +69,7 @@ TextOverlay.prototype.processPreviewArea = function(aircraft, controller) {
         case 'SPD':
         case 'SLOW':
           if (0 <= parameter && parameter <= 9999) {
-            aircraft.assignSpeed(parameter, this._scope.situation().elapsed(), 0);
+            aircraft.assignSpeed(parameter, this._scope._trafficSimulator.elapsed(), 0);
             this.clearPreview();
             return true;
           }

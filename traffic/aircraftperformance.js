@@ -38,3 +38,7 @@ AircraftPerformance.prototype.bankAngle = function(alt) {
 AircraftPerformance.prototype.vref = function() {
 	return this._vref;
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = AircraftPerformance;
+}

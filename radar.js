@@ -11,14 +11,19 @@ Radar.prototype.position = function() {
 };
 
 Radar.prototype.sweep = function(feed, targetManager, renderFn) {
-  feed.blips().forEach(function(blip) {
-    this.sync(blip, targetManager);
+  var blips = [];//feed.blips();
+  socket.emit('radar.sweep', function(blips) {
+    blips.forEach(function(blip) {
+      this.sync(blip, targetManager);
+    }.bind(this));
+    targetManager.getAllTargets().forEach(function(target) {
+      //this.revSync(target, feed, targetManager);
+    }.bind(this));
+    if (renderFn)
+      renderFn();
   }.bind(this));
-  targetManager.getAllTargets().forEach(function(target) {
-    this.revSync(target, feed, targetManager);
-  }.bind(this));
-  if (renderFn)
-    renderFn();
+
+  
 
   // var radials = [],
   //     currentRadial = 0;
@@ -42,7 +47,7 @@ Radar.prototype.sweep = function(feed, targetManager, renderFn) {
 };
 
 Radar.prototype.sync = function(blip, targetManager) {
-  var target = targetManager.getTargetByCallsign(blip.callsign());
+  var target = targetManager.getTargetByCallsign(blip.callsign);
   if (target)
     target.updateFromBlip(blip);
   else {

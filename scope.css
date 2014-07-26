@@ -10,6 +10,87 @@ body {
 	background:#000;
 }
 
+.scope-settings {
+	height: 54px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.button-group, .scope-button-group {
+	display: inline-block;
+}
+
+.button, .scope-button-container {
+	display: inline-block;
+	color: #ccc;
+}
+
+.button .full, .scope-full-button {
+	display: table;
+	background: #111;
+	border-top: 2px solid #555;
+	border-right: 2px solid #090909;
+	border-bottom: 2px solid #060606;
+	border-left: 2px solid #444;
+	height: 50px;
+	width: 50px;
+	cursor: default;
+}
+
+.button .split, .scope-split-button {
+	display: table;
+	background: #111;
+	border-top: 2px solid #555;
+	border-right: 2px solid #090909;
+	border-bottom: 2px solid #060606;
+	border-left: 2px solid #444;
+	height: 23px;
+	width: 50px;
+	cursor: default;
+}
+
+.button .vert, .scope-vertical-button {
+	display: table;
+	background: #111;
+	border-top: 2px solid #555;
+	border-right: 2px solid #090909;
+	border-bottom: 2px solid #060606;
+	border-left: 2px solid #444;
+	height: 50px;
+	width: 30px;
+	cursor: default;
+}
+
+.scope-button-container .selected {
+	background: #020;
+	border-top: 2px solid #000900;
+	border-right: 2px solid #353;
+	border-bottom: 2px solid #343;
+	border-left: 2px solid #000c00;
+	color: #ab9;
+}
+
+.scope-button-container div:hover > p {
+	color: #ab9;
+}
+
+.button .disabled {
+	color: #555;
+}
+
+.button p, .scope-button-container p {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	font-size: 8px;
+	text-transform: uppercase;
+}
+
 #scope {
 	cursor:url(cross_cursor.png) 10 10, crosshair;
 }

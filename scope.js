@@ -60,19 +60,23 @@ Scope.prototype.turnOff = function() {
 	}
 };
 
-Scope.prototype.select = function(x, y) {
+Scope.prototype.select = function(e) {
+	var offset = $(e.target).offset(),
+			x = e.clientX - offset.left,
+			y = e.clientY - offset.top;
 	var target = this._targetManager.select(x, y, this._renderer);
-	if (target) {
-		if (!this._textOverlay.processPreviewArea(target, this._controller)) {
-			this._textOverlay.clearPreview();
-			this._textOverlay.addPreviewChar(target.callsign());
-			this._textOverlay.addPreviewChar(' ');
-		} 
-		this.render();
-		return true;
-	}
-	this.render();
-	return false;
+	// if (target) {
+	// 	if (!this._textOverlay.processPreviewArea(target, this._controller)) {
+	// 		this._textOverlay.clearPreview();
+	// 		this._textOverlay.addPreviewChar(target.callsign());
+	// 		this._textOverlay.addPreviewChar(' ');
+	// 	}
+	// 	this.render();
+	// 	return true;
+	// }
+	// this.render();
+	// return false;
+	return target;
 };
 
 Scope.prototype.bind = function(scope) {
@@ -121,12 +125,15 @@ Scope.prototype.textOverlay = function() {
 
 Scope.prototype.fit = function() {
 	this._renderer.scope().width = $(window).width();
-	this._renderer.scope().height = $(window).height();
+	this._renderer.scope().height = $(window).height() - ($('.scope-settings').is(':visible') ? 54 : 0);
 }
 
 Scope.prototype.renderBackground = function() {
 	this._renderer.context().fillStyle = this._renderer.background();
+	this._renderer.context().strokeStyle = this._renderer.brite(this._compass._brite);
+	this._renderer.context().lineWidth = 1;
 	this._renderer.context().fillRect(0, 0, this._renderer.scope().width, this._renderer.scope().height);
+	this._renderer.context().strokeRect(0, 0, this._renderer.scope().width, this._renderer.scope().height);
 };
 
 Scope.prototype.renderOverlays = function() {

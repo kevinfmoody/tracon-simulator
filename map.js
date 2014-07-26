@@ -21,7 +21,7 @@ Map.prototype.loadFromFile = function(filename, r, callback) {
 Map.prototype.addMapPath = function(pathList, r) {
 	// Loop through map file
 	for (var line in pathList) {
-		var lineData = $.trim(pathList[line]).split(' ');
+		var lineData = pathList[line].trim().split(' ');
 		if (lineData.length >= 4) {
 			var subpath = [];
 			// Loop through each coordinate in line

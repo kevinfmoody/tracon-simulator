@@ -85,3 +85,7 @@ Autopilot.prototype.angleBetween = function(primaryHeading, secondaryHeading) {
   var gap = Math.abs(primaryHeading - secondaryHeading);
   return Math.min(gap, 360 - gap);
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = Autopilot;
+}
