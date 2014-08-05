@@ -3,32 +3,29 @@ var express = require('express'),
     http = require('http').Server(app),
     io = require('socket.io')(http),
     TrafficSimulator = require('../traffic/TrafficSimulator.js'),
-    VATSIM = require('./vatsim/vatsim.js'),
-    v = new VATSIM(),
+    ClientManager = require('./ClientManager.js'),
     r = {
       magVar: function() { return -15.24; }
-    };
-
-v.client().connect(function() {
-  v.atc().add('BOS_APP', 'Kevin Moody', '1097238', '201815', '8');
-  v.messages().send('BOS_APP1', 'Yo people. how are you?');
-  v.weather().metar('KBOS');
-  setInterval(function() {
-    v.atc().sendPosition('18250', '5', '150', '8', '43.23414', '-71.2341');
-  }, 15000);
-});
-
-var simulation = new TrafficSimulator();
-simulation.loadSituation('../situations/a90.sit', function() {
-  console.log('situation loaded');
-  simulation.run(r);
-});
+    },
+    COUNT = 0;
 
 io.on('connection', function(socket) {
-  console.log('a user connected');
-  socket.on('radar.sweep', function(radarReturn) {
-    radarReturn(simulation.blips());
-  });
+  var cm = new ClientManager(socket);
+  // if (COUNT === 0) {
+  //   COUNT++;
+  //   cm._v.pilot().addPilot({
+  //     from: 'SWA393',
+  //     cid: '5!MP!L0T',
+  //     password: '5!MTR@C0N',
+  //     name: 'Kevin Moody'
+  //   });
+  //   cm._v.pilot().addPilot({
+  //     from: 'SWA3999',
+  //     cid: '5!MP!L0T',
+  //     password: '5!MTR@C0N',
+  //     name: 'Kevin Moody'
+  //   });
+  // }
 });
 
 app.use('/', express.static('../'));

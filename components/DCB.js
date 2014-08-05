@@ -4,9 +4,20 @@ var MainDCB = React.createClass({
   render: function() {
     return (
       <div className="main-dcb">
-        <DCBScopeRangeButton />
-        <DCBScopeCenterButtonGroup />
+        <DCBScopeRangeButtonContainer />
+        <DCBScopeCenterButtonContainer />
         <DCBRangeRingsButtonGroup />
+        <DCBMapsButtonContainer />
+        <DCBFavoriteMapsButtonGroup />
+        <DCBWeatherButtonGroup />
+        <DCBBriteButtonContainer />
+        <DCBLeaderButtonContainer />
+        <DCBCharSizeButtonContainer />
+        <DCBScopeModeButtonContainer />
+        <DCBPrefSetButtonContainer />
+        <DCBRadarSiteButtonContainer />
+        <DCBTextFiltersButtonContainer />
+        <DCBShiftButtonContainer />
       </div>
     );
   }
@@ -30,5 +41,3 @@ var MasterDCB = React.createClass({
     );
   }
 });
-
-React.renderComponent(<MasterDCB />, document.getElementById('wahoo'));

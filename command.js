@@ -1,7 +1,8 @@
 var Command = Command || {};
 
 Command.ERROR = {
-  FORMAT: 0
+  FORMAT: 0,
+  TAKE_NO_ACTION: 1
 };
 
 Command.SEGMENT_TYPE = {
@@ -42,6 +43,39 @@ Command.ALIAS = {
   SLOW: Command.SEGMENT.SPEED
 };
 
+Command.cleanupFunction = null;
+
+Command.registerCleanupFunction = function(fn) {
+  Command.cleanup();
+  Command.cleanupFunction = fn;
+};
+
+Command.cleanup = function() {
+  Command.clearCleanupTimeout();
+  if (Command.cleanupFunction) {
+    Command.cleanupFunction();
+    Command.cleanupFunction = null;
+    scope.render();
+  }
+};
+
+Command.cleanupTimeout = null;
+
+Command.clearCleanupTimeout = function() {
+  if (Command.cleanupTimeout) {
+    clearTimeout(Command.cleanupTimeout);
+    Command.cleanupTimeout = null;
+  }
+};
+
+Command.cleanupIn = function(milliseconds) {
+  Command.clearCleanupTimeout();
+  Command.cleanupTimeout = setTimeout(function() {
+    Command.cleanup();
+    Command.clearCleanupTimeout();
+  }, milliseconds);
+};
+
 Command.run = function(e, args) {
   if (args[0] === '')
     return;
@@ -66,9 +100,24 @@ Command.run = function(e, args) {
       case Command.ERROR.FORMAT:
         scope.textOverlay().formatError();
         break;
-      default:
-        scope.textOverlay().formatError();
     }
+  }
+};
+
+Command[Command.SEGMENT_TYPE.PLACEHOLDER] = function(e, args) {
+  switch (args[0]) {
+    case '*':
+      var headingAndDistance = scope.measureHeadingAndDistance(e);
+      if (headingAndDistance) {
+        scope.textOverlay().clearPreview();
+        scope.textOverlay().setPreviewAreaMessage(headingAndDistance.heading + '/' + headingAndDistance.distance);
+        Command.registerCleanupFunction(function() {
+          scope.textOverlay().clearPreviewAreaMessage();
+          scope.clearRenderPoints();
+        });
+        Command.cleanupIn(15000);
+      }
+      throw Command.ERROR.TAKE_NO_ACTION;
   }
 };
 
@@ -94,11 +143,21 @@ Command[Command.SEGMENT.TERMINATE_CONTROL] = function(e, args) {
   throw Command.ERROR.FORMAT;
 };
 
-Command[Command.SEGMENT_TYPE.CALLSIGN] = {};
 
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.ILS] = {};
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.ILS][Command.SEGMENT_TYPE.RUNWAY] = function(e, args) {
-
+  var callsign = args[0],
+      runwayID = args[2],
+      target = scope.targetManager().getTargetByCallsign(callsign),
+      runway = scope.airport('KBOS').runway(runwayID);
+  if (target && runway) {
+    socket.emit('TS.ILS', {
+      callsign: callsign,
+      runway: runway
+    });
+    return;
+  }
+  throw Command.ERROR.FORMAT;
 };
 
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.VISUAL_APPROACH] = {};
@@ -108,15 +167,45 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.VISUAL_APPROACH][Command.
 
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.FLY_HEADING] = {};
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.FLY_HEADING][Command.SEGMENT_TYPE.HEADING] = function(e, args) {
-
+  var callsign = args[0],
+      heading = args[2],
+      target = scope.targetManager().getTargetByCallsign(callsign);
+  if (target && 0 <= heading && heading <= 360) {
+    socket.emit('TS.heading', {
+      callsign: callsign,
+      heading: heading
+    });
+    return;
+  }
+  throw Command.ERROR.FORMAT;
 };
 
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.MAINTAIN_ALTITUDE] = {};
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.MAINTAIN_ALTITUDE][Command.SEGMENT_TYPE.SPEED] = function(e, args) {
-
+  var callsign = args[0],
+      altitude = args[2],
+      target = scope.targetManager().getTargetByCallsign(callsign);
+  if (target && 0 <= altitude && altitude <= 99999) {
+    socket.emit('TS.altitude', {
+      callsign: callsign,
+      altitude: altitude
+    });
+    return;
+  }
+  throw Command.ERROR.FORMAT;
 };
 
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.SPEED] = {};
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.SPEED][Command.SEGMENT_TYPE.SPEED] = function(e, args) {
-
+  var callsign = args[0],
+      speed = args[2],
+      target = scope.targetManager().getTargetByCallsign(callsign);
+  if (target && 0 <= speed && speed <= 360) {
+    socket.emit('TS.speed', {
+      callsign: callsign,
+      speed: speed
+    });
+    return;
+  }
+  throw Command.ERROR.FORMAT;
 };

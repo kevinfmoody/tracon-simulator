@@ -1,4 +1,7 @@
+/** @jsx React.DOM */
+
 var scope = new Scope();
+var connectionDelegate = new ConnectionDelegate(scope, socket);
 
 $(document).ready(function() {
 	initScope();
@@ -14,18 +17,19 @@ $(document).ready(function() {
 
 function initScope() {
 	scope.bind('#scope');
-	scope.addMap('maps/a90.map', function() {
+	scope.addMap('22L27', '', 'maps/a90.map', function() {
 		scope.render();
 		setInterval(function() {
 			scope.render();
 		}, 1000 / 30);
+    React.renderComponent(<MasterDCB />, document.getElementById('wahoo'));
 	});
 	//scope.setSituation('situations/a90.sit');
   scope._radar.setPosition(new LatLon(42.3629722, -71.0064167));
-  scope._trafficSimulator.loadSituation('situations/a90.sit', function() {
+  // scope._trafficSimulator.loadSituation('situations/a90.sit', function() {
     //scope._trafficSimulator.run(scope.renderer());
     scope.turnOn();
-  });
+  // });
 	//scope.situation().run();
 }
 
@@ -83,7 +87,9 @@ function initScopeDrag() {
 		});
 		return false;
 	});
-	$('#scope').bind('mouseup mouseover mouseout touchend touchcancel', function() { scope.renderer().setMouseDown(false); });
+	$('#scope').bind('mouseup mouseover mouseout touchend touchcancel', function(e) {
+    scope.renderer().setMouseDown(false);
+  });
 	$('#scope').bind('mousemove touchmove', function(e) {
       	e = e.type == 'touchmove' ? e.touches[0] : e;
 		if (scope.renderer().mouseDown()) {
@@ -103,15 +109,9 @@ function initScopeDrag() {
 
 function initSlewDetection() {
 	$('#scope').click(function(e) {
+    Command.cleanup();
     Command.run(e, scope.textOverlay().previewSegments());
 	});
-
-  $('.button .vert, .button .full, .button .split').click(function() {
-    $(this).toggleClass('selected');
-    if ($(this).text().trim().toUpperCase() === 'MAPS') {
-
-    }
-  });
 }
 
 function initKeyDetection() {
@@ -120,13 +120,18 @@ function initKeyDetection() {
     scope.render();
   });
 	$(document).keydown(function(e) {
-    var keyCommands = Keyboard[e.which];
-    if (keyCommands) {
-      var command = keyCommands[Keyboard.combo(e)];
-      if (command) {
-        e.preventDefault();
-        command(e);
-        scope.render();
+    Command.cleanup();
+    if (e.which === Keyboard.KEYS.ENTER)
+      Command.run(e, scope.textOverlay().previewSegments());
+    else {
+      var keyCommands = Keyboard[e.which];
+      if (keyCommands) {
+        var command = keyCommands[Keyboard.combo(e)];
+        if (command) {
+          e.preventDefault();
+          command(e);
+          scope.render();
+        }
       }
     }
 	});

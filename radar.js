@@ -12,16 +12,16 @@ Radar.prototype.position = function() {
 
 Radar.prototype.sweep = function(feed, targetManager, renderFn) {
   var blips = [];//feed.blips();
-  socket.emit('radar.sweep', function(blips) {
-    blips.forEach(function(blip) {
-      this.sync(blip, targetManager);
-    }.bind(this));
-    targetManager.getAllTargets().forEach(function(target) {
-      //this.revSync(target, feed, targetManager);
-    }.bind(this));
-    if (renderFn)
-      renderFn();
-  }.bind(this));
+  // socket.emit('radar.sweep', function(blips) {
+  //   blips.forEach(function(blip) {
+  //     this.sync(blip, targetManager);
+  //   }.bind(this));
+  //   targetManager.getAllTargets().forEach(function(target) {
+  //     //this.revSync(target, feed, targetManager);
+  //   }.bind(this));
+  //   if (renderFn)
+  //     renderFn();
+  // }.bind(this));
 
   
 

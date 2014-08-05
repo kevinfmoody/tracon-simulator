@@ -1,11 +1,17 @@
-var net = require('net');
+var net = require('net'),
+    Packet = require('./Packet.js');
 
-function Client() {
+function Client(socket) {
+  this._s = socket;
+
   this._HOST = '127.0.0.1';
   this._PORT = 6809;
 
   this._FIELD_DELIMETER = ':';
   this._PACKET_DELIMETER = '\r\n';
+
+  this._packetInFlight = false;
+  this._dataBuffer = null;
 
   this._isConnected = false;
   this._isConnecting = false;
@@ -27,6 +33,8 @@ Client.prototype.connect = function(cb) {
   if (!this.isConnected() && !this._isConnecting) {
     this._isConnecting = true;
     this._client.connect(this._PORT, this._HOST, cb);
+  } else {
+    cb();
   }
 };
 
@@ -42,39 +50,53 @@ Client.prototype.callsign = function() {
 };
 
 Client.prototype.sendPacket = function(command, payload) {
-  if (this._callsign) {
-    this.sendRawPacket(command + this._callsign + this._FIELD_DELIMETER +
-      payload.join(this._FIELD_DELIMETER));
-  } else {
-    this._callsign = payload[0];
-    this.sendRawPacket(command + payload.join(this._FIELD_DELIMETER));
-  }
+  this._callsign = payload[0];
+  this.sendRawPacket(command + payload.join(this._FIELD_DELIMETER));
 };
 
 Client.prototype.sendRawPacket = function(packet) {
-  console.log(packet + this._PACKET_DELIMETER);
-  this._client.write(packet + this._PACKET_DELIMETER);
+  // console.log('> ' + packet + this._PACKET_DELIMETER);
+  this.connect(function() {
+    this._client.write(packet + this._PACKET_DELIMETER);
+  }.bind(this));
 };
 
 Client.prototype.handleConnect = function() {
-  console.log(':)');
+  // console.log(':)');
 
   this._isConnecting = false;
   this._isConnected = true;
 };
 
 Client.prototype.handleData = function(data) {
-  console.log(data.toString());
+  if (this._s) {
+    var dataString;
+    if (this._packetInFlight) {
+      this._dataBuffer = Buffer.concat([this._dataBuffer, data]);
+      dataString = this._dataBuffer.toString();
+    } else
+      dataString = data.toString();
+    if (dataString.slice(-2) === '\r\n') {
+      this._packetInFlight = false;
+      this.processPacket(dataString);
+    } else
+      this._packetInFlight = true;
+  }
+};
+
+Client.prototype.processPacket = function(packet) {
+  // console.log(packet);
+  Packet.process(packet.substr(0, packet.length - 2), this._s);
 };
 
 Client.prototype.handleError = function(err) {
-  console.log(':/');
+  // console.log(':/');
 
   this._isConnecting = false;
 };
 
 Client.prototype.handleClose = function(msg) {
-  console.log(':\'(');
+  // console.log(':\'(');
 
   this._isConnected = false;
 };

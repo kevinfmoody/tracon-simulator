@@ -1,5 +1,6 @@
 function TextOverlay(scope) {
   this._scope = scope;
+  this._previewMessage = '';
   this._preview = [''];
   this._formatError = false;
   this._previewLine = 6;
@@ -10,6 +11,14 @@ function TextOverlay(scope) {
 		textOverlay._clock = new Date();
 	}, 1000);
 }
+
+TextOverlay.prototype.setPreviewAreaMessage = function(message) {
+  this._previewMessage = message;
+};
+
+TextOverlay.prototype.clearPreviewAreaMessage = function() {
+  this._previewMessage = '';
+};
 
 TextOverlay.prototype.lines = function() {
   return this._preview.length;
@@ -43,69 +52,69 @@ TextOverlay.prototype.targetSelect = function() {
 };
 
 TextOverlay.prototype.processPreviewArea = function(aircraft, controller) {
-  if (this._preview.length == 3) {
-    var aircraft = this._scope._trafficSimulator.getAircraftByCallsign(this._preview[0]);
-    var command = this._preview[1];
-    var parameter = this._preview[2];
-    if (aircraft && !isNaN(parameter)) {
-      switch (command) {
-        case 'TL':
-        case 'TR':
-        case 'FH':
-          if (0 <= parameter && parameter <= 360) {
-            aircraft.assignHeading(parameter, this._scope._trafficSimulator.elapsed(), 0);
-            this.clearPreview();
-            return true;
-          }
-          break;
-        case 'CM':
-        case 'DM':
-          if (0 <= parameter && parameter <= 99999) {
-            aircraft.assignAltitude(parameter, this._scope._trafficSimulator.elapsed(), 0);
-            this.clearPreview();
-            return true;
-          }
-          break;
-        case 'SPD':
-        case 'SLOW':
-          if (0 <= parameter && parameter <= 9999) {
-            aircraft.assignSpeed(parameter, this._scope._trafficSimulator.elapsed(), 0);
-            this.clearPreview();
-            return true;
-          }
-          break;
-      }
-    }
-  } else if (this._preview.length == 1) {
-    var command = this._preview[0],
-        coneCommand = /^\*P\d+$/,
-        jRingCommand = /^\*J\d+$/;
-    if (aircraft) {
-      if (command == 'IC') {
-        aircraft.setController(controller);
-        this.clearPreview();
-        return true;
-      } else if (command == 'TC') {
-        aircraft.setController(null);
-        this.clearPreview();
-        return true;
-      } else if (coneCommand.test(command.substr(1))) {
-        aircraft.enableCone(parseInt(command.substr(3)));
-        this.clearPreview();
-        return true;
-      } else if (jRingCommand.test(command.substr(1))) {
-        aircraft.enableJRing(parseInt(command.substr(3)));
-        this.clearPreview();
-        return true;
-      }
-    }
-  }
-  if (this._preview[0] == '')
-    return false;
-  else {
-    this._formatError = true;
-    return true;
-  }
+  // if (this._preview.length == 3) {
+  //   var aircraft = this._scope._trafficSimulator.getAircraftByCallsign(this._preview[0]);
+  //   var command = this._preview[1];
+  //   var parameter = this._preview[2];
+  //   if (aircraft && !isNaN(parameter)) {
+  //     switch (command) {
+  //       case 'TL':
+  //       case 'TR':
+  //       case 'FH':
+  //         if (0 <= parameter && parameter <= 360) {
+  //           aircraft.assignHeading(parameter, this._scope._trafficSimulator.elapsed(), 0);
+  //           this.clearPreview();
+  //           return true;
+  //         }
+  //         break;
+  //       case 'CM':
+  //       case 'DM':
+  //         if (0 <= parameter && parameter <= 99999) {
+  //           aircraft.assignAltitude(parameter, this._scope._trafficSimulator.elapsed(), 0);
+  //           this.clearPreview();
+  //           return true;
+  //         }
+  //         break;
+  //       case 'SPD':
+  //       case 'SLOW':
+  //         if (0 <= parameter && parameter <= 9999) {
+  //           aircraft.assignSpeed(parameter, this._scope._trafficSimulator.elapsed(), 0);
+  //           this.clearPreview();
+  //           return true;
+  //         }
+  //         break;
+  //     }
+  //   }
+  // } else if (this._preview.length == 1) {
+  //   var command = this._preview[0],
+  //       coneCommand = /^\*P\d+$/,
+  //       jRingCommand = /^\*J\d+$/;
+  //   if (aircraft) {
+  //     if (command == 'IC') {
+  //       aircraft.setController(controller);
+  //       this.clearPreview();
+  //       return true;
+  //     } else if (command == 'TC') {
+  //       aircraft.setController(null);
+  //       this.clearPreview();
+  //       return true;
+  //     } else if (coneCommand.test(command.substr(1))) {
+  //       aircraft.enableCone(parseInt(command.substr(3)));
+  //       this.clearPreview();
+  //       return true;
+  //     } else if (jRingCommand.test(command.substr(1))) {
+  //       aircraft.enableJRing(parseInt(command.substr(3)));
+  //       this.clearPreview();
+  //       return true;
+  //     }
+  //   }
+  // }
+  // if (this._preview[0] == '')
+  //   return false;
+  // else {
+  //   this._formatError = true;
+  //   return true;
+  // }
 };
 
 TextOverlay.prototype.clearPreview = function() {
@@ -151,9 +160,8 @@ TextOverlay.prototype.renderPreviewArea = function(r) {
   r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
   r.context().textAlign = 'left';
   r.context().textBaseline = 'top';
-  r.context().fillStyle = this.brite();
-  if (this._formatError)
-    r.context().fillText('FORMAT', 75, this.line(r, .14, this._previewLine - 1));
+  r.context().fillStyle = '#0c0';
+  r.context().fillText(this._formatError ? 'FORMAT' : this._previewMessage, 75, this.line(r, .14, this._previewLine - 1));
   for (var i = 0; i < this._preview.length; i++)
     r.context().fillText(this._preview[i], 75, this.line(r, .14, this._previewLine + i));
 };

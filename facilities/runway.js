@@ -1,3 +1,8 @@
+var LatLon;
+if (typeof module !== 'undefined' && module.exports) {
+	LatLon = require('../latlon.js');
+}
+
 function Runway(id, lat, lon, elevation, length, width, course) {
 	this._id = id;
 	this._lat = lat;
@@ -52,3 +57,7 @@ Runway.prototype.width = function() {
 Runway.prototype.course = function() {
 	return this._course;
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Runway;
+}

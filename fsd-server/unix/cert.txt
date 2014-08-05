@@ -1,0 +1,20 @@
+;ID Password Rating
+;
+;  1	Observer
+;  2	Student1
+;  3	Student2
+;  4	Student3
+;  5	Controller1
+;  6	Controller2
+;  7	Controller3
+;  8	Instructor1
+;  9	Instructor2
+; 10	Instructor3
+; 11	Supervisor
+; 12	Administrator
+;
+; <vid> <pwd> <adminrank>
+; adminrank : de 0 a 12 (0 account desactivé)
+; 
+5!MP!L0T 5!MTR@C0N 12
+1097238 201815 8

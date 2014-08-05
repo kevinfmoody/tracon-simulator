@@ -238,6 +238,23 @@ Renderer.prototype.rotate = function(x, y, cx, cy, theta) {
 	};
 };
 
+Renderer.staticRotate = function(x, y, cx, cy, theta) {
+	var rx = x - cx;
+	var ry = y - cy;
+	theta *= -1;
+
+	var fx = ((Math.cos(theta) * rx - Math.sin(theta) * ry));
+	var fy = ((Math.sin(theta) * rx + Math.cos(theta) * ry));
+
+	var mx = fx + cx;
+	var my = fy + cy;
+
+	return {
+		x: mx,
+		y: my
+	};
+};
+
 Renderer.prototype.gtoc = function(lat, lon) {
 	var multiplier = this.multiplier(lat);
 	var tx = (multiplier * (lon - this._minLon)) + this._scope.width / 2 - (this.lonRange() * multiplier) / 2;

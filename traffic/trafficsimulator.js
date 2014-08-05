@@ -1,11 +1,9 @@
-var fs,
-    Aircraft;
-if (typeof module !== 'undefined' && module.exports) {
-  fs = require('fs');
-  Aircraft = require('./aircraft.js');
-}
+var fs = require('fs');
+var Aircraft = require('./aircraft.js');
 
-function TrafficSimulator() {
+function TrafficSimulator(socket) {
+  this._s = socket;
+
   this._aircraft = [];
   this._lastRun = 0;
   this._elapsed = 0;
@@ -14,11 +12,6 @@ function TrafficSimulator() {
   this._isRunning = false;
 }
 
-/**
- * In order for TrafficSimulator to be considered a 
- * TrafficFeed, it must contain a blips() method that
- * returns all targets in the simulation.
- */
 TrafficSimulator.prototype.blips = function() {
   return this._aircraft.map(function(aircraft) {
     return aircraft.blip();
@@ -49,7 +42,7 @@ TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
       var situation = data.toString().split('\n');
       this._aircraft = [];
       for (var i in situation)
-        this._aircraft.push(new Aircraft(situation[i]));
+        this._aircraft.push(new Aircraft(situation[i], this._s));
       loadedFn();
     }.bind(this));
   } else {
@@ -57,7 +50,7 @@ TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
       var situation = data.split('\n');
       this._aircraft = [];
       for (var i in situation)
-        this._aircraft.push(new Aircraft(situation[i]));
+        this._aircraft.push(new Aircraft(situation[i], this._s));
       loadedFn();
     }.bind(this));
   }

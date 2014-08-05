@@ -149,6 +149,12 @@ Keyboard[Keyboard.KEYS.R][Keyboard.COMBO_KEYS.CTRL] = function(e) {
   //scope.situation().run();
 };
 
+Keyboard[Keyboard.KEYS.T] = {};
+Keyboard[Keyboard.KEYS.T][Keyboard.COMBO_KEYS.CTRL] = function(e) {
+  $('.incoming-messages').toggle();
+};
+
+
 Keyboard[Keyboard.KEYS.P] = {};
 Keyboard[Keyboard.KEYS.P][Keyboard.COMBO_KEYS.CTRL] = function(e) {
   //scope.situation().pause();

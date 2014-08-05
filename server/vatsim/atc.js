@@ -2,178 +2,204 @@ function ATC(client) {
   this._client = client;
 }
 
-ATC.prototype.add = function(callsign, name, cid, password, rating) {
+ATC.prototype.addController = function(data) {
   this._client.sendPacket('#AA', [
-    callsign,
+    data.from,
     'SERVER',
-    name,
-    cid,
-    password,
-    rating,
+    data.name,
+    data.cid,
+    data.password,
+    data.rating,
     9
   ]);
 };
 
-ATC.prototype.sendPosition = function(frequency, facility, visRange, rating, latitude, longitude) {
+ATC.prototype.deleteController = function() {
+  this._client.sendPacket('#DA', [
+    data.from
+  ]);
+};
+
+ATC.prototype.sendPosition = function(data) {
   this._client.sendPacket('%', [
-    frequency,
-    facility,
-    visRange,
-    rating,
-    latitude,
-    longitude,
+    data.from,
+    data.frequency,
+    data.facility,
+    data.visRange,
+    data.rating,
+    data.latitude,
+    data.longitude,
     0
   ]);
 };
 
-ATC.prototype.delete = function() {
-  this._client.sendPacket('#DA');
-};
-
-ATC.prototype.requestHandoff = function(controller, callsign) {
+ATC.prototype.requestHandoff = function(data) {
   this._client.sendPacket('$HO', [
-    controller,
-    callsign
+    data.from,
+    data.to,
+    data.callsign
   ]);
 };
 
-ATC.prototype.acceptHandoff = function(controller, callsign) {
+ATC.prototype.acceptHandoff = function(data) {
   this._client.sendPacket('$HA', [
-    controller,
-    callsign
+    data.from,
+    data.to,
+    data.callsign
   ]);
 };
 
-ATC.prototype.refuseHandoff = function(controller, callsign) {
+ATC.prototype.refuseHandoff = function(data) {
   this._client.sendPacket('#PC', [
-    controller,
+    data.from,
+    data.to,
     'CCP',
     'HC',
-    callsign
+    data.callsign
   ]);
 };
 
-ATC.prototype.pointout = function(controller, callsign) {
+ATC.prototype.pointout = function(data) {
   this._client.sendPacket('#PC', [
-    controller,
+    data.from,
+    data.to,
     'CCP',
     'PT',
-    callsign
+    data.callsign
   ]);
 };
 
-ATC.prototype.claimOwnership = function(to, callsign) {
+ATC.prototype.claimOwnership = function(data) {
   this._client.sendPacket('#PC', [
-    to,
+    data.from,
+    data.to,
     'CCP',
     'IH',
-    callsign
+    data.callsign
   ]);
 };
 
-ATC.prototype.scratchpad = function(to, callsign, scratchpadText) {
+ATC.prototype.scratchpad = function(data) {
   this._client.sendPacket('#PC', [
-    to,
+    data.from,
+    data.to,
     'CCP',
     'SC',
-    callsign,
-    scratchpadText
+    data.callsign,
+    data.scratchpadText
   ]);
 };
 
-ATC.prototype.squawk = function(to, callsign, squawk) {
+ATC.prototype.squawk = function(data) {
   this._client.sendPacket('#PC', [
-    to,
+    data.from,
+    data.to,
     'CCP',
     'BC',
-    callsign,
-    squawk
+    data.callsign,
+    data.squawk
   ]);
 };
 
-ATC.prototype.voiceType = function(to, callsign, voiceType) {
+ATC.prototype.voiceType = function(data) {
   this._client.sendPacket('#PC', [
-    to,
+    data.from,
+    data.to,
     'CCP',
     'VT',
-    callsign,
-    voiceType
+    data.callsign,
+    data.voiceType
   ]);
 };
 
-ATC.prototype.temporaryAltitude = function(to, callsign, altitude) {
+ATC.prototype.temporaryAltitude = function(data) {
   this._client.sendPacket('#PC', [
-    to,
+    data.from,
+    data.to,
     'CCP',
     'TA',
-    callsign,
-    altitude
+    data.callsign,
+    data.altitude
   ]);
 };
 
-ATC.prototype.amendFlightPlan = function(callsign, flightType, aircraftType,
-    cruiseAirspeed, departureAirport, departureTimeEstimated, departureTimeActual,
-    cruiseAltitude, destinationAirport, hoursEnroute, minutesEnroute,
-    fuelAvailableHours, fuelAvailableMinutes, alternateAirport, remarks, route) {
+ATC.prototype.amendFlightPlan = function(data) {
   this._client.sendPacket('$AM', [
+    data.from,
     'SERVER',
-    callsign,
-    flightType,
-    aircraftType,
-    cruiseAirspeed,
-    departureAirport,
-    departureTimeEstimated,
-    departureTimeActual,
-    cruiseAltitude,
-    destinationAirport,
-    hoursEnroute,
-    minutesEnroute,
-    fuelAvailableHours,
-    fuelAvailableMinutes,
-    alternateAirport,
-    remarks,
-    route
+    data.callsign,
+    data.flightType,
+    data.aircraftType,
+    data.cruiseAirspeed,
+    data.departureAirport,
+    data.departureTimeEstimated,
+    data.departureTimeActual,
+    data.cruiseAltitude,
+    data.destinationAirport,
+    data.hoursEnroute,
+    data.minutesEnroute,
+    data.fuelAvailableHours,
+    data.fuelAvailableMinutes,
+    data.alternateAirport,
+    data.remarks,
+    data.route
   ]);
 };
 
-ATC.prototype.ping = function(to, data) {
+ATC.prototype.ping = function(data) {
   this._client.sendPacket('$PI', [
-    to,
-    data
+    data.from,
+    data.to,
+    data.data
   ]);
 };
 
-ATC.prototype.ping = function(to, echoData) {
+ATC.prototype.pong = function(data) {
   this._client.sendPacket('$PO', [
-    to,
-    echoData
+    data.from,
+    data.to,
+    data.echoData
   ]);
 };
 
-ATC.prototype.checkValidity = function(controller) {
+ATC.prototype.checkValidity = function(data) {
   var payload = [
+    data.from,
     'SERVER',
     'ATC'
   ];
-  if (controller)
-    payload.push(controller);
+  if (data.controller)
+    payload.push(data.controller);
   this._client.sendPacket('$CQ', payload);
 };
 
-ATC.prototype.checkCapabilities = function(to) {
+ATC.prototype.checkCapabilities = function(data) {
   this._client.sendPacket('$CQ', [
-    to,
+    data.from,
+    data.to,
     'CAPS'
   ]);
 };
 
-ATC.prototype.capabilities = function(to, capabilities) {
+ATC.prototype.capabilities = function(data) {
   this._client.sendPacket('$CQ', [
-    to,
+    data.from,
+    data.to,
     'CAPS'
-  ].concat(capabilities.map(function(capability) {
+  ].concat(ags.capabilities.map(function(capability) {
     return capability + '=1';
   })));
+};
+
+ATC.prototype.forceSquawk = function(data) {
+  this._client.sendPacket('$CQ', [
+    data.from,
+    data.to,
+    'IPC',
+    'W',
+    852,
+    this.squawk
+  ]);
 };
 
 module.exports = ATC;

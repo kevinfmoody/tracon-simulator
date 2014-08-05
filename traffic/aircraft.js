@@ -1,13 +1,19 @@
 var AircraftPerformance,
 		Autopilot,
 		LatLon;
+
+var VATSIM = require('../server/vatsim/vatsim.js');
+
 if (typeof module !== 'undefined' && module.exports) {
   AircraftPerformance = require('./aircraftperformance.js');
   Autopilot = require('./autopilot.js');
   LatLon = require('../latlon.js');
 }
 
-function Aircraft(aircraftString) {
+function Aircraft(aircraftString, socket) {
+	this._v = new VATSIM();
+	this._v.client().connect();
+
 	this._conflicting = false;
 	this._selected = false;
 	this._lastSimulated = 0;
@@ -53,9 +59,34 @@ function Aircraft(aircraftString) {
 		pointout: '#ff0'
 	};
 
-	if (typeof aircraftString == 'string')
+	if (typeof aircraftString == 'string') {
 		this.loadFromString(aircraftString);
+
+		this._v.pilot().addPilot({
+			from: this.callsign(),
+			cid: '5!MP!L0T',
+			password: '5!MTR@C0N',
+			name: 'Captain Sim'
+		});
+	}
+
+	setInterval(function() {
+		var blip = this.blip();
+		this._v.pilot().sendPosition({
+      identFlag: 'N',
+      from: blip.callsign,
+      squawk: blip.squawk,
+      latitude: blip.position._lat,
+      longitude: blip.position._lon,
+      altitude: blip.altitude,
+      groundSpeed: blip.speed
+    });
+	}.bind(this), 5000);
 }
+
+Aircraft.prototype.autopilot = function() {
+	return this._autopilot;
+};
 
 Aircraft.prototype.blip = function() {
 	return {

@@ -69,17 +69,17 @@ TargetManager.prototype.render = function(r) {
   var elapsedRenderer = r.elapsed(),
       targets = this.getAllTargets(),
       targetsInRange = [];
-  for (var i in targets)
-    if (r.inBounds(targets[i].position()._lat, targets[i].position()._lon))
-      targetsInRange.push(targets[i]);
-  for (var i in targetsInRange)
-    targetsInRange[i].renderHistory(r);
-  for (var i in targetsInRange)
-    targetsInRange[i].renderExtras(r);
-  for (var i in targetsInRange)
-    targetsInRange[i].renderTarget(r);
-  for (var i in targetsInRange)
-    targetsInRange[i].renderPosition(r);
-  for (var i in targetsInRange)
-    targetsInRange[i].renderDataBlock(r, elapsedRenderer);
+  for (var a in targets)
+    if (r.inBounds(targets[a].position()._lat, targets[a].position()._lon))
+      targetsInRange.push(new TargetRenderer(targets[a]));
+  for (var b in targetsInRange)
+    targetsInRange[b].renderHistory(r);
+  for (var c in targetsInRange)
+    targetsInRange[c].renderExtras(r);
+  for (var d in targetsInRange)
+    targetsInRange[d].renderTarget(r);
+  for (var e in targetsInRange)
+    targetsInRange[e].renderPosition(r);
+  for (var f in targetsInRange)
+    targetsInRange[f].renderDataBlock(r, elapsedRenderer);
 };

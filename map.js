@@ -1,10 +1,29 @@
-function Map(filename, r, callback) {
+function Map(id, name, filename, r, callback) {
+	this._id = id;
+	this._name = name;
 	this._path = [];
 	this._brite = 2;
+	this._enabled = true;
 
 	if (typeof filename == 'string')
 		this.loadFromFile(filename, r, callback);
 }
+
+Map.prototype.id = function() {
+	return this._id;
+};
+
+Map.prototype.name = function() {
+	return this._name;
+};
+
+Map.prototype.enabled = function() {
+	return this._enabled;
+};
+
+Map.prototype.toggle = function() {
+	this._enabled = !this._enabled;
+};
 
 Map.prototype.setBrite = function(brite) {
 	this._brite = brite;
@@ -56,16 +75,18 @@ Map.prototype.addMapPath = function(pathList, r) {
 };
 
 Map.prototype.render = function(r) {
-	r.context().lineWidth = 1.5;
-	r.context().strokeStyle = r.brite(this._brite);
-	// Render each line
-	for (var line in this._path) {
-		var from = r.gtoc(this._path[line][0], this._path[line][1]);
-		var to = r.gtoc(this._path[line][2], this._path[line][3]);
-		// Draw a scaled line
-		r.context().beginPath();
-		r.context().moveTo(from.x, from.y);
-		r.context().lineTo(to.x, to.y);
-		r.context().stroke();
+	if (this._enabled) {
+		r.context().lineWidth = 1.5;
+		r.context().strokeStyle = r.brite(this._brite);
+		// Render each line
+		for (var line in this._path) {
+			var from = r.gtoc(this._path[line][0], this._path[line][1]);
+			var to = r.gtoc(this._path[line][2], this._path[line][3]);
+			// Draw a scaled line
+			r.context().beginPath();
+			r.context().moveTo(from.x, from.y);
+			r.context().lineTo(to.x, to.y);
+			r.context().stroke();
+		}
 	}
 };
