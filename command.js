@@ -109,6 +109,7 @@ Command[Command.SEGMENT_TYPE.PLACEHOLDER] = function(e, args) {
     case '*':
       var headingAndDistance = scope.measureHeadingAndDistance(e);
       if (headingAndDistance) {
+        scope.addRenderPoint(scope.selectPosition(e));
         scope.textOverlay().clearPreview();
         scope.textOverlay().setPreviewAreaMessage(headingAndDistance.heading + '/' + headingAndDistance.distance);
         Command.registerCleanupFunction(function() {

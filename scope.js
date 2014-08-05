@@ -92,7 +92,6 @@ Scope.prototype.selectPosition = function(e) {
 		return target.position();
 	else {
 		var position = this._renderer.ctop(x, y);
-		this._renderPoints.push(position);
 		return position;
 	}
 };
@@ -111,6 +110,10 @@ Scope.prototype.measureHeadingAndDistance = function(e) {
 		this._measureDistanceStartPosition = this.selectPosition(e);
 		return null;
 	}
+};
+
+Scope.prototype.addRenderPoint = function(position) {
+	this._renderPoints.push(position);
 };
 
 Scope.prototype.clearRenderPoints = function() {

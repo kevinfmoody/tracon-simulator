@@ -109,6 +109,10 @@ function initScopeDrag() {
 
 function initSlewDetection() {
 	$('#scope').click(function(e) {
+    scope.clearRenderPoints();
+    var loc = scope._flow.project(scope.selectPosition(e), 10);
+    console.log(scope._flow.average(loc));
+    scope.addRenderPoint(loc);
     Command.cleanup();
     Command.run(e, scope.textOverlay().previewSegments());
 	});
