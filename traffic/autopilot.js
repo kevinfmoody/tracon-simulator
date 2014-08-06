@@ -1,3 +1,5 @@
+var LatLon = require('../latlon.js');
+
 function Autopilot(aircraft) {
   this._aircraft = aircraft;
   this._runway;
@@ -81,11 +83,25 @@ Autopilot.prototype.flyVisualApproach = function() {
   }
 };
 
+Autopilot.prototype.perpendicularDistanceToLeg = function(leg) {
+  var bearingDelta = leg.startPosition.bearingTo(leg.endPosition) -
+    this._aircraft.position().bearingTo(leg.startPosition);
+  return Math.abs(this._aircraft.position().distanceTo(leg.startPosition) *
+    Math.sin(bearingDelta * Math.PI / 180) * 0.539957);
+};
+
 Autopilot.prototype.angleBetween = function(primaryHeading, secondaryHeading) {
   var gap = Math.abs(primaryHeading - secondaryHeading);
   return Math.min(gap, 360 - gap);
 };
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = Autopilot;
-}
+Autopilot.prototype.testPerpendicularDistanceToLeg = function() {
+  var leg = {
+    startPosition: new LatLon(42.45175239815871, -70.46488620269045),
+    endPosition: new LatLon(42.35927194570811, -70.99059588718505)
+  };
+  if (this._aircraft.callsign() === 'ICE98')
+    console.log(this.perpendicularDistanceToLeg(leg));
+};
+
+module.exports = Autopilot;

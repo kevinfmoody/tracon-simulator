@@ -96,7 +96,7 @@ Aircraft.prototype.blip = function() {
 		arrival: this.arrival(),
 		position: this.position(),
 		altitude: this.altitude(),
-		speed: this.speed(),
+		speed: this.groundspeed(),
 		squawk: this.squawk()
 	};
 };
@@ -216,6 +216,11 @@ Aircraft.prototype.flyQuick = function(elapsedSituation, r) {
 		this.updateHistory();
 		this.updatePosition(this.updateHeading(), this.updateSpeed(), this.updateAltitude(), r);
 		this.updateAssignments();
+
+		if (this._callsign === 'ICE98') {
+			console.log('r: ' + this._performance.turnRadius(this.groundspeed(), this.altitude()));
+			this._autopilot.testPerpendicularDistanceToLeg();
+		}
 	}
 };
 
@@ -239,7 +244,7 @@ Aircraft.prototype.updatePosition = function(pastHeading, pastSpeed, pastAltitud
 
 Aircraft.prototype.updatePositionQuick = function(pastHeading, pastSpeed, pastAltitude) {
 	var averageHeading = (this._heading + pastHeading) / 2;
-	var averageSpeed = this.groundspeed((this._speed + pastSpeed) / 2, (this._altitude + pastAltitude) / 2);
+	var averageSpeed = this.groundspeed((this._speed + pastSpeed) / 2, (this._altitude + pastAltitude) / 2, averageHeading);
 	var distance = averageSpeed * this._elapsed * 1.852 / 3600000;
 	var destination = new LatLon(this._lat, this._lon).destinationPoint(averageHeading, distance);
 	this._lat = destination._lat;
@@ -471,10 +476,14 @@ Aircraft.prototype.setLastSimulated = function(lastSimulated) {
   this._lastSimulated = lastSimulated;
 };
 
-Aircraft.prototype.groundspeed = function(airspeed, altitude) {
-	//var radians = angleBetween(Setting.wind.direction, this.heading) / 180 * Math.PI;
-	//var correction = Setting.wind.speed * Math.cos(radians);
-	return (altitude ? altitude : this._altitude) / 200 + (airspeed ? airspeed : this._speed);// - correction;
+Aircraft.prototype.groundspeed = function(airspeed, altitude, heading) {
+	var WIND_DIRECTION = 270,
+			WIND_SPEED = 25;
+	
+	var radians = this._autopilot.angleBetween(WIND_DIRECTION, (heading ? heading : this._heading)) / 180 * Math.PI;
+	var correction = WIND_SPEED * Math.cos(radians);
+	
+	return (altitude ? altitude : this._altitude) / 200 + (airspeed ? airspeed : this._speed)- correction;
 };
 
 Aircraft.prototype.airspeed = function(groundspeed, altitude) {

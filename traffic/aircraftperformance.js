@@ -32,7 +32,15 @@ AircraftPerformance.prototype.accelerationRate = function() {
 
 AircraftPerformance.prototype.bankAngle = function(alt) {
 	var altitude = alt || 0;
-	return alt >= this._smoothAltitude ? this._bankAngle * .4 : this._bankAngle;
+	return alt >= this._smoothAltitude ? this._bankAngle * 0.4 : this._bankAngle;
+};
+
+AircraftPerformance.prototype.turnRadius = function(speed, altitude) {
+	var bankAngle = this.bankAngle(altitude),
+			speedInMetersPerSecond = speed * 0.514444,
+			radiusInMeters = Math.pow(speedInMetersPerSecond, 2) / (9.80665 * Math.tan(bankAngle * Math.PI / 180));
+	console.log(bankAngle, speedInMetersPerSecond);
+	return radiusInMeters * 0.000539957;
 };
 
 AircraftPerformance.prototype.vref = function() {
