@@ -70,6 +70,13 @@ function Aircraft(aircraftString, socket) {
 		});
 	}
 
+	if (this.callsign() === 'ICE98') {
+		this._autopilot.ACTIVE_LEGS.unshift({
+			startPosition: this.position(),
+			endPosition: this._autopilot.ACTIVE_LEGS[0].startPosition
+		});
+	}
+
 	setInterval(function() {
 		var blip = this.blip();
 		this._v.pilot().sendPosition({
@@ -217,10 +224,9 @@ Aircraft.prototype.flyQuick = function(elapsedSituation, r) {
 		this.updatePosition(this.updateHeading(), this.updateSpeed(), this.updateAltitude(), r);
 		this.updateAssignments();
 
-		if (this._callsign === 'ICE98') {
-			console.log('r: ' + this._performance.turnRadius(this.groundspeed(), this.altitude()));
-			this._autopilot.testPerpendicularDistanceToLeg();
-		}
+		// if (this._callsign === 'ICE98') {
+		// 	console.log(this._autopilot.interceptHeading(r));
+		// }
 	}
 };
 
@@ -304,16 +310,16 @@ Aircraft.prototype.loadFromString = function(aircraftString) {
 	this._flightRules = segments[3].trim();
 	this._departure = segments[4].trim();
 	this._arrival = segments[5].trim();
-	this._cuiseAltitude = parseInt(segments[6].trim());
+	this._cuiseAltitude = parseInt(segments[6].trim(), 10);
 	this._route = segments[7].trim();
 	this._remarks = segments[8].trim();
 	this._squawk = segments[9].trim();
 	this._squawkMode = segments[10].trim();
 	this._lat = parseFloat(segments[11].trim());
 	this._lon = parseFloat(segments[12].trim());
-	this._altitude = parseInt(segments[13].trim());
-	this._speed = parseInt(segments[14].trim());
-	this._heading = parseInt(segments[15].trim());
+	this._altitude = parseInt(segments[13].trim(), 10);
+	this._speed = parseInt(segments[14].trim(), 10);
+	this._heading = parseInt(segments[15].trim(), 10);
 	this._performance.loadFromCategory(this._category);
 };
 
@@ -478,7 +484,7 @@ Aircraft.prototype.setLastSimulated = function(lastSimulated) {
 
 Aircraft.prototype.groundspeed = function(airspeed, altitude, heading) {
 	var WIND_DIRECTION = 270,
-			WIND_SPEED = 25;
+			WIND_SPEED = 0;
 	
 	var radians = this._autopilot.angleBetween(WIND_DIRECTION, (heading ? heading : this._heading)) / 180 * Math.PI;
 	var correction = WIND_SPEED * Math.cos(radians);

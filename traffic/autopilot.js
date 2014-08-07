@@ -18,6 +18,21 @@ function Autopilot(aircraft) {
   };
   this._currentAction = this._action.INACTIVE;
   this._currentState = this._state.INACTIVE;
+
+  this.ACTIVE_LEGS = [
+    {
+      startPosition: new LatLon(42.53728102399617, -69.99036947154653),
+      endPosition: new LatLon(42.44679377265025, -70.47755508601381)
+    },
+    {
+      startPosition: new LatLon(42.44679377265025, -70.47755508601381),
+      endPosition: new LatLon(42.52755728169469, -70.61846177278272)
+    },
+    {
+      startPosition: new LatLon(42.52755728169469, -70.61846177278272),
+      endPosition: new LatLon(42.72859260197211, -70.48297467454829)
+    }
+  ];
 }
 
 Autopilot.prototype.engageILS = function(runway) {
@@ -31,15 +46,22 @@ Autopilot.prototype.engageVisualApproach = function(runway) {
 };
 
 Autopilot.prototype.fly = function(r) {
-  switch (this._currentAction) {
-    case this._action.ILS_APPROACH:
-      this.flyILS(r);
-      return false;
-    case this._action.VISUAL_APPROACH:
-      this.flyVisualApproach();
-      return true;
-    case this._action.INACTIVE:
-      return false;
+
+  if (this._aircraft._callsign === 'ICE98') {
+    console.log('-----------');
+    this.track(r);
+    return false;
+  } else {
+    switch (this._currentAction) {
+      case this._action.ILS_APPROACH:
+        this.flyILS(r);
+        return false;
+      case this._action.VISUAL_APPROACH:
+        this.flyVisualApproach();
+        return true;
+      case this._action.INACTIVE:
+        return false;
+    }
   }
 };
 
@@ -85,8 +107,8 @@ Autopilot.prototype.flyVisualApproach = function() {
 
 Autopilot.prototype.perpendicularDistanceToLeg = function(leg) {
   var bearingDelta = leg.startPosition.bearingTo(leg.endPosition) -
-    this._aircraft.position().bearingTo(leg.startPosition);
-  return Math.abs(this._aircraft.position().distanceTo(leg.startPosition) *
+    this._aircraft.position().bearingTo(leg.endPosition);
+  return Math.abs(this._aircraft.position().distanceTo(leg.endPosition) *
     Math.sin(bearingDelta * Math.PI / 180) * 0.539957);
 };
 
@@ -100,8 +122,66 @@ Autopilot.prototype.testPerpendicularDistanceToLeg = function() {
     startPosition: new LatLon(42.45175239815871, -70.46488620269045),
     endPosition: new LatLon(42.35927194570811, -70.99059588718505)
   };
-  if (this._aircraft.callsign() === 'ICE98')
-    console.log(this.perpendicularDistanceToLeg(leg));
+  return this.perpendicularDistanceToLeg(leg);
+};
+
+Autopilot.prototype.interceptAngle = function(leg) {
+  var d = this.perpendicularDistanceToLeg(leg),
+      r = this._aircraft._performance.turnRadius(this._aircraft.groundspeed(), this._aircraft.altitude());
+
+  //console.log(d);
+  //console.log(r);
+  return d >= r ? -1 : Math.acos(1 - d / r) * 180 / Math.PI;
+};
+
+Autopilot.prototype.interceptHeading = function(leg, r) {
+  var angle = this.interceptAngle(leg);
+
+  if (angle === -1)
+    return -1;
+
+  var legBearing = leg.startPosition.bearingTo(leg.endPosition),
+      bearingFromLegEnd = leg.endPosition.bearingTo(this._aircraft.position()),
+      radial = (bearingFromLegEnd - legBearing + 360) % 360,
+      angleOffsetSign = radial < 180 ? -1 : 1;
+
+  if (radial <= 90 || radial >= 270) {
+    return -1;
+  }
+
+  return (legBearing + angle * angleOffsetSign - r.magVar() + 360) % 360;
+};
+
+Autopilot.prototype.track = function(r) {
+  var legs = this.ACTIVE_LEGS;
+  var activeLeg = legs[0],
+      nextLeg = legs[1];
+  if (activeLeg) {
+    var activeInterceptHeading = this.interceptHeading(activeLeg, r);
+    console.log(activeInterceptHeading);
+    if (activeInterceptHeading <= 0) {
+      console.log('this leg is unnatainable. next leg!');
+      this.ACTIVE_LEGS.shift();
+      return;
+    }
+    if (nextLeg) {
+      var nextInterceptHeading = this.interceptHeading(nextLeg, r);
+      if (nextInterceptHeading >= 0) {
+        var nextLegHeading = nextLeg.startPosition.bearingTo(nextLeg.endPosition) - r.magVar(),
+            activeAngleDelta = this.angleBetween(activeInterceptHeading, nextLegHeading),
+            nextAngleDelta = this.angleBetween(nextInterceptHeading, nextLegHeading);
+        if (nextAngleDelta < activeAngleDelta) {
+          console.log('activating & using next leg');
+          activeInterceptHeading = nextInterceptHeading;
+          this.ACTIVE_LEGS.shift();
+        }
+      }
+    }
+    //console.log(activeInterceptHeading);
+    this._aircraft.assignHeading(activeInterceptHeading, this._aircraft._lastSimulated, 0);
+  } else {
+    console.log('no legs');
+  }
 };
 
 module.exports = Autopilot;

@@ -20,6 +20,7 @@ function Scope() {
 
 	this._measureDistanceStartPosition = null;
 	this._renderPoints = [];
+	this._renderPath = [];
 	this._renderPointsBlinker = new Date().getTime();
 	//this._weatherOverlay = new WeatherOverlay;
 
@@ -120,6 +121,14 @@ Scope.prototype.clearRenderPoints = function() {
 	this._renderPoints = [];
 };
 
+Scope.prototype.setRenderPath = function(path) {
+	this._renderPath = path;
+};
+
+Scope.prototype.clearRenderPath = function() {
+	this._renderPath = [];
+};
+
 Scope.prototype.bind = function(scope) {
 	this._renderer.bind(scope);
 };
@@ -201,6 +210,34 @@ Scope.prototype.renderRenderPoints = function() {
 	}
 };
 
+Scope.prototype.renderRenderPath = function() {
+	if (this._renderPath.length) {
+		var pos;
+
+		this._renderer.context().fillStyle = '#0c0';
+		this._renderer.context().strokeStyle = '#0c0';
+		this._renderer.context().lineWidth = 4;
+		this._renderer.context().lineJoin = 'round';
+
+		pos = this._renderer.gtoc(this._renderPath[0]._lat, this._renderPath[0]._lon);
+		this._renderer.context().beginPath();
+		this._renderer.context().moveTo(pos.x, pos.y);
+		for (var i = 1; i < this._renderPath.length; i++) {
+			pos = this._renderer.gtoc(this._renderPath[i]._lat, this._renderPath[i]._lon);
+			this._renderer.context().lineTo(pos.x, pos.y);
+		}
+		this._renderer.context().stroke();
+
+		var dots = [0, this._renderPath.length - 1];
+		for (var d = 0; d < 2; d++) {
+			pos = this._renderer.gtoc(this._renderPath[dots[d]]._lat, this._renderPath[dots[d]]._lon);
+			this._renderer.context().beginPath();
+			this._renderer.context().arc(pos.x, pos.y, 4, 0, 2 * Math.PI);
+			this._renderer.context().fill();
+		}
+	}
+};
+
 Scope.prototype.render = function() {
 	this.fit();
 	this.renderBackground();
@@ -212,6 +249,7 @@ Scope.prototype.render = function() {
 	//this._situation.render(this._renderer);
 	//this.detectAndRenderConflicts();
 	this.renderRenderPoints();
+	this.renderRenderPath();
 	this._targetManager.render(this._renderer);
 	if (this._crda)
 			this._crda.ghostTargets(this._targetManager, this._renderer);

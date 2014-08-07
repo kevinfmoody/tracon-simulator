@@ -106,16 +106,44 @@ TargetRenderer.prototype.renderJRing = function(r) {
 TargetRenderer.prototype.renderExtras = function(r) {
   this.renderJRing(r);
   this.renderCone(r);
+
+  if (this._target.callsign() === 'ICE98') {
+    var ACTIVE_LEGS = [
+      {
+        startPosition: new LatLon(42.53728102399617, -69.99036947154653),
+        endPosition: new LatLon(42.44679377265025, -70.47755508601381)
+      },
+      {
+        startPosition: new LatLon(42.44679377265025, -70.47755508601381),
+        endPosition: new LatLon(42.52755728169469, -70.61846177278272)
+      },
+      {
+        startPosition: new LatLon(42.52755728169469, -70.61846177278272),
+        endPosition: new LatLon(42.72859260197211, -70.48297467454829)
+      }
+    ];
+
+    r.context().strokeStyle = 'orange';
+    r.context().lineWidth = 2;
+    for (var i in ACTIVE_LEGS) {
+      var start = r.gtoc(ACTIVE_LEGS[i].startPosition._lat, ACTIVE_LEGS[i].startPosition._lon);
+      var end = r.gtoc(ACTIVE_LEGS[i].endPosition._lat, ACTIVE_LEGS[i].endPosition._lon);
+      r.context().beginPath();
+      r.context().moveTo(start.x, start.y);
+      r.context().lineTo(end.x, end.y);
+      r.context().stroke();
+    }
+  }
 };
 
 TargetRenderer.prototype.renderHistory = function(r) {
   if (r.targetHistory()) {
     r.context().fillStyle = '#00f';
-    for (var i in this._target.history()) {
+    for (var i in this._target.history().slice(1)) {
       var historyPos = r.gtoc(this._target.history()[i]._lat, this._target.history()[i]._lon);
       r.context().beginPath();
-      r.context().arc(historyPos.x, historyPos.y, 5 - Math.floor(i / 2), 0, 2 * Math.PI);
-      r.context().globalAlpha = 0.5 - i / 10;
+      r.context().arc(historyPos.x, historyPos.y, 5 - Math.floor((i - 1) / 2), 0, 2 * Math.PI);
+      r.context().globalAlpha = 0.5 - (i - 1) / 10;
       r.context().fill();
     }
     r.context().globalAlpha = 1;

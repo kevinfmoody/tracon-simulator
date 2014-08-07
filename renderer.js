@@ -190,7 +190,17 @@ Renderer.prototype.mouseDown = function() {
 };
 
 Renderer.prototype.setMouseDown = function(mouseDown) {
+	if (mouseDown && !this._mouseDown)
+		this._dragging = false;
 	this._mouseDown = mouseDown;
+};
+
+Renderer.prototype.dragging = function() {
+	this._dragging = true;
+};
+
+Renderer.prototype.wasDragging = function() {
+	return this._dragging;
 };
 
 Renderer.prototype.latRange = function() {
@@ -337,6 +347,11 @@ Renderer.prototype.pad = function (string, length, heading) {
 	s = string == 0 && heading ? 360 : string;
 	var s = "00000" + s;
   	return s.substr(s.length - length);
+};
+
+Renderer.prototype.angleBetweenHeadings = function(primaryHeading, secondaryHeading) {
+  var gap = Math.abs(primaryHeading - secondaryHeading);
+  return Math.min(gap, 360 - gap);
 };
 
 Renderer.prototype.angleBetween = function(ax, ay, bx, by) {

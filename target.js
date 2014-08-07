@@ -91,8 +91,8 @@ Target.prototype.setController = function(controller) {
 
 Target.prototype.addHistory = function(position) {
   this._history.unshift(position);
-  if (this._history.length > 5)
-    this._history.length = 5;
+  if (this._history.length > 6)
+    this._history.length = 6;
 };
 
 Target.prototype.callsign = function() {

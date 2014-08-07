@@ -12,7 +12,8 @@ Command.SEGMENT_TYPE = {
   ALTITUDE: 0,
   SPEED: 0,
   SECTOR: 0,
-  RUNWAY: 0
+  RUNWAY: 0,
+  PATH_NAME: 0
 };
 
 Command.SEGMENT = {
@@ -22,7 +23,9 @@ Command.SEGMENT = {
   TERMINATE_CONTROL: 'TC',
   FLY_HEADING: 'FH',
   MAINTAIN_ALTITUDE: 'MA',
-  SPEED: 'SPD'
+  SPEED: 'SPD',
+  PATH: 'PATH',
+  MEASURE_DISTANCE: '*'
 };
 
 Command.SEGMENT_RAW = {
@@ -32,7 +35,9 @@ Command.SEGMENT_RAW = {
   TC: true,
   FH: true,
   MA: true,
-  SPD: true
+  SPD: true,
+  PATH: true,
+  '*': true
 };
 
 Command.ALIAS = {
@@ -43,17 +48,21 @@ Command.ALIAS = {
   SLOW: Command.SEGMENT.SPEED
 };
 
+Command.currentCommand = [];
+Command.lastCommand = [];
+
 Command.cleanupFunction = null;
 
-Command.registerCleanupFunction = function(fn) {
-  Command.cleanup();
+Command.registerCleanupFunction = function(fn, skipOnCurrent) {
+  Command.cleanup(skipOnCurrent);
   Command.cleanupFunction = fn;
 };
 
-Command.cleanup = function() {
+Command.cleanup = function(skipOnCurrent) {
   Command.clearCleanupTimeout();
   if (Command.cleanupFunction) {
-    Command.cleanupFunction();
+    if (!skipOnCurrent || JSON.stringify(Command.currentCommand) !== JSON.stringify(Command.lastCommand))
+      Command.cleanupFunction();
     Command.cleanupFunction = null;
     scope.render();
   }
@@ -86,6 +95,7 @@ Command.run = function(e, args) {
       arg = Command.ALIAS[arg] || Command.SEGMENT_TYPE.PLACEHOLDER;
     command.push(arg);
   }
+  Command.currentCommand = command;
   var fn = Command;
   for (var j in command) {
     fn = fn[command[j]];
@@ -102,24 +112,27 @@ Command.run = function(e, args) {
         break;
     }
   }
+  Command.lastCommand = command;
 };
 
-Command[Command.SEGMENT_TYPE.PLACEHOLDER] = function(e, args) {
-  switch (args[0]) {
-    case '*':
-      var headingAndDistance = scope.measureHeadingAndDistance(e);
-      if (headingAndDistance) {
-        scope.addRenderPoint(scope.selectPosition(e));
-        scope.textOverlay().clearPreview();
-        scope.textOverlay().setPreviewAreaMessage(headingAndDistance.heading + '/' + headingAndDistance.distance);
-        Command.registerCleanupFunction(function() {
-          scope.textOverlay().clearPreviewAreaMessage();
-          scope.clearRenderPoints();
-        });
-        Command.cleanupIn(15000);
-      }
-      throw Command.ERROR.TAKE_NO_ACTION;
+Command[Command.SEGMENT_TYPE.PLACEHOLDER] = {};
+
+Command[Command.SEGMENT.MEASURE_DISTANCE] = function(e, args) {
+  if (e.type === 'click') {
+    var headingAndDistance = scope.measureHeadingAndDistance(e);
+    if (headingAndDistance) {
+      scope.addRenderPoint(scope.selectPosition(e));
+      scope.textOverlay().clearPreview();
+      scope.textOverlay().setPreviewAreaMessage(headingAndDistance.heading + '/' + headingAndDistance.distance);
+      Command.registerCleanupFunction(function() {
+        scope.textOverlay().clearPreviewAreaMessage();
+        scope.clearRenderPoints();
+      });
+      Command.cleanupIn(15000);
+    }
+    throw Command.ERROR.TAKE_NO_ACTION;
   }
+  throw Command.ERROR.FORMAT;
 };
 
 Command[Command.SEGMENT.INITIATE_CONTROL] = function(e, args) {
@@ -201,7 +214,7 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.SPEED][Command.SEGMENT_TY
   var callsign = args[0],
       speed = args[2],
       target = scope.targetManager().getTargetByCallsign(callsign);
-  if (target && 0 <= speed && speed <= 360) {
+  if (target && 0 <= speed && speed <= 9999) {
     socket.emit('TS.speed', {
       callsign: callsign,
       speed: speed
@@ -210,3 +223,44 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.SPEED][Command.SEGMENT_TY
   }
   throw Command.ERROR.FORMAT;
 };
+
+Command[Command.SEGMENT.PATH] = {};
+Command[Command.SEGMENT.PATH][Command.SEGMENT_TYPE.PATH_NAME] = (function() {
+  var path = [],
+      cleanup = function() {
+        path = [];
+        scope.clearRenderPath();
+        scope.textOverlay().clearPreviewAreaMessage();
+      };
+  return function(e, args) {
+    scope.textOverlay().clearPreviewAreaMessage();
+    if (e.type === 'click') {
+      Command.registerCleanupFunction(cleanup, true);
+      var pos = scope.selectPosition(e),
+          last = path[path.length - 1],
+          secondToLast = path[path.length - 2];
+      if (last) {
+        if (last.distanceTo(pos) * 0.539957 < 1) {
+          scope.textOverlay().setPreviewAreaMessage('ILL DIST');
+          throw Command.ERROR.TAKE_NO_ACTION;
+        }
+        if (secondToLast) {
+          var lastBearing = secondToLast.bearingTo(last),
+              newBearing = last.bearingTo(pos);
+          if (scope.renderer().angleBetweenHeadings(lastBearing, newBearing) >= 90) {
+            scope.textOverlay().setPreviewAreaMessage('ILL TURN');
+            throw Command.ERROR.TAKE_NO_ACTION;
+          }
+        }
+      }
+      path.push(pos);
+      scope.setRenderPath(path);
+      throw Command.ERROR.TAKE_NO_ACTION;
+    } else if (path.length) {
+      cleanup();
+      return;
+    }
+    cleanup();
+    throw Command.ERROR.FORMAT;
+  };
+})();

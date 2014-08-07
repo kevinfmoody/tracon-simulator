@@ -39,7 +39,6 @@ AircraftPerformance.prototype.turnRadius = function(speed, altitude) {
 	var bankAngle = this.bankAngle(altitude),
 			speedInMetersPerSecond = speed * 0.514444,
 			radiusInMeters = Math.pow(speedInMetersPerSecond, 2) / (9.80665 * Math.tan(bankAngle * Math.PI / 180));
-	console.log(bankAngle, speedInMetersPerSecond);
 	return radiusInMeters * 0.000539957;
 };
 

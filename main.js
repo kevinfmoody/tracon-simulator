@@ -91,8 +91,9 @@ function initScopeDrag() {
     scope.renderer().setMouseDown(false);
   });
 	$('#scope').bind('mousemove touchmove', function(e) {
-      	e = e.type == 'touchmove' ? e.touches[0] : e;
+    e = e.type === 'touchmove' ? e.touches[0] : e;
 		if (scope.renderer().mouseDown()) {
+      scope.renderer().dragging();
 			scope.renderer().setTranslationOffset({
 				x: scope.renderer().translationOffset().x + scope.renderer().scale(e.clientX - scope.renderer().lastMousePosition().x),
 				y: scope.renderer().translationOffset().y + scope.renderer().scale(scope.renderer().lastMousePosition().y - e.clientY)
@@ -109,14 +110,8 @@ function initScopeDrag() {
 
 function initSlewDetection() {
 	$('#scope').click(function(e) {
-    scope.clearRenderPoints();
-    // var loc = scope._flow.project(scope.selectPosition(e), 10);
-    // console.log(scope._flow.average(loc));
-    var loc = scope.selectPosition(e);
-    console.log(loc);
-    scope.addRenderPoint(loc);
-    Command.cleanup();
-    Command.run(e, scope.textOverlay().previewSegments());
+    if (!scope.renderer().wasDragging())
+      Command.run(e, scope.textOverlay().previewSegments());
 	});
 }
 
@@ -126,10 +121,11 @@ function initKeyDetection() {
     scope.render();
   });
 	$(document).keydown(function(e) {
-    Command.cleanup();
-    if (e.which === Keyboard.KEYS.ENTER)
+    if (e.which === Keyboard.KEYS.ENTER) {
+      e.preventDefault();
       Command.run(e, scope.textOverlay().previewSegments());
-    else {
+    } else {
+      Command.cleanup();
       var keyCommands = Keyboard[e.which];
       if (keyCommands) {
         var command = keyCommands[Keyboard.combo(e)];
