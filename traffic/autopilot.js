@@ -48,7 +48,6 @@ Autopilot.prototype.engageVisualApproach = function(runway) {
 Autopilot.prototype.fly = function(r) {
 
   if (this._aircraft._callsign === 'ICE98') {
-    console.log('-----------');
     this.track(r);
     return false;
   } else {
@@ -128,9 +127,6 @@ Autopilot.prototype.testPerpendicularDistanceToLeg = function() {
 Autopilot.prototype.interceptAngle = function(leg) {
   var d = this.perpendicularDistanceToLeg(leg),
       r = this._aircraft._performance.turnRadius(this._aircraft.groundspeed(), this._aircraft.altitude());
-
-  //console.log(d);
-  //console.log(r);
   return d >= r ? -1 : Math.acos(1 - d / r) * 180 / Math.PI;
 };
 
@@ -158,9 +154,7 @@ Autopilot.prototype.track = function(r) {
       nextLeg = legs[1];
   if (activeLeg) {
     var activeInterceptHeading = this.interceptHeading(activeLeg, r);
-    console.log(activeInterceptHeading);
     if (activeInterceptHeading <= 0) {
-      console.log('this leg is unnatainable. next leg!');
       this.ACTIVE_LEGS.shift();
       return;
     }
@@ -171,16 +165,12 @@ Autopilot.prototype.track = function(r) {
             activeAngleDelta = this.angleBetween(activeInterceptHeading, nextLegHeading),
             nextAngleDelta = this.angleBetween(nextInterceptHeading, nextLegHeading);
         if (nextAngleDelta < activeAngleDelta) {
-          console.log('activating & using next leg');
           activeInterceptHeading = nextInterceptHeading;
           this.ACTIVE_LEGS.shift();
         }
       }
     }
-    //console.log(activeInterceptHeading);
     this._aircraft.assignHeading(activeInterceptHeading, this._aircraft._lastSimulated, 0);
-  } else {
-    console.log('no legs');
   }
 };
 

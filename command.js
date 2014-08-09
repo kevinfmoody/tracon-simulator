@@ -13,7 +13,8 @@ Command.SEGMENT_TYPE = {
   SPEED: 0,
   SECTOR: 0,
   RUNWAY: 0,
-  PATH_NAME: 0
+  PATH_NAME: 0,
+  PATH_FIXES: 0
 };
 
 Command.SEGMENT = {
@@ -24,7 +25,10 @@ Command.SEGMENT = {
   FLY_HEADING: 'FH',
   MAINTAIN_ALTITUDE: 'MA',
   SPEED: 'SPD',
-  PATH: 'PATH',
+  DRAW_PATH: 'DRAWPATH',
+  TYPE_PATH: 'TYPEPATH',
+  SHOW_PATH: 'SHOWPATH',
+  HIDE_PATH: 'HIDEPATH',
   MEASURE_DISTANCE: '*'
 };
 
@@ -36,7 +40,8 @@ Command.SEGMENT_RAW = {
   FH: true,
   MA: true,
   SPD: true,
-  PATH: true,
+  TYPE_PATH: true,
+  FIXPATH: true,
   '*': true
 };
 
@@ -45,7 +50,11 @@ Command.ALIAS = {
   TR: Command.SEGMENT.FLY_HEADING,
   CM: Command.SEGMENT.MAINTAIN_ALTITUDE,
   DM: Command.SEGMENT.MAINTAIN_ALTITUDE,
-  SLOW: Command.SEGMENT.SPEED
+  SLOW: Command.SEGMENT.SPEED,
+  DP: Command.SEGMENT.DRAW_PATH,
+  TP: Command.SEGMENT.TYPE_PATH,
+  SP: Command.SEGMENT.SHOW_PATH,
+  HP: Command.SEGMENT.HIDE_PATH
 };
 
 Command.currentCommand = [];
@@ -224,43 +233,140 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.SPEED][Command.SEGMENT_TY
   throw Command.ERROR.FORMAT;
 };
 
-Command[Command.SEGMENT.PATH] = {};
-Command[Command.SEGMENT.PATH][Command.SEGMENT_TYPE.PATH_NAME] = (function() {
-  var path = [],
+Command[Command.SEGMENT.SHOW_PATH] = {};
+Command[Command.SEGMENT.SHOW_PATH][Command.SEGMENT_TYPE.PATH_NAME] = function(e, args) {
+  try {
+    scope.pathManager().showPath(args[1].toUpperCase());
+  } catch (err) {
+    switch (err) {
+      case PathManager.ERROR.PATH_NOT_FOUND:
+        scope.textOverlay().setPreviewAreaMessage('ILL PTH');
+        Command.registerCleanupFunction(function() {
+          scope.textOverlay().clearPreviewAreaMessage();
+        });
+        throw Command.ERROR.TAKE_NO_ACTION;
+    }
+  }
+};
+
+Command[Command.SEGMENT.HIDE_PATH] = {};
+Command[Command.SEGMENT.HIDE_PATH][Command.SEGMENT_TYPE.PATH_NAME] = function(e, args) {
+  try {
+    scope.pathManager().hidePath(args[1].toUpperCase());
+  } catch (err) {
+    switch (err) {
+      case PathManager.ERROR.PATH_NOT_FOUND:
+        scope.textOverlay().setPreviewAreaMessage('ILL PTH');
+        Command.registerCleanupFunction(function() {
+          scope.textOverlay().clearPreviewAreaMessage();
+        });
+        throw Command.ERROR.TAKE_NO_ACTION;
+    }
+  }
+};
+
+Command[Command.SEGMENT.DRAW_PATH] = {};
+Command[Command.SEGMENT.DRAW_PATH][Command.SEGMENT_TYPE.PATH_NAME] = (function() {
+  var path = null,
       cleanup = function() {
-        path = [];
-        scope.clearRenderPath();
+        path = null;
         scope.textOverlay().clearPreviewAreaMessage();
       };
   return function(e, args) {
     scope.textOverlay().clearPreviewAreaMessage();
+    var pathName = args[1].toUpperCase();
+    if (!pathName)
+      throw Command.ERROR.FORMAT;
+    if (!path)
+      path = new Path(pathName);
     if (e.type === 'click') {
       Command.registerCleanupFunction(cleanup, true);
       var pos = scope.selectPosition(e),
-          last = path[path.length - 1],
-          secondToLast = path[path.length - 2];
+          waypoints = path.waypoints(),
+          last = waypoints[waypoints.length - 1],
+          secondToLast = waypoints[waypoints.length - 2];
       if (last) {
-        if (last.distanceTo(pos) * 0.539957 < 1) {
+        if (last.position.distanceTo(pos) * 0.539957 < 1) {
           scope.textOverlay().setPreviewAreaMessage('ILL DIST');
           throw Command.ERROR.TAKE_NO_ACTION;
         }
         if (secondToLast) {
-          var lastBearing = secondToLast.bearingTo(last),
-              newBearing = last.bearingTo(pos);
+          var lastBearing = secondToLast.position.bearingTo(last.position),
+              newBearing = last.position.bearingTo(pos);
           if (scope.renderer().angleBetweenHeadings(lastBearing, newBearing) >= 90) {
             scope.textOverlay().setPreviewAreaMessage('ILL TURN');
             throw Command.ERROR.TAKE_NO_ACTION;
           }
         }
       }
-      path.push(pos);
-      scope.setRenderPath(path);
+      path.addWaypoint(null, pos);
+      scope.pathManager().setPath(path);
+      scope.pathManager().showPath(pathName);
       throw Command.ERROR.TAKE_NO_ACTION;
-    } else if (path.length) {
-      cleanup();
-      return;
     }
     cleanup();
-    throw Command.ERROR.FORMAT;
   };
 })();
+
+Command[Command.SEGMENT.TYPE_PATH] = {};
+Command[Command.SEGMENT.TYPE_PATH][Command.SEGMENT_TYPE.PATH_NAME] = {};
+Command[Command.SEGMENT.TYPE_PATH][Command.SEGMENT_TYPE.PATH_NAME][Command.SEGMENT_TYPE.PATH_FIXES] = function(e, args) {
+  scope.textOverlay().clearPreviewAreaMessage();
+  var pathName = args[1].toUpperCase(),
+      waypoints = args[2].split('.'),
+      numRequiredWaypoints = waypoints.length;
+  if (pathName && numRequiredWaypoints) {
+    scope.textOverlay().setPreviewAreaMessage('LOAD...');
+    var numResolvedWaypoints = 0,
+        waypointLocations = {},
+        path = new Path(pathName),
+        formRoute = function() {
+          Command.registerCleanupFunction(function() {
+            scope.clearRenderPaths();
+            scope.textOverlay().clearPreviewAreaMessage();
+          }, true);
+          for (var i in waypoints) {
+            var waypointName = waypoints[i],
+                waypointLocation = waypointLocations[waypointName];
+            if (waypointLocation)
+              path.addWaypoint(waypointName, waypointLocation);
+            else {
+              scope.textOverlay().setPreviewAreaMessage('ILL RTE');
+              return;
+            }
+          }
+          scope.pathManager().setPath(path);
+          scope.pathManager().showPath(pathName);
+          scope.textOverlay().clearPreviewAreaMessage();
+        },
+        navaidHandler = function(navaid, data) {
+          numResolvedWaypoints++;
+          if (data.navaid)
+            waypointLocations[navaid] = data.navaid;
+          if (numResolvedWaypoints === numRequiredWaypoints)
+            formRoute();
+        },
+        fixHandler = function(fix, data) {
+          numResolvedWaypoints++;
+          if (data.fix)
+            waypointLocations[fix] = data.fix;
+          if (numResolvedWaypoints === numRequiredWaypoints)
+            formRoute();
+        };
+    for (var i in waypoints) {
+      waypoints[i] = waypoints[i].toUpperCase();
+      var waypoint = waypoints[i];
+      if (waypoint.length === 3)
+        $.get('/api/navaids/' + waypoint, navaidHandler.bind(this, waypoint));
+      else if (waypoint.length === 5)
+        $.get('/api/fixes/' + waypoint, fixHandler.bind(this, waypoint));
+      else {
+        numResolvedWaypoints++;
+        if (numResolvedWaypoints === numRequiredWaypoints)
+          formRoute();
+      }
+    }
+    throw Command.ERROR.TAKE_NO_ACTION;
+  }
+  throw Command.ERROR.FORMAT;
+};

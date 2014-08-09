@@ -12,6 +12,7 @@ function Scope() {
 	this._compass = new Compass;
 	this._textOverlay = new TextOverlay(this);
 	this._flow = new Flow();
+	this._pathManager = new PathManager();
 
 	this._radarManager;
 	this._isOn = false;
@@ -20,7 +21,7 @@ function Scope() {
 
 	this._measureDistanceStartPosition = null;
 	this._renderPoints = [];
-	this._renderPath = [];
+	//this._renderPaths = [];
 	this._renderPointsBlinker = new Date().getTime();
 	//this._weatherOverlay = new WeatherOverlay;
 
@@ -77,6 +78,10 @@ Scope.prototype.targetManager = function() {
 	return this._targetManager;
 };
 
+Scope.prototype.pathManager = function() {
+	return this._pathManager;
+};
+
 Scope.prototype.select = function(e) {
 	var offset = $(e.target).offset(),
 			x = e.clientX - offset.left,
@@ -121,12 +126,12 @@ Scope.prototype.clearRenderPoints = function() {
 	this._renderPoints = [];
 };
 
-Scope.prototype.setRenderPath = function(path) {
-	this._renderPath = path;
+Scope.prototype.addRenderPath = function(path) {
+	this._renderPaths.push(path);
 };
 
-Scope.prototype.clearRenderPath = function() {
-	this._renderPath = [];
+Scope.prototype.clearRenderPaths = function() {
+	this._renderPaths = [];
 };
 
 Scope.prototype.bind = function(scope) {
@@ -176,7 +181,7 @@ Scope.prototype.textOverlay = function() {
 Scope.prototype.fit = function() {
 	this._renderer.scope().width = $(window).width();
 	this._renderer.scope().height = $(window).height() - ($('.scope-settings').is(':visible') ? 54 : 0);
-}
+};
 
 Scope.prototype.renderBackground = function() {
 	this._renderer.context().fillStyle = this._renderer.background();
@@ -210,34 +215,6 @@ Scope.prototype.renderRenderPoints = function() {
 	}
 };
 
-Scope.prototype.renderRenderPath = function() {
-	if (this._renderPath.length) {
-		var pos;
-
-		this._renderer.context().fillStyle = '#0c0';
-		this._renderer.context().strokeStyle = '#0c0';
-		this._renderer.context().lineWidth = 4;
-		this._renderer.context().lineJoin = 'round';
-
-		pos = this._renderer.gtoc(this._renderPath[0]._lat, this._renderPath[0]._lon);
-		this._renderer.context().beginPath();
-		this._renderer.context().moveTo(pos.x, pos.y);
-		for (var i = 1; i < this._renderPath.length; i++) {
-			pos = this._renderer.gtoc(this._renderPath[i]._lat, this._renderPath[i]._lon);
-			this._renderer.context().lineTo(pos.x, pos.y);
-		}
-		this._renderer.context().stroke();
-
-		var dots = [0, this._renderPath.length - 1];
-		for (var d = 0; d < 2; d++) {
-			pos = this._renderer.gtoc(this._renderPath[dots[d]]._lat, this._renderPath[dots[d]]._lon);
-			this._renderer.context().beginPath();
-			this._renderer.context().arc(pos.x, pos.y, 4, 0, 2 * Math.PI);
-			this._renderer.context().fill();
-		}
-	}
-};
-
 Scope.prototype.render = function() {
 	this.fit();
 	this.renderBackground();
@@ -245,11 +222,11 @@ Scope.prototype.render = function() {
 	for (var i in this._maps)
 		this._maps[i].render(this._renderer);
 	this._flow.render(this._renderer);
+	this._pathManager.render(this._renderer);
 	//this._weatherOverlay.render(this._renderer);
 	//this._situation.render(this._renderer);
 	//this.detectAndRenderConflicts();
 	this.renderRenderPoints();
-	this.renderRenderPath();
 	this._targetManager.render(this._renderer);
 	if (this._crda)
 			this._crda.ghostTargets(this._targetManager, this._renderer);

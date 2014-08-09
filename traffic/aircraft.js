@@ -223,10 +223,6 @@ Aircraft.prototype.flyQuick = function(elapsedSituation, r) {
 		this.updateHistory();
 		this.updatePosition(this.updateHeading(), this.updateSpeed(), this.updateAltitude(), r);
 		this.updateAssignments();
-
-		// if (this._callsign === 'ICE98') {
-		// 	console.log(this._autopilot.interceptHeading(r));
-		// }
 	}
 };
 
@@ -324,11 +320,8 @@ Aircraft.prototype.loadFromString = function(aircraftString) {
 };
 
 Aircraft.prototype.update = function(aircraft, aircraftList, elapsedSituation) {
-  //console.log(aircraftList[aircraft.callsign()]);
-  //console.log(aircraft);
   if (aircraftList[aircraft.callsign()] && (aircraftList[aircraft.callsign()].lat() != aircraft.lat()
       || aircraftList[aircraft.callsign()].lon() != aircraft.lon())) {
-    //console.log('updating ' + this._callsign);
     this._lastSimulated = elapsedSituation;
     this._lat = aircraft.lat();
     this._lon = aircraft.lon();

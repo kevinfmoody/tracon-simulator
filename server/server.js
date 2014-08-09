@@ -3,7 +3,9 @@ var express = require('express'),
     http = require('http').Server(app),
     io = require('socket.io')(http),
     request = require('request'),
-    ClientManager = require('./ClientManager.js');
+    ClientManager = require('./ClientManager.js'),
+    NavigationAPI = require('./NavigationAPI.js'),
+    Apiify = require('./Apiify.js');
 
 io.on('connection', function(socket) {
   new ClientManager(socket);
@@ -14,6 +16,9 @@ app.get('/proxy', function(req, res) {
     res.send(body);
   });
 });
+
+app.get('/api/fixes/*', Apiify(NavigationAPI.fix, 'fix'));
+app.get('/api/navaids/*', Apiify(NavigationAPI.navaid, 'navaid'));
 
 app.use('/', express.static('../'));
 
