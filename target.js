@@ -132,7 +132,7 @@ Target.prototype.controller = function() {
 };
 
 Target.prototype.history = function() {
-  return this._history;
+  return this._history.slice(1);
 };
 
 Target.prototype.course = function() {

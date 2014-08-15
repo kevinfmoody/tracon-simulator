@@ -144,6 +144,18 @@ Keyboard[Keyboard.KEYS.S][Keyboard.COMBO_KEYS.CTRL] = function(e) {
   $('.scope-settings').toggle();
 };
 
+Keyboard[Keyboard.KEYS.M] = {};
+Keyboard[Keyboard.KEYS.M][Keyboard.COMBO_KEYS.CTRL] = function(e) {
+  $('.situation-controls').toggle();
+  if ($('.situation-controls').is(':visible')) {
+    $(scope.renderer().scope()).css('margin-left', '250px');
+    $('.scope-settings').css('margin-left', '250px');
+  } else {
+    $(scope.renderer().scope()).css('margin-left', '0');
+    $('.scope-settings').css('margin-left', '0');
+  }
+};
+
 Keyboard[Keyboard.KEYS.R] = {};
 Keyboard[Keyboard.KEYS.R][Keyboard.COMBO_KEYS.CTRL] = function(e) {
   //scope.situation().run();

@@ -5,6 +5,8 @@ function Airport(icao, iata, lat, lon, elevation) {
 	this._lon = lon;
 	this._elevation = elevation;
 	this._runways = {};
+  this._metar = null;
+  this._updating = false;
 }
 
 Airport.prototype.numRunways = function() {
@@ -42,4 +44,26 @@ Airport.prototype.lon = function() {
 
 Airport.prototype.elevation = function() {
   return this._elevation;
+};
+
+Airport.prototype.updateMetar = function(cb) {
+  $.get('/api/metars/' + this.icao(), function(data) {
+    if (data.metar)
+      this._metar = data.metar;
+    cb();
+  }.bind(this));
+};
+
+Airport.prototype.metar = function(tryAgain) {
+  if (!this._updating) {
+    this._updating = true;
+    this.updateMetar(tryAgain);
+    setInterval(this.updateMetar.bind(this), 5 * 60 * 1000);
+  }
+  return this._metar;
+};
+
+Airport.prototype.altimeter = function(tryAgain) {
+  this.metar(tryAgain);
+  return this._metar ? this._metar.altimeter : '--.--';
 };

@@ -8,6 +8,14 @@ body {
 	padding:0;
 	overflow:hidden;
 	background:#000;
+	cursor: default;
+	font-family: "Oxygen Mono", sans-serif;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .incoming-messages {
@@ -29,12 +37,7 @@ body {
 
 .scope-settings {
 	height: 54px;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+	margin-left: 250px;
 }
 
 .button-group, .scope-button-group {
@@ -94,7 +97,7 @@ body {
 	border-left: 2px solid #000c00;
 }
 
-.scope-button-container div:hover:not(.disabled) > p {
+.scope-button-container div:hover:not(.disabled) p {
 	color: #ab9;
 }
 
@@ -113,6 +116,7 @@ body {
 
 #scope {
 	cursor:url(cross_cursor.png) 10 10, crosshair;
+	margin-left: 250px;
 }
 
 #previewArea {
@@ -126,4 +130,160 @@ body {
 	right:0;
 	color:green;
 	font-family:Monaco, sans-serif;
+}
+
+.situation-controls {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 250px;
+	background: #222;
+}
+
+.situation-controls > h1 {
+	height: 54px;
+	line-height: 54px;
+	padding-left: 20px;
+	text-transform: uppercase;
+	background: #000;
+	color: #888;
+	font-size: 12px;
+	border-bottom: 1px solid #2a2a2a;
+}
+
+.situation-controls .control-section {
+	border-bottom: 1px solid #2a2a2a;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+.situation-controls .control-section.expanded {
+	background: #000;
+}
+
+.situation-controls .control-section .scrollable {
+	max-height: 250px;
+	overflow-y: auto;
+}
+
+.situation-controls .control-section div {
+	display: none;
+}
+
+.situation-controls .control-section.expanded div {
+	display: block;
+}
+
+.situation-controls .control-section h1 {
+	position: relative;
+	height: 54px;
+	line-height: 54px;
+	padding-left: 20px;
+	text-transform: uppercase;
+	color: #888;
+	font-size: 12px;
+}
+
+.situation-controls .control-section h1:hover {
+	background: #000;
+	cursor: pointer;
+}
+
+.situation-controls .control-section h1:after {
+	content: '';
+	position: absolute;
+	height: 0;
+	width: 0;
+	top: 50%;
+	right: 20px;
+	margin-top: -5px;
+	border-left: 5px solid #888;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+}
+
+.situation-controls .control-section.expanded h1:after {
+	content: '';
+	position: absolute;
+	height: 0;
+	width: 0;
+	top: 50%;
+	right: 18px;
+	margin-top: -3px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid #888;
+	border-bottom: none;
+}
+
+.situation-controls .control-section .setting {
+	margin: 0 20px;
+	padding: 10px 0;
+	border-top: 1px solid #262626;
+	overflow: hidden;
+}
+
+.situation-controls .control-section .setting .label {
+	font-size: 12px;
+	color: #888;
+	display: inline-block;
+}
+
+.situation-controls .control-section .setting .value {
+	display: inline-block;
+}
+
+.situation-controls .control-section .setting .button {
+	padding: 3px 6px;
+	margin: 0;
+	margin-left: 6px;
+	font-size: 10px;
+	text-transform: uppercase;
+	background: #222;
+	border: 1px solid #2a2a2a;
+	border-radius: 3px;
+	float: right;
+	cursor: pointer;
+	color: #ccc;
+}
+
+.situation-controls .control-section .setting .button:hover {
+	background: #2a2a2a;
+}
+
+.situation-controls .control-section .setting input {
+	padding: 3px 6px;
+	margin: 0;
+	margin-left: 6px;
+	font-size: 10px;
+	text-transform: uppercase;
+	font-family: "Oxygen Mono", sans-serif;
+	background: transparent;
+	border: none;
+	outline: none;
+	color: #ccc;
+	text-align: right;
+	background: #222;
+	border: 1px solid #2a2a2a;
+	border-radius: 3px;
+	float: right;
+	overflow: hidden;
+}
+
+.situation-controls .control-section .setting input:hover {
+	background: #2a2a2a;
+}
+
+.situation-controls .control-section .setting .value input {
+	border: none;
+	background: #000;
+	color: #aaa;
+	font-family: "Oxygen Mono", sans-serif;
+	font-size: 12px;
+	text-transform: uppercase;
+	width: 40px;
+	outline: none;
 }

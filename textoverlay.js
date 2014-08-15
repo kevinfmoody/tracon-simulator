@@ -12,6 +12,8 @@ function TextOverlay(scope) {
 	}, 1000);
 }
 
+
+
 TextOverlay.prototype.setPreviewAreaMessage = function(message) {
   this._previewMessage = message;
 };
@@ -145,8 +147,8 @@ TextOverlay.prototype.removePreviewChar = function() {
   this._formatError = false;
 };
 
-TextOverlay.prototype.brite = function(red) {
-  if (red)
+TextOverlay.prototype.brite = function(color) {
+  if (color === 'red')
     return 'rgb(' + Math.round(255 * this._brite / 10) + ', 0, 0)';
   return 'rgb(0, ' + Math.round(255 * this._brite / 10) + ', 0)';
 };
@@ -181,15 +183,15 @@ TextOverlay.prototype.renderTime = function(r, airports) {
 	var timeString = (hours.length == 1 ? '0' + hours : hours) 
     + (minutes.length == 1 ? '0' + minutes : minutes) + '/' 
     + (seconds.length == 1 ? '0' + seconds : seconds);
-	r.context().fillText(timeString + ' --.--', 75, this.line(r, .14, 0));
-  r.context().fillStyle = this.brite(true);
-	r.context().fillText('NA/NA/NA ', 75, this.line(r, .14, 1));
+	r.context().fillText(timeString + ' ' + airports['KBOS'].altimeter(scope.render.bind(scope)), 75, this.line(r, .14, 0));
+  r.context().fillStyle = this.brite('green');
+	r.context().fillText('OK/OK/OK ', 75, this.line(r, .14, 1));
   r.context().fillStyle = this.brite();
   r.context().fillText(iata, 75 + r.context().measureText('NA/NA/NA ').width, this.line(r, .14, 1));
 	r.context().fillText('22NM PTL: 3.0', 75, this.line(r, .14, 2));
 	r.context().fillText('N99 999 U N99 999 A', 75, this.line(r, .14, 3));
   for (var i = 0; i < ICAOs.length; i++)
-    r.context().fillText(airports[ICAOs[i]].iata() + ' --.--', 75, this.line(r, .14, 4 + i));
+    r.context().fillText(airports[ICAOs[i]].iata() + ' ' + airports[ICAOs[i]].altimeter(scope.render.bind(scope)), 75, this.line(r, .14, 4 + i));
   this._previewLine = 6 + ICAOs.length;
 };
 

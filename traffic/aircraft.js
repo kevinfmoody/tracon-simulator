@@ -2,7 +2,8 @@ var AircraftPerformance,
 		Autopilot,
 		LatLon;
 
-var VATSIM = require('../server/vatsim/vatsim.js');
+var VATSIM = require('../server/vatsim/vatsim.js'),
+		Flow = require('../server/Flow.js');
 
 if (typeof module !== 'undefined' && module.exports) {
   AircraftPerformance = require('./aircraftperformance.js');
@@ -10,9 +11,10 @@ if (typeof module !== 'undefined' && module.exports) {
   LatLon = require('../latlon.js');
 }
 
-function Aircraft(aircraftString, socket) {
+function Aircraft(aircraftString, socket, currentFlow) {
 	this._v = new VATSIM();
 	this._v.client().connect();
+	this._flow = currentFlow;
 
 	this._conflicting = false;
 	this._selected = false;
@@ -79,15 +81,16 @@ function Aircraft(aircraftString, socket) {
 
 	setInterval(function() {
 		var blip = this.blip();
-		this._v.pilot().sendPosition({
-      identFlag: 'N',
-      from: blip.callsign,
-      squawk: blip.squawk,
-      latitude: blip.position._lat,
-      longitude: blip.position._lon,
-      altitude: blip.altitude,
-      groundSpeed: blip.speed
-    });
+		if (blip)
+			this._v.pilot().sendPosition({
+				identFlag: 'N',
+				from: blip.callsign,
+				squawk: blip.squawk,
+				latitude: blip.position._lat,
+				longitude: blip.position._lon,
+				altitude: blip.altitude,
+				groundSpeed: blip.speed
+			});
 	}.bind(this), 5000);
 }
 
@@ -96,16 +99,36 @@ Aircraft.prototype.autopilot = function() {
 };
 
 Aircraft.prototype.blip = function() {
-	return {
-		callsign: this.callsign(),
-		mode: this.mode(),
-		type: this.type(),
-		arrival: this.arrival(),
-		position: this.position(),
-		altitude: this.altitude(),
-		speed: this.groundspeed(),
-		squawk: this.squawk()
-	};
+	// try {
+	// 	var position = this._flow.project(this.position(), 5),
+	// 			average = this._flow.average(position);
+	// 	return {
+	// 		callsign: this.callsign(),
+	// 		mode: this.mode(),
+	// 		type: this.type(),
+	// 		arrival: this.arrival(),
+	// 		position: position,
+	// 		altitude: average.altitude !== -1 ? average.altitude : this.altitude(),
+	// 		speed: average.speed !== -1 ? average.speed : this.groundspeed(),
+	// 		squawk: this.squawk()
+	// 	};
+	// } catch (err) {
+	// 	switch (err) {
+	// 		case Flow.ERROR.NO_DATA:
+				return {
+					callsign: this.callsign(),
+					mode: this.mode(),
+					type: this.type(),
+					arrival: this.arrival(),
+					position: this.position(),
+					altitude: this.altitude(),
+					speed: this.groundspeed(),
+					squawk: this.squawk()
+				};
+	// 		default:
+	// 			return null;
+	// 	}
+	// }
 };
 
 Aircraft.prototype.initiateControl = function() {

@@ -13,6 +13,30 @@ $(document).ready(function() {
 	initKeyDetection();
 	initSlewDetection();
   initSettings();
+
+  $('.control-section h1').click(function() {
+    var $parent = $(this).parent();
+    if ($parent.hasClass('expanded')) {
+      $parent.removeClass('expanded');
+    } else {
+      $('.control-section').removeClass('expanded');
+      $parent.addClass('expanded');
+    }
+  });
+  $('.control-section .button').click(function() {
+    var txt = $(this).text().trim();
+    if (txt === 'On' || txt === 'Off')
+      $(this).text(txt === 'On' ? 'Off' : 'On');
+  });
+  $('.control-section').keydown(function(e) {
+    e.stopPropagation();
+  });
+  $('.control-section').keypress(function(e) {
+    e.stopPropagation();
+  });
+  $('.control-section input').mouseout(function(e) {
+    $(this).blur();
+  });
 });
 
 function initScope() {

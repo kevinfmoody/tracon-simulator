@@ -2,12 +2,12 @@ var VATSIM = require('./vatsim/vatsim.js'),
     TrafficSimulator = require('../traffic/TrafficSimulator.js'),
     SimulationCommands = require('./SimulationCommands.js');
 
-function ClientManager(socket) {
+function ClientManager(socket, currentFlow) {
   this._s = socket;
   this._v = new VATSIM(this._s);
   this._v.client().connect();
 
-  this._simulation = new TrafficSimulator(this._s);
+  this._simulation = new TrafficSimulator(this._s, currentFlow);
   this._commands = new SimulationCommands(this._simulation);
   this._simulation.loadSituation('../situations/a90.sit', function() {
     this._simulation.run({ magVar: function() { return -15.24; } });

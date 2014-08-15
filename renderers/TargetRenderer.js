@@ -107,33 +107,33 @@ TargetRenderer.prototype.renderExtras = function(r) {
   this.renderJRing(r);
   this.renderCone(r);
 
-  if (this._target.callsign() === 'ICE98') {
-    var ACTIVE_LEGS = [
-      {
-        startPosition: new LatLon(42.53728102399617, -69.99036947154653),
-        endPosition: new LatLon(42.44679377265025, -70.47755508601381)
-      },
-      {
-        startPosition: new LatLon(42.44679377265025, -70.47755508601381),
-        endPosition: new LatLon(42.52755728169469, -70.61846177278272)
-      },
-      {
-        startPosition: new LatLon(42.52755728169469, -70.61846177278272),
-        endPosition: new LatLon(42.72859260197211, -70.48297467454829)
-      }
-    ];
+  // if (this._target.callsign() === 'ICE98') {
+  //   var ACTIVE_LEGS = [
+  //     {
+  //       startPosition: new LatLon(42.53728102399617, -69.99036947154653),
+  //       endPosition: new LatLon(42.44679377265025, -70.47755508601381)
+  //     },
+  //     {
+  //       startPosition: new LatLon(42.44679377265025, -70.47755508601381),
+  //       endPosition: new LatLon(42.52755728169469, -70.61846177278272)
+  //     },
+  //     {
+  //       startPosition: new LatLon(42.52755728169469, -70.61846177278272),
+  //       endPosition: new LatLon(42.72859260197211, -70.48297467454829)
+  //     }
+  //   ];
 
-    r.context().strokeStyle = 'orange';
-    r.context().lineWidth = 2;
-    for (var i in ACTIVE_LEGS) {
-      var start = r.gtoc(ACTIVE_LEGS[i].startPosition._lat, ACTIVE_LEGS[i].startPosition._lon);
-      var end = r.gtoc(ACTIVE_LEGS[i].endPosition._lat, ACTIVE_LEGS[i].endPosition._lon);
-      r.context().beginPath();
-      r.context().moveTo(start.x, start.y);
-      r.context().lineTo(end.x, end.y);
-      r.context().stroke();
-    }
-  }
+  //   r.context().strokeStyle = 'orange';
+  //   r.context().lineWidth = 2;
+  //   for (var i in ACTIVE_LEGS) {
+  //     var start = r.gtoc(ACTIVE_LEGS[i].startPosition._lat, ACTIVE_LEGS[i].startPosition._lon);
+  //     var end = r.gtoc(ACTIVE_LEGS[i].endPosition._lat, ACTIVE_LEGS[i].endPosition._lon);
+  //     r.context().beginPath();
+  //     r.context().moveTo(start.x, start.y);
+  //     r.context().lineTo(end.x, end.y);
+  //     r.context().stroke();
+  //   }
+  // }
 };
 
 TargetRenderer.prototype.renderHistory = function(r) {

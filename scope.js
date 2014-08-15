@@ -179,7 +179,7 @@ Scope.prototype.textOverlay = function() {
 };
 
 Scope.prototype.fit = function() {
-	this._renderer.scope().width = $(window).width();
+	this._renderer.scope().width = $(window).width() - ($('.situation-controls').is(':visible') ? 250 : 0);
 	this._renderer.scope().height = $(window).height() - ($('.scope-settings').is(':visible') ? 54 : 0);
 };
 

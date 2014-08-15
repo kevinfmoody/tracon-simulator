@@ -1,7 +1,8 @@
 var fs = require('fs');
 var Aircraft = require('./aircraft.js');
 
-function TrafficSimulator(socket) {
+function TrafficSimulator(socket, currentFlow) {
+  this._currentFlow = currentFlow;
   this._s = socket;
 
   this._aircraft = [];
@@ -42,7 +43,7 @@ TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
       var situation = data.toString().split('\n');
       this._aircraft = [];
       for (var i in situation)
-        this._aircraft.push(new Aircraft(situation[i], this._s));
+        this._aircraft.push(new Aircraft(situation[i], this._s, this._currentFlow));
       loadedFn();
     }.bind(this));
   } else {
@@ -50,7 +51,7 @@ TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
       var situation = data.split('\n');
       this._aircraft = [];
       for (var i in situation)
-        this._aircraft.push(new Aircraft(situation[i], this._s));
+        this._aircraft.push(new Aircraft(situation[i], this._s, this._currentFlow));
       loadedFn();
     }.bind(this));
   }

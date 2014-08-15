@@ -97,20 +97,23 @@ Command.cleanupIn = function(milliseconds) {
 Command.run = function(e, args) {
   if (args[0] === '')
     return;
-  var command = [];
-  for (var i in args) {
-    arg = args[i];
-    if (!Command.SEGMENT_RAW[arg])
-      arg = Command.ALIAS[arg] || Command.SEGMENT_TYPE.PLACEHOLDER;
-    command.push(arg);
+  var fn = Command.manualProcess(e, args),
+      command = [];
+  if (!fn) {
+    for (var i in args) {
+      arg = args[i];
+      if (!Command.SEGMENT_RAW[arg])
+        arg = Command.ALIAS[arg] || Command.SEGMENT_TYPE.PLACEHOLDER;
+      command.push(arg);
+    }
+    fn = Command;
+    for (var j in command) {
+      fn = fn[command[j]] || Command.manualProcess(e, args);
+      if (!fn)
+        scope.textOverlay().formatError();
+    }
   }
   Command.currentCommand = command;
-  var fn = Command;
-  for (var j in command) {
-    fn = fn[command[j]];
-    if (!fn)
-      scope.textOverlay().formatError();
-  }
   try {
     fn(e, args);
     scope.textOverlay().clearPreview();
@@ -122,6 +125,32 @@ Command.run = function(e, args) {
     }
   }
   Command.lastCommand = command;
+};
+
+Command.manualProcess = function(e, args) {
+  var command = args[0],
+      coneCommand = /^\*P\d+$/,
+      jRingCommand = /^\*J\d+$/;
+  switch (true) {
+    case coneCommand.test(command):
+      return function(e, args) {
+        debugger
+        if (e.type === 'click') {
+          var aircraft = scope.select(e);
+          if (aircraft)
+            aircraft.enableCone(parseInt(args[0].substr(2), 10));
+        }
+      };
+    case jRingCommand.test(command):
+      return function(e, args) {
+        if (e.type === 'click') {
+          var aircraft = scope.select(e);
+          if (aircraft)
+            aircraft.enableJRing(parseInt(args[0].substr(2), 10));
+        }
+      };
+  }
+  return null;
 };
 
 Command[Command.SEGMENT_TYPE.PLACEHOLDER] = {};

@@ -9,8 +9,8 @@ NavigationAPI.fix = (function() {
       return cb(null);
     fix = fix.toUpperCase();
     var cachedPosition = cachedFixes[fix];
-      if (cachedPosition)
-        return cb(cachedPosition);
+    if (cachedPosition)
+      return cb(cachedPosition);
     request.get({
       url: 'http://www.airnav.com/airspace/fix/' + fix
     }, function(error, response, body) {
@@ -29,6 +29,9 @@ NavigationAPI.fix = (function() {
               lon = (lonDirection === 'E' ? 1 : -1) * (lonDegrees + lonMinutes / 60 + lonSeconds / 3600),
               position = new LatLon(lat, lon);
           cachedFixes[fix] = position;
+          setTimeout(function() {
+            delete cachedFixes[fix];
+          }, 8 * 60 * 60 * 1000);
           return cb(position);
         }
       }
@@ -57,6 +60,9 @@ NavigationAPI.navaid = (function() {
         if (match) {
           var position = new LatLon(parseFloat(match[1]), parseFloat(match[2]));
           cachedNavaids[navaid] = position;
+          setTimeout(function() {
+            delete cachedFixes[fix];
+          }, 8 * 60 * 60 * 1000);
           return cb(position);
         }
       }
