@@ -6,14 +6,14 @@ var express = require('express'),
     ClientManager = require('./ClientManager.js'),
     NavigationAPI = require('./NavigationAPI.js'),
     WeatherAPI = require('./WeatherAPI.js'),
-    Apiify = require('./Apiify.js'),
-    Flow = require('./Flow.js');
+    Apiify = require('./Apiify.js');//,
+    //Flow = require('./Flow.js');
 
-var currentFlow = new Flow();
-currentFlow.loadRecent();
+// var currentFlow = new Flow();
+// currentFlow.loadRecent();
 
 io.on('connection', function(socket) {
-  new ClientManager(socket, currentFlow);
+  new ClientManager(socket, null/*currentFlow*/);
 });
 
 app.get('/proxy', function(req, res) {
