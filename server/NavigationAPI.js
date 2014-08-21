@@ -56,12 +56,12 @@ NavigationAPI.navaid = (function() {
       }
     }, function(error, response, body) {
       if (body) {
-        var match = body.match(/([\d-]+\.[\d]+)\/([\d-]+\.[\d]+)/);
+        var match = body.match(/([\+\-]{0,1}\d+\.\d+)\s*\/\s*([\+\-]{0,1}\d+\.\d+)/);
         if (match) {
           var position = new LatLon(parseFloat(match[1]), parseFloat(match[2]));
           cachedNavaids[navaid] = position;
           setTimeout(function() {
-            delete cachedFixes[fix];
+            delete cachedNavaids[navaid];
           }, 8 * 60 * 60 * 1000);
           return cb(position);
         }

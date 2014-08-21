@@ -3,7 +3,7 @@ if (typeof module !== 'undefined' && module.exports) {
 	LatLon = require('../latlon.js');
 }
 
-function Runway(id, lat, lon, elevation, length, width, course) {
+function Runway(id, lat, lon, elevation, length, width, course, ILSCapable) {
 	this._id = id;
 	this._lat = lat;
 	this._lon = lon;
@@ -11,7 +11,7 @@ function Runway(id, lat, lon, elevation, length, width, course) {
 	this._length = length;
 	this._width = width;
 	this._course = course;
-	this._ILSCapable = false;
+	this._ILSCapable = ILSCapable || false;
 }
 
 Runway.prototype.enableILS = function() {

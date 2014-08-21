@@ -41,7 +41,10 @@ $(document).ready(function() {
 
 function initScope() {
 	scope.bind('#scope');
-	scope.addMap('22L27', '', 'maps/a90.map', function() {
+  // scope.addMap('22L27', '', 'maps/a90.map', function() {
+  //   scope.render();
+  // });
+	scope.addMap('BOSMHT', '', 'maps/bosmht.map', function() {
 		scope.render();
 		setInterval(function() {
 			scope.render();
@@ -74,8 +77,10 @@ function initBostonAirport() {
   R27.enableILS();
   R22L.enableILS();
   R4R.enableILS();
-  KBOS.addRunway(R9, R27);
-  KBOS.addRunway(R4R, R22L);
+  KBOS.addRunway(R9);
+  KBOS.addRunway(R27);
+  KBOS.addRunway(R4R);
+  KBOS.addRunway(R22L);
   scope.addAirport(KBOS);
   var R27R22L = new CRDA(scope.airport('KBOS'), '27', '22L');
   scope.setCRDA(R27R22L);

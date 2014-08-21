@@ -2,7 +2,7 @@ function Map(id, name, filename, r, callback) {
 	this._id = id;
 	this._name = name;
 	this._path = [];
-	this._brite = 2;
+	this._brite = 5;
 	this._enabled = true;
 
 	if (typeof filename == 'string')
@@ -44,17 +44,23 @@ Map.prototype.addMapPath = function(pathList, r) {
 		if (lineData.length >= 4) {
 			var subpath = [];
 			// Loop through each coordinate in line
-			for (var i in lineData) {
-				if (i < 4) {
-					var lineDataParts = lineData[i].split('.');
-					var p1 = parseInt(lineDataParts[0].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
-					var p2 = parseInt(lineDataParts[1].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
-					var p3 = parseInt(lineDataParts[2].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
-					var p4 = parseInt(lineDataParts[3].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
-					if (p1 < 0) {
-						subpath[i] = -1 * (-1 * p1 + p2 / 60 + (parseFloat(p3 + '.' + p4)) / 3600);
-					} else {
-						subpath[i] = p1 + p2 / 60 + (parseFloat(p3 + '.' + p4)) / 3600;
+			subpath[0] = parseFloat(lineData[0]);
+			if (!isNaN(subpath[0])) {
+				for (var n = 1; n < 4; n++)
+					subpath[n] = parseFloat(lineData[n]);
+			} else {
+				for (var i in lineData) {
+					if (i < 4) {
+						var lineDataParts = lineData[i].split('.');
+						var p1 = parseInt(lineDataParts[0].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
+						var p2 = parseInt(lineDataParts[1].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
+						var p3 = parseInt(lineDataParts[2].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
+						var p4 = parseInt(lineDataParts[3].replace('N', '+').replace('E', '+').replace('S', '-').replace('W', '-'));
+						if (p1 < 0) {
+							subpath[i] = -1 * (-1 * p1 + p2 / 60 + (parseFloat(p3 + '.' + p4)) / 3600);
+						} else {
+							subpath[i] = p1 + p2 / 60 + (parseFloat(p3 + '.' + p4)) / 3600;
+						}
 					}
 				}
 			}
