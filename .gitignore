@@ -1,2 +1,4 @@
 sloc.sh
 .DS_Store
+server/providers/data
+server/node_modules
