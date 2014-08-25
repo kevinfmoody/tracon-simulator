@@ -2,27 +2,6 @@ var AirportAPI = {},
     request = require('request'),
     LatLon = require('../latlon.js');
 
-AirportAPI.runway = (function() {
-  var cachedRunways = {};
-  return function(icao, id, cb) {
-    if (icao.length !== 4 || id.length === 0)
-      return cb(null);
-    icao = icao.toUpperCase();
-    var runwayString = icao + '.' + id,
-        cachedRunway = cachedRunways[runwayString];
-    if (cachedRunway)
-      return cb(cachedRunway);
-    request.get({
-      url: 'http://www.airnav.com/airport/' + icao
-    }, function(error, response, body) {
-      if (body) {
-        
-      }
-      cb(null);
-    });
-  };
-})();
-
 AirportAPI.airport = (function() {
   var cachedAirports = {};
   return function(icao, cb) {

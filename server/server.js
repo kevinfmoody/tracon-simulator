@@ -6,7 +6,7 @@ var express = require('express'),
     ClientManager = require('./ClientManager.js'),
     NavigationAPI = require('./NavigationAPI.js'),
     WeatherAPI = require('./WeatherAPI.js'),
-    AirportAPI = require('./AirportAPI.js'),
+    FacilitiesAPI = require('./FacilitiesAPI.js'),
     Apiify = require('./Apiify.js');//,
     //Flow = require('./Flow.js');
 
@@ -26,7 +26,7 @@ app.get('/proxy', function(req, res) {
 app.get('/api/fixes/*', Apiify(NavigationAPI.fix, 'fix'));
 app.get('/api/navaids/*', Apiify(NavigationAPI.navaid, 'navaid'));
 app.get('/api/metars/*', Apiify(WeatherAPI.metar, 'metar'));
-app.get('/api/airports/*', Apiify(AirportAPI.airport, 'airport'));
+app.get('/api/airports/*', Apiify(FacilitiesAPI.airport, 'airport'));
 
 app.use('/', express.static('../'));
 
