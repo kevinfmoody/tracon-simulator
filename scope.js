@@ -2,22 +2,24 @@ function Scope() {
 	this._maps = {};
 	this._airports = {};
 	// this._trafficSimulator = new TrafficSimulator;
-	this._targetManager = new TargetManager;
+	this._targetManager = new TargetManager();
+	this._facilityManager = new FacilityManager();
+	//this._mapManager = new MapManager(this);
 	this._controller = new Controller('A', 'SR', 'BOS_APP', '118.25');
 	//this._feed = new Feed;
-	this._radar = new Radar;
+	this._radar = new Radar();
 
 	//this._situation = new Situation;
-	this._renderer = new Renderer;
-	this._compass = new Compass;
+	this._renderer = new Renderer();
+	this._compass = new Compass();
 	this._textOverlay = new TextOverlay(this);
 	this._flow = new Flow();
 	this._pathManager = new PathManager();
 
-	this._radarManager;
+	this._radarManager = null;
 	this._isOn = false;
 
-	this._crda;
+	this._crda = null;
 
 	this._measureDistanceStartPosition = null;
 	this._renderPoints = [];
@@ -39,6 +41,10 @@ function Scope() {
 // 		this._cde.manageAlarm();
 // 	}
 // };
+
+Scope.prototype.facilityManager = function() {
+	return this._facilityManager;
+};
 
 Scope.prototype.setCRDA = function(crda) {
 	this._crda = crda;
@@ -148,6 +154,10 @@ Scope.prototype.airport = function(icao) {
 
 Scope.prototype.addMap = function(id, name, map, callback) {
 	this._maps[id] = new Map(id, name, map, this._renderer, callback);
+};
+
+Scope.prototype.enableSmartMap = function() {
+	this._maps['SMART'] = new SmartMap('SMART', '', this);
 };
 
 Scope.prototype.setSituation = function(situation) {

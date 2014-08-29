@@ -1,0 +1,394 @@
+<html>
+<head>
+  <title>simTRACON</title>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:300,900' rel='stylesheet' type='text/css'>
+  <script src="/vendor/jquery.js" type="text/javascript"></script>
+  <style type="text/css">
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      background: #000;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+    }
+
+    .logo {
+      border-bottom: 1px solid #333;
+    }
+
+    .logo h1 {
+      width: 960px;
+      padding: 8px 0;
+      margin: 0 auto;
+      font-size: 16px;
+      color: #999;
+      font-weight: 300;
+    }
+
+    .step {
+      position: relative;
+      margin: 75px auto;
+      width: 600px;
+    }
+
+    .step .prompt {
+      color: #aaa;
+      font-size: 24px;
+      text-transform: uppercase;
+      height: 50px;
+      line-height: 50px;
+    }
+
+    .step input {
+      font-family: 'Roboto', sans-serif;
+      background: #000;
+      font-weight: 900;
+      color: #fff;
+      font-size: 24px;
+      text-transform: uppercase;
+      width: 600px;
+      outline: none;
+      border: none;
+      padding: 9px 0;
+    }
+
+    .step .typeahead {
+      color: #aaa;
+      font-size: 24px;
+      text-transform: uppercase;
+      height: 50px;
+      line-height: 50px;
+    }
+
+    .step .continue {
+      color: #aaa;
+      font-size: 24px;
+      text-transform: uppercase;
+      line-height: 50px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .step .label {
+      color: #aaa;
+      font-size: 24px;
+      text-transform: uppercase;
+      padding: 12px 0;
+    }
+
+    .step .label+* {
+      border-top: 1px dotted #333;
+    }
+
+    .step .clickable, .step .selectable {
+      color: #aaa;
+      font-size: 24px;
+      text-transform: uppercase;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 12px 0;
+      position: relative;
+    }
+
+    .step .selectable.selected {
+      color: #fff;
+    }
+
+    .step .selectable.selected:before {
+      position: absolute;
+      content: '';
+      top: 23px;
+      left: -12px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 5px solid #fff;
+    }
+
+    .step .clickable+.clickable, .step input+.clickable, .step input+input, .step .section+.clickable, .step .selectable+.selectable {
+      border-top: 1px dotted #333;
+    }
+
+    .step .clickable:hover, .step .selectable:hover {
+      color: #fff;
+    }
+
+    .step .clickable .small, .step .selectable .small, .link .link-description {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.2em;
+      font-weight: 300;
+      text-transform: none;
+    }
+
+    .step .continue:hover {
+      color: #fff;
+    }
+
+    .step .number {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 2px dotted #333;
+      border-radius: 22px;
+      color: #333;
+      font-weight: 900;
+      line-height: 40px;
+      text-align: center;
+      top: 6px;
+      left: -56px;
+    }
+
+    .progress-bar {
+      position: absolute;
+      top: -1px;
+      width: 100%;
+      height: 1px;
+      background: #333;
+    }
+
+    .progress {
+      height: 1px;
+      background: #999;
+      position: relative;
+    }
+
+    .progress:before {
+      position: absolute;
+      content: attr(data-step) ' of ' attr(data-of-step);
+      width: 50px;
+      bottom: 0;
+      font-size: 12px;
+      left: 100%;
+      margin-bottom: 5px;
+      margin-left: -4px;
+      color: #333;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .progress:after {
+      position: absolute;
+      content: attr(data-step);
+      bottom: 0;
+      font-size: 12px;
+      left: 100%;
+      margin-bottom: 5px;
+      margin-left: -4px;
+      color: #999;
+      font-weight: 900;
+    }
+
+    .link .link-label {
+      display: inline-block;
+    }
+
+    .link .link-url {
+      display: inline-block;
+      text-transform: none;
+      font-weight: 300;
+    }
+  </style>
+  <script type="text/javascript">
+    function pad(hdg) {
+      if (hdg < 10)
+        return '00' + hdg;
+      else if (hdg < 100)
+        return '0' + hdg;
+      else
+        return hdg;
+    };
+
+    function sortRunways(a, b) {
+      a = a.id;
+      b = b.id;
+      var delta = parseInt(a, 10) - parseInt(b, 10);
+      if (delta < 0)
+        return -1;
+      else if (delta > 0)
+        return 1;
+      else {
+        var scores = {'L': 0, 'C': 1, 'R': 2};
+        return scores[a[a.length - 1]] - scores[b[b.length - 1]];
+      }
+    };
+
+    var cachedAirports = {},
+        loadingAirports = {},
+        selectedAirport = {},
+        numRunwaysSelected = 0;
+    $(document).ready(function() {
+      $('.step-0 input:first').focus();
+
+      $('.step-1 input').keyup(function() {
+        var icao = $(this).val().trim().toUpperCase(),
+            $airportName = $('.airport-name'),
+            $continue = $('.step-1 .clickable');
+        $airportName.empty();
+        $continue.hide();
+        if (icao.length === 4) {
+          if (cachedAirports[icao]) {
+            selectedAirport = cachedAirports[icao];
+            $airportName.text(selectedAirport.name);
+            $continue.show();
+          } else {
+            if (!loadingAirports[icao]) {
+              loadingAirports[icao] = true;
+              $.get('/api/airports/' + icao, function(airport) {
+                cachedAirports[icao] = airport;
+                if (airport) {
+                  delete loadingAirports[icao];
+                  selectedAirport = cachedAirports[icao];
+                  $airportName.text(selectedAirport.name);
+                  $continue.show();
+                }
+              });
+            }
+          }
+        }
+      });
+
+      $('.step-0 .clickable').click(function() {
+        $('.step-0').hide();
+        $('.step-1').show().find('input').focus();
+      });
+
+      $('.step-1 .clickable').click(function() {
+        $('.step-1').hide();
+        var $runways = $('.step-2 .runways'),
+            runways = selectedAirport.runways;
+        runways.sort(sortRunways);
+        for (var i in runways) {
+          var runway = runways[i],
+              course = Math.round(runway.course - selectedAirport.magVar);
+          $runways.append(
+            $('<div>')
+              .addClass('selectable')
+              .text(runway.id)
+              .append(
+                $('<div>')
+                  .addClass('small')
+                  .html(runway.length + ' / ' + pad(course) + '&deg;')
+              )
+          );
+        }
+        $('.step-2').show();
+      });
+
+      $('.step-2 .clickable').click(function() {
+        $('.step-2').hide();
+        $('.step-3').show();
+      });
+
+      $('.step-3 .clickable').click(function() {
+        $('.step-3').hide();
+        $('.step-4').show();
+      });
+
+      $('.step-4 .clickable').click(function() {
+        $('.step-4').hide();
+        $('.step-5').show();
+      });
+
+      $(document).on('click',  '.selectable', function() {
+        var $continue = $('.step-2 .clickable');
+        if ($(this).hasClass('selected')) {
+          numRunwaysSelected--;
+          $(this).removeClass('selected');
+          if (numRunwaysSelected === 0)
+            $continue.hide();
+        } else {
+          numRunwaysSelected++;
+          $(this).addClass('selected');
+          $continue.show();
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="logo">
+    <h1>simTRACON</h1>
+  </div>
+  <div class="step step-0">
+    <div class="progress-bar">
+      <div class="progress" style="width:0%" data-step="0" data-of-step="5"></div>
+    </div>
+    <div class="label">Login</div>
+    <input type="text" placeholder="Username" />
+    <input type="password" placeholder="Password" />
+    <div class="clickable">
+      Continue
+    </div>
+  </div>
+  <div class="step step-1" style="display:none">
+    <div class="progress-bar">
+      <div class="progress" style="width:20%" data-step="1" data-of-step="5"></div>
+    </div>
+    <div class="label">Select Primary Airport</div>
+    <input type="text" placeholder="ICAO" />
+    <div class="clickable" style="display:none">
+      Continue
+      <div class="small airport-name"></div>
+    </div>
+  </div>
+  <div class="step step-2" style="display:none">
+    <div class="progress-bar">
+      <div class="progress" style="width:40%" data-step="2" data-of-step="5"></div>
+    </div>
+    <div class="label">Select Arriving Runways</div>
+    <div class="section runways"></div>
+    <div class="clickable" style="display:none">
+      Continue
+    </div>
+  </div>
+  <div class="step step-3" style="display:none">
+    <div class="progress-bar">
+      <div class="progress" style="width:60%" data-step="3" data-of-step="5"></div>
+    </div>
+    <div class="label">Select Map Mode</div>
+    <div class="clickable">
+      Smart Maps
+      <div class="small">If you don't want to deal with user-uploaded maps, allow simTRACON to automatically generate extremely realistic maps. Perfect for new airports that don't already have any available real-world video maps.</div>
+    </div>
+    <div class="clickable">
+      User Uploaded Maps
+      <div class="small">Use and upload real-world video maps. If no real-world video maps have been uploaded for the airport you have selected, you'll need to upload your own maps.</div>
+    </div>
+  </div>
+  <div class="step step-4" style="display:none">
+    <div class="progress-bar">
+      <div class="progress" style="width:80%" data-step="4" data-of-step="5"></div>
+    </div>
+    <div class="label">Select Traffic Mode</div>
+    <div class="clickable">
+      Real-World Traffic
+      <div class="small">Allow simTRACON to automatically load a snapshot of the current real-word traffic situation.</div>
+    </div>
+    <div class="clickable">
+      User Uploaded Situations
+      <div class="small">Use and upload specific traffic situations. If no situation files have been uploaded for the airport you have selected, you'll need to upload your own.</div>
+    </div>
+  </div>
+  <div class="step step-5" style="display:none">
+    <div class="progress-bar">
+      <div class="progress" style="width:100%" data-step="5" data-of-step="5"></div>
+    </div>
+    <div class="label">Your Session is Running</div>
+    <div class="clickable link">
+      <div class="link-label">Manager URL &bull;</div>
+      <div class="link-url">simtracon.com/m/3fs7fas8</div>
+      <div class="link-description">Command aircraft during the session and use the situation manager to edit settings on the fly.</div>
+    </div>
+    <div class="clickable link">
+      <div class="link-label">Public URL &bull;</div>
+      <div class="link-url">simtracon.com/bc8o36c2</div>
+      <div class="link-description">Provide access to the scope and situation without the ability to directly command aircraft and alter situation settings.</div>
+    </div>
+  </div>
+</body>
+</html>

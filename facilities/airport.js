@@ -3,12 +3,13 @@ if (typeof module !== 'undefined' && module.exports) {
   LatLon = require('../latlon.js');
 }
 
-function Airport(icao, iata, lat, lon, elevation) {
+function Airport(icao, iata, lat, lon, elevation, magVar) {
   this._icao = icao;
   this._iata = iata;
 	this._lat = lat;
 	this._lon = lon;
 	this._elevation = elevation;
+  this._magVar = magVar;
 	this._runways = {};
   this._metar = null;
   this._syncing = false;
@@ -47,11 +48,15 @@ Airport.prototype.runway = function(id) {
 	return this._runways[id];
 };
 
+Airport.prototype.runways = function() {
+  return this._runways;
+};
+
 Airport.prototype.runwayPairs = function() {
   var runwayIDs = {},
       runwayPairs = [];
   for (var id in this._runways) {
-    if (!runwayIDs[id]) {
+    if (!runwayIDs[id] && /^(\d{1,2})(L|C|R){0,1}$/.test(id)) {
       var pair = this.runwayPair(id);
       runwayIDs[pair[0].id()] = true;
       runwayIDs[pair[1].id()] = true;
@@ -62,13 +67,15 @@ Airport.prototype.runwayPairs = function() {
 };
 
 Airport.prototype.runwayPair = function(id) {
-  var runwayParts = id.match(/(\d{1,2})(L|C|R){0,1}/),
+  var runwayParts = id.match(/^(\d{1,2})(L|C|R){0,1}$/),
       letter = runwayParts[2],
       number = parseInt(runwayParts[1], 10),
       opposingLetter = '',
       opposingNumber = (number + 18) % 36;
   if (opposingNumber === 0)
     opposingNumber = 36;
+  if (opposingNumber < 10)
+    opposingNumber = '0' + opposingNumber;
   switch (letter) {
     case 'L':
       opposingLetter = 'R';
@@ -108,6 +115,10 @@ Airport.prototype.lon = function() {
 
 Airport.prototype.elevation = function() {
   return this._elevation;
+};
+
+Airport.prototype.magVar = function() {
+  return this._magVar;
 };
 
 Airport.prototype.metar = function(tryAgain) {

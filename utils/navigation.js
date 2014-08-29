@@ -1,6 +1,24 @@
 var LatLon = require('../latlon.js'),
     nagivation = {};
 
+nagivation.geoTilesInRadius = function(type, position, radius, geo2Mode) {
+  var radiusInKm = radius * 1.852,
+      multiplier = geo2Mode ? 2 : 1,
+      minLatTile = Math.floor(position.destinationPoint(180, radiusInKm)._lat * multiplier),
+      maxLatTile = Math.floor(position.destinationPoint(360, radiusInKm)._lat * multiplier),
+      minLonTile = Math.floor(position.destinationPoint(270, radiusInKm)._lon * multiplier),
+      maxLonTile = Math.floor(position.destinationPoint(90, radiusInKm)._lon * multiplier),
+      tiles = [];
+  for (var lat2 = minLatTile; lat2 <= maxLatTile; lat2++)
+    for (var lon2 = minLonTile; lon2 <= maxLonTile; lon2++)
+      tiles.push(type + ':geo' + (geo2Mode ? '2' : '') + '.' + lat2 + '.' + lon2);
+  return tiles;
+};
+
+nagivation.within = function(originPoint, foreignPoint, distance) {
+  return originPoint.distanceTo(foreignPoint) * 0.539957 < distance;
+};
+
 nagivation.parseLat = function(string) {
   var match = string.match(/(\d+)-(\d+)-(\d+\.\d+)(N|S)/),
       latDegrees = parseInt(match[1], 10),

@@ -4,8 +4,8 @@ var scope = new Scope();
 var connectionDelegate = new ConnectionDelegate(scope, socket);
 
 $(document).ready(function() {
-	initScope();
   initBostonAirport();
+	initScope();
   //initSanFransiscoAirport();
 	initScopeZoom();
 	initScopeResize();
@@ -44,13 +44,14 @@ function initScope() {
   // scope.addMap('22L27', '', 'maps/a90.map', function() {
   //   scope.render();
   // });
-	scope.addMap('BOSMHT', '', 'maps/bosmht.map', function() {
+  scope.enableSmartMap();
+	//scope.addMap('BOSMHT', '', 'maps/bosmht.map', function() {
 		scope.render();
 		setInterval(function() {
 			scope.render();
 		}, 1000 / 30);
-    React.renderComponent(<MasterDCB />, document.getElementById('wahoo'));
-	});
+    //React.renderComponent(<MasterDCB />, document.getElementById('wahoo'));
+	//});
 	//scope.setSituation('situations/a90.sit');
   scope._radar.setPosition(new LatLon(42.3629722, -71.0064167));
   // scope._trafficSimulator.loadSituation('situations/a90.sit', function() {
@@ -69,6 +70,7 @@ function initSanFransiscoAirport() {
 }
 
 function initBostonAirport() {
+  scope.facilityManager().setPrimaryAirport('KSRQ');
   var KBOS = new Airport('KBOS', 'BOS', 42.3629722, -71.0064167, 20);
   var R9 = new Runway('9', 42.3557542, -71.0128938, 17, 7000, 150, 93);
   var R27 = new Runway('27', 42.3602168, -70.9877037, 15, 7000, 150, 273);

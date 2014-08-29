@@ -16,7 +16,7 @@ FacilitiesAPI.airport = function(icao, cb) {
         lat: parseFloat(apt.lat),
         lon: parseFloat(apt.lon),
         elevation: parseFloat(apt.elevation),
-        magVar: parseInt(apt.magVar, 10),
+        magVar: parseFloat(apt.magVar),
         runways: []
       };
       r.smembers('airports.' + icao + '.runways', function(err, ids) {
@@ -32,7 +32,7 @@ FacilitiesAPI.airport = function(icao, cb) {
                 elevation: parseFloat(rwy.elevation),
                 length: parseInt(rwy.length, 10),
                 width: parseInt(rwy.width, 10),
-                course: parseInt(rwy.course, 10),
+                course: parseFloat(rwy.course),
                 ILSCapable: rwy.ILSCapable === 'true',
                 thresholdCrossingHeight: parseInt(rwy.thresholdCrossingHeight, 10),
                 visualGlidePathAngle: parseFloat(rwy.visualGlidePathAngle)

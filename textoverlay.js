@@ -169,30 +169,30 @@ TextOverlay.prototype.renderPreviewArea = function(r) {
 };
 
 TextOverlay.prototype.renderTime = function(r, airports) {
-	var ICAOs = Object.keys(airports);
-	var iata = airports[ICAOs[0]].iata();
-	r.context().beginPath();
-	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
-	r.context().textAlign = 'left';
-	r.context().textBaseline = 'top';
-	r.context().fillStyle = this.brite();
-	var date = this._clock;
-	var hours = '' + date.getUTCHours();
-	var minutes = '' + date.getUTCMinutes();
-	var seconds = '' + date.getUTCSeconds();
-	var timeString = (hours.length == 1 ? '0' + hours : hours) 
-    + (minutes.length == 1 ? '0' + minutes : minutes) + '/' 
-    + (seconds.length == 1 ? '0' + seconds : seconds);
-	r.context().fillText(timeString + ' ' + airports['KBOS'].altimeter(scope.render.bind(scope)), 75, this.line(r, .14, 0));
-  r.context().fillStyle = this.brite('green');
-	r.context().fillText('OK/OK/OK ', 75, this.line(r, .14, 1));
-  r.context().fillStyle = this.brite();
-  r.context().fillText(iata, 75 + r.context().measureText('NA/NA/NA ').width, this.line(r, .14, 1));
-	r.context().fillText('22NM PTL: 3.0', 75, this.line(r, .14, 2));
-	r.context().fillText('N99 999 U N99 999 A', 75, this.line(r, .14, 3));
-  for (var i = 0; i < ICAOs.length; i++)
-    r.context().fillText(airports[ICAOs[i]].iata() + ' ' + airports[ICAOs[i]].altimeter(scope.render.bind(scope)), 75, this.line(r, .14, 4 + i));
-  this._previewLine = 6 + ICAOs.length;
+	// var ICAOs = Object.keys(airports);
+	// var iata = airports[ICAOs[0]].iata();
+	// r.context().beginPath();
+	// r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+	// r.context().textAlign = 'left';
+	// r.context().textBaseline = 'top';
+	// r.context().fillStyle = this.brite();
+	// var date = this._clock;
+	// var hours = '' + date.getUTCHours();
+	// var minutes = '' + date.getUTCMinutes();
+	// var seconds = '' + date.getUTCSeconds();
+	// var timeString = (hours.length == 1 ? '0' + hours : hours) 
+ //    + (minutes.length == 1 ? '0' + minutes : minutes) + '/' 
+ //    + (seconds.length == 1 ? '0' + seconds : seconds);
+	// r.context().fillText(timeString + ' ' + airports['KBOS'].altimeter(scope.render.bind(scope)), 75, this.line(r, .14, 0));
+ //  r.context().fillStyle = this.brite('green');
+	// r.context().fillText('OK/OK/OK ', 75, this.line(r, .14, 1));
+ //  r.context().fillStyle = this.brite();
+ //  r.context().fillText(iata, 75 + r.context().measureText('NA/NA/NA ').width, this.line(r, .14, 1));
+	// r.context().fillText('22NM PTL: 3.0', 75, this.line(r, .14, 2));
+	// r.context().fillText('N99 999 U N99 999 A', 75, this.line(r, .14, 3));
+ //  for (var i = 0; i < ICAOs.length; i++)
+ //    r.context().fillText(airports[ICAOs[i]].iata() + ' ' + airports[ICAOs[i]].altimeter(scope.render.bind(scope)), 75, this.line(r, .14, 4 + i));
+ //  this._previewLine = 6 + ICAOs.length;
 };
 
 TextOverlay.prototype.renderLACAMCI = function(r, cde) {

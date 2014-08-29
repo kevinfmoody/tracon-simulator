@@ -73,6 +73,7 @@ var fs = require('fs'),
                 thresholdCrossingHeight = parseInt(line.substr(offset + 84, 3), 10),
                 visualGlidePathAngle = parseFloat(line.substr(offset + 87, 4)),
                 ILSCapable = instrumentLandingSystemType.indexOf('ILS') >= 0;
+            console.log(exactCourse);
             r.hmset(
               'airports.' + icao + '.runways.' + id,
               'id', id,

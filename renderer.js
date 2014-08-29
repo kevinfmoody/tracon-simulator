@@ -5,7 +5,7 @@ function Renderer() {
 	this._scope;
 	this._context;
 	this._background = '#000';
-	this._magVar = -15.24;
+	this._magVar = 0;
 	this._minLat = 90;
 	this._minLon = 180;
 	this._midLat = 0;
