@@ -4682,3 +4682,1325 @@
 04-08-114 21:20:33 FSD: client from localhost removed from client interface:write error
 04-08-114 21:20:33 FSD: client from localhost removed from client interface:write error
 04-08-114 21:20:33 FSD: client from localhost removed from client interface:connection closed
+15-12-114 15:26:13 : Booting server
+15-12-114 15:26:13 FSD: Reading certificates from 'cert.txt'
+15-12-114 15:26:13 FSD: Booting port 6809 (client interface)
+15-12-114 15:26:13 FSD: Booting port 3011 (server interface)
+15-12-114 15:26:13 FSD: Booting port 3010 (system management interface)
+15-12-114 15:26:13 FSD: No 'allowfrom' found, allowing everybody on the server port
+15-12-114 15:26:13 FSD: We are up
+15-12-114 15:27:30 FSD: ** METAR: Could not connect to ftp port on METAR host
+15-12-114 15:27:30 FSD: Reading certificates from 'cert.txt'
+15-12-114 15:27:30 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:30 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:30 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:30 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:30 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:32 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:32 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:32 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:32 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:32 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:27:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:18 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:20 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:23 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:28 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:28 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:33 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:33 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:33 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:33 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:33 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:34 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:34 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:34 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:34 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:34 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:34 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:34 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:34 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:34 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:34 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:34 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:34 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:34 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:35 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:37 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:38 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:39 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:41 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:42 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:42 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:43 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:45 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:46 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:46 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:47 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:47 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:47 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:47 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:48 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:48 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:48 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:48 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:48 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:48 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:48 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:51 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:51 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:53 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:53 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:54 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:29:56 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:56 FSD: Connection accepted from localhost on client interface
+15-12-114 15:29:59 FSD: Connection accepted from localhost on client interface
+15-12-114 15:31:19 : Booting server
+15-12-114 15:31:19 FSD: Reading certificates from 'cert.txt'
+15-12-114 15:31:19 FSD: Booting port 6809 (client interface)
+15-12-114 15:31:19 FSD: Booting port 3011 (server interface)
+15-12-114 15:31:19 FSD: Booting port 3010 (system management interface)
+15-12-114 15:31:19 FSD: No 'allowfrom' found, allowing everybody on the server port
+15-12-114 15:31:19 FSD: We are up
+15-12-114 15:31:19 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:35 FSD: ** METAR: Could not connect to ftp port on METAR host
+15-12-114 15:32:35 FSD: Reading certificates from 'cert.txt'
+15-12-114 15:32:35 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:35 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:35 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:35 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:35 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:36 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:37 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:38 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:39 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:39 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:39 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:41 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:42 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:43 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:44 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:49 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:51 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: client from localhost removed from client interface:closed on command
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:54 FSD: Connection accepted from localhost on client interface
+15-12-114 15:32:59 FSD: Connection accepted from localhost on client interface
+15-12-114 16:03:47 : Booting server
+15-12-114 16:03:47 FSD: Reading certificates from 'cert.txt'
+15-12-114 16:03:47 FSD: Booting port 6809 (client interface)
+15-12-114 16:03:47 FSD: Booting port 3011 (server interface)
+15-12-114 16:03:47 FSD: Booting port 3010 (system management interface)
+15-12-114 16:03:47 FSD: No 'allowfrom' found, allowing everybody on the server port
+15-12-114 16:03:47 FSD: We are up
+15-12-114 16:03:48 FSD: Connection accepted from localhost on client interface
+15-12-114 16:05:00 : Booting server
+15-12-114 16:05:00 FSD: Reading certificates from 'cert.txt'
+15-12-114 16:05:00 FSD: Booting port 6809 (client interface)
+15-12-114 16:05:00 FSD: Booting port 3011 (server interface)
+15-12-114 16:05:00 FSD: Booting port 3010 (system management interface)
+15-12-114 16:05:00 FSD: No 'allowfrom' found, allowing everybody on the server port
+15-12-114 16:05:00 FSD: We are up
+15-12-114 16:05:28 : Booting server
+15-12-114 16:05:28 FSD: Reading certificates from 'cert.txt'
+15-12-114 16:05:28 FSD: Booting port 6809 (client interface)
+15-12-114 16:05:28 FSD: Booting port 3011 (server interface)
+15-12-114 16:05:28 FSD: Booting port 3010 (system management interface)
+15-12-114 16:05:28 FSD: No 'allowfrom' found, allowing everybody on the server port
+15-12-114 16:05:28 FSD: We are up
+15-12-114 16:05:28 FSD: Connection accepted from localhost on client interface
+15-12-114 16:05:54 : Booting server
+15-12-114 16:05:54 FSD: Reading certificates from 'cert.txt'
+15-12-114 16:05:54 FSD: Booting port 6809 (client interface)
+15-12-114 16:05:54 FSD: Booting port 3011 (server interface)
+15-12-114 16:05:54 FSD: Booting port 3010 (system management interface)
+15-12-114 16:05:54 FSD: No 'allowfrom' found, allowing everybody on the server port
+15-12-114 16:05:54 FSD: We are up
+15-12-114 16:07:10 FSD: ** METAR: Could not connect to ftp port on METAR host
+15-12-114 16:07:10 FSD: Reading certificates from 'cert.txt'
+15-12-114 16:07:10 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:10 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:10 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:10 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:10 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:11 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:11 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:11 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:11 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:11 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:18 FSD: Connection accepted from localhost on client interface
+15-12-114 16:07:18 FSD: Connection accepted from localhost on client interface
+15-12-114 16:11:16 FSD: ** METAR: Could not connect to ftp port on METAR host
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:03 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:08 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:13 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:14 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:15 FSD: client from localhost removed from client interface:connection closed
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:17 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:18 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:18 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:20 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:20 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:20 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:21 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:21 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:22 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:22 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:22 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:22 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:22 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:22 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:22 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:22 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:22 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:22 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:25 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:25 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:26 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:26 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:27 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:27 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:27 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:27 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:30 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:30 FSD: client from localhost removed from client interface:closed on command
+15-12-114 16:34:35 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:35 FSD: Connection accepted from localhost on client interface
+15-12-114 16:34:35 FSD: Connection accepted from localhost on client interface
+15-12-114 17:11:15 FSD: ** METAR: Could not connect to ftp port on METAR host
+15-12-114 18:18:52 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+15-12-114 20:47:08 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+15-12-114 22:48:01 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 00:48:54 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 02:49:44 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 04:50:40 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 06:51:33 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 08:52:26 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 10:53:19 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 12:47:17 FSD: ** METAR: Could not lookup METAR host name weather.apoll3.com.
+16-12-114 12:48:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:25 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:25 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:25 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:25 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:26 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:26 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:26 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:26 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:26 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:26 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:28 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:28 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:28 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:28 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:28 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:29 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:29 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:30 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:30 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:30 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:30 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:30 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:31 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:31 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:31 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:31 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:31 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:31 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:31 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:32 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:33 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:34 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:34 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:35 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:35 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:35 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:35 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:35 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:35 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:35 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:48:39 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:39 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:39 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:39 FSD: Connection accepted from localhost on client interface
+16-12-114 12:48:39 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:14 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:19 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:49:24 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:51 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:52 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: Connection accepted from localhost on client interface
+16-12-114 12:54:55 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:54:55 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: client from localhost removed from client interface:closed on command
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:00 FSD: Connection accepted from localhost on client interface
+16-12-114 12:55:05 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:17 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:00:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:29 FSD: client from localhost removed from client interface:connection closed
+16-12-114 13:02:32 : Booting server
+16-12-114 13:02:32 FSD: Reading certificates from 'cert.txt'
+16-12-114 13:02:32 FSD: Booting port 6809 (client interface)
+16-12-114 13:02:32 FSD: Booting port 3011 (server interface)
+16-12-114 13:02:32 FSD: Booting port 3010 (system management interface)
+16-12-114 13:02:32 FSD: No 'allowfrom' found, allowing everybody on the server port
+16-12-114 13:02:32 FSD: We are up
+16-12-114 13:02:37 FSD: ** METAR: Could not connect to ftp port on METAR host
+16-12-114 13:02:37 FSD: Reading certificates from 'cert.txt'
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:37 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:40 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:41 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:42 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:43 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:45 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:45 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:45 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:46 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:50 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:50 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:50 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:50 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:50 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:02:50 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:50 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:51 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:55 FSD: Connection accepted from localhost on client interface
+16-12-114 13:02:55 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: ** METAR: Could not connect to ftp port on METAR host
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:16 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:20 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:20 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:20 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:20 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:20 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:20 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:20 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:20 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:20 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:20 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:21 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:22 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:22 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:22 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:22 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:22 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:22 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:22 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:22 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:22 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:23 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:26 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:31 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:31 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:31 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:31 FSD: Connection accepted from localhost on client interface
+16-12-114 13:11:31 FSD: client from localhost removed from client interface:closed on command
+16-12-114 13:11:36 FSD: Connection accepted from localhost on client interface
+16-12-114 13:45:26 : Booting server
+16-12-114 13:45:26 FSD: Reading certificates from 'cert.txt'
+16-12-114 13:45:26 FSD: Booting port 6809 (client interface)
+16-12-114 13:45:26 FSD: Booting port 3011 (server interface)
+16-12-114 13:45:26 FSD: Booting port 3010 (system management interface)
+16-12-114 13:45:26 FSD: No 'allowfrom' found, allowing everybody on the server port
+16-12-114 13:45:26 FSD: We are up
+16-12-114 13:45:47 : Booting server
+16-12-114 13:45:47 FSD: Reading certificates from 'cert.txt'
+16-12-114 13:45:47 FSD: Booting port 6809 (client interface)
+16-12-114 13:45:47 FSD: Booting port 3011 (server interface)
+16-12-114 13:45:47 FSD: Booting port 3010 (system management interface)
+16-12-114 13:45:47 FSD: No 'allowfrom' found, allowing everybody on the server port
+16-12-114 13:45:47 FSD: We are up
+16-12-114 13:47:03 FSD: ** METAR: Could not connect to ftp port on METAR host
+16-12-114 13:47:03 FSD: Reading certificates from 'cert.txt'
+16-12-114 13:47:03 FSD: Connection accepted from localhost on client interface
+16-12-114 13:47:03 FSD: Connection accepted from localhost on client interface
+16-12-114 13:47:03 FSD: Connection accepted from localhost on client interface
+16-12-114 13:47:03 FSD: client from localhost removed from client interface:write error
+16-12-114 13:47:03 FSD: Connection accepted from localhost on client interface
+16-12-114 13:47:03 FSD: client from localhost removed from client interface:write error
+16-12-114 13:47:03 FSD: Connection accepted from localhost on client interface
+16-12-114 13:47:03 FSD: client from localhost removed from client interface:write error
+16-12-114 13:47:03 FSD: client from localhost removed from client interface:write error
+16-12-114 13:47:04 FSD: client from localhost removed from client interface:write error
+16-12-114 14:11:15 FSD: ** METAR: Could not connect to ftp port on METAR host
+16-12-114 15:11:15 FSD: ** METAR: Could not connect to ftp port on METAR host

@@ -50,8 +50,16 @@ TargetRenderer.getLeaderTipOffset = function() {
 /** INSTANCE LEVEL **/
 /********************/
 
-TargetRenderer.prototype.renderDataBlockColor = function() {
-  return this._target.isControlled() ? '#fff' : '#0c0';
+TargetRenderer.prototype.renderDataBlockColor = function(elapsed) {
+  if (this._target._controlState === this._target._controlStates.INBOUND_HANDOFF ||
+    this._target._controlState === this._target._controlStates.POST_HANDOFF)
+    return elapsed % 1000 < 500 ? '#fff' : '#bbb';
+  else if (this._target._controlState === this._target._controlStates.POST_HANDOFF)
+    return elapsed % 1000 < 500 ? '#0c0' : '#080';
+  else if (this._target.isOwned())
+    return '#fff';
+  else
+    return '#0c0';
 };
 
 TargetRenderer.prototype.renderCone = function(r) {
@@ -182,7 +190,7 @@ TargetRenderer.prototype.renderTarget = function(r) {
   r.context().fill();
 };
 
-TargetRenderer.prototype.renderPosition = function(r) {
+TargetRenderer.prototype.renderPosition = function(r, elapsed) {
   var acPos = r.gtoc(this._target.position()._lat, this._target.position()._lon),
       targetCode = this._target.isControlled() ? this._target.controller().getTargetCode() : '*';
   r.context().beginPath();
@@ -192,7 +200,7 @@ TargetRenderer.prototype.renderPosition = function(r) {
   r.context().strokeStyle = '#000';
   r.context().lineWidth = 2;
   r.context().strokeText(targetCode, acPos.x, acPos.y);
-  r.context().fillStyle = this.renderDataBlockColor();
+  r.context().fillStyle = this.renderDataBlockColor(elapsed);
   r.context().fillText(targetCode, acPos.x, acPos.y);
 };
 
@@ -205,7 +213,7 @@ TargetRenderer.prototype.renderPartialDataBlock = function(r, elapsed) {
   r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
   r.context().textAlign = 'left';
   r.context().textBaseline = 'middle';
-  r.context().fillStyle = this.renderDataBlockColor();
+  r.context().fillStyle = this.renderDataBlockColor(elapsed);
   var scopeSpeed = Math.floor(this._target.speed() / 10);
   var scopeAltitude = Math.floor(this._target.altitude() / 100);
   r.context().fillText(r.pad(scopeAltitude, 3) + '  ' + r.pad(scopeSpeed, 2), acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - leaderTipOffset.y);
@@ -221,7 +229,7 @@ TargetRenderer.prototype.renderFullDataBlock = function(r, elapsed) {
   r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
   r.context().textAlign = 'left';
   r.context().textBaseline = 'middle';
-  r.context().fillStyle = this.renderDataBlockColor();
+  r.context().fillStyle = this.renderDataBlockColor(elapsed);
   r.context().fillText(this._target.callsign(), acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - leaderTipOffset.y);
   r.context().imageSmoothingEnabled = true;
   // Draw the target aircraft, altitude, and speed data block
@@ -229,14 +237,16 @@ TargetRenderer.prototype.renderFullDataBlock = function(r, elapsed) {
   r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
   r.context().textAlign = 'left';
   r.context().textBaseline = 'middle';
-  r.context().fillStyle = this.renderDataBlockColor();
+  r.context().fillStyle = this.renderDataBlockColor(elapsed);
   var scopeSpeed = Math.floor(this._target.speed() / 10),
       scopeAltitude = Math.floor(this._target.altitude() / 100),
-      scopeText;
+      scopeText,
+      otherController = this._target.otherController(),
+      spacing = otherController ? otherController.getIdentifier() : '  ';
   if (this._target.isCoasting())
-    scopeText = 'CST  ' + (elapsed % 4000 < 2000 ? r.pad(scopeSpeed, 2) : this._target.type());
+    scopeText = 'CST' + spacing + (elapsed % 4000 < 2000 ? r.pad(scopeSpeed, 2) : this._target.type());
   else
-    scopeText = elapsed % 4000 < 2000 ? r.pad(scopeAltitude, 3) + '  ' + r.pad(scopeSpeed, 2) : this._target.arrival() + '  ' + this._target.type();
+    scopeText = elapsed % 4000 < 2000 ? r.pad(scopeAltitude, 3) + spacing + r.pad(scopeSpeed, 2) : this._target.arrival() + spacing + this._target.type();
   r.context().fillText(scopeText, acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - (leaderTipOffset.y - 15));
 };
 
@@ -248,7 +258,7 @@ TargetRenderer.prototype.renderDataBlock = function(r, elapsed) {
   r.context().moveTo(acPos.x, acPos.y + -10);
   r.context().lineTo(acPos.x + leaderTipOffset.x, acPos.y - 10 - leaderTipOffset.y);
   r.context().lineWidth = 1;
-  r.context().strokeStyle = this.renderDataBlockColor();
+  r.context().strokeStyle = this.renderDataBlockColor(elapsed);
   r.context().stroke();
   if (this._target.isExpanded())
     this.renderFullDataBlock(r, elapsed);

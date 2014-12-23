@@ -21,6 +21,19 @@ function Target(callsign) {
   this._isCoasting = false;
   this._isAwaitingPurge = false;
 
+  this._otherController = null;
+  this._controlStates = {
+    NORMAL: 1,
+    OWNED: 2,
+    INBOUND_HANDOFF: 3,
+    HANDOFF: 4,
+    POST_HANDOFF: 5
+  };
+  this._controlState = this._controlStates.NORMAL;
+  this._handoffTimeout;
+
+  this._radarReturnTimeout;
+
   this._modes = {
     OFF: 1,
     STANDBY: 2,
@@ -29,11 +42,108 @@ function Target(callsign) {
   };
 }
 
-Target.prototype.updateFromBlip = function(blip) {
-  this.update(blip.callsign, blip.mode, blip.type, blip.arrival, blip.position, blip.altitude, blip.speed, blip.squawk);
+Target.prototype.clearPostHandoff = function() {
+  if (this._handoffTimeout) {
+    clearTimeout(this._handoffTimeout);
+    delete this._handoffTimeout;
+  }
+  this._otherController = null;
+  this._controlState = this.isOwned() ? this._controlStates.OWNED : this._controlStates.NORMAL;
+  this.contract();
 };
 
-Target.prototype.update = function(callsign, mode, type, arrival, position, altitude, speed, squawk) {
+Target.prototype.handoff = function(toController) {
+  if (this._handoffTimeout) {
+    clearTimeout(this._handoffTimeout);
+    delete this._handoffTimeout;
+  }
+  this._otherController = toController;
+  this._controlState = this._controlStates.HANDOFF;
+  this._handoffTimeout = setTimeout(function() {
+    this._otherController = null;
+    this._controlState = this._controlStates.OWNED;
+  }.bind(this), 10 * 1000);
+};
+
+Target.prototype.acceptHandoff = function() {
+  if (this._handoffTimeout) {
+    clearTimeout(this._handoffTimeout);
+    delete this._handoffTimeout;
+  }
+  this._otherController = null;
+  this._controlState = this._controlStates.OWNED;
+  this.setController(scope.controller());
+};
+
+Target.prototype.handoffAccepted = function(byControler) {
+  if (this._handoffTimeout) {
+    clearTimeout(this._handoffTimeout);
+    delete this._handoffTimeout;
+  }
+  this.expand();
+  this._controller = byControler;
+  this._otherController = null;
+  this._controlState = this._controlStates.POST_HANDOFF;
+  if (scope.sounds())
+    new Audio('/sounds/HandoffAccepted.wav').play();
+  this._handoffTimeout = setTimeout(function() {
+    this._controlState = this._controlStates.NORMAL;
+    this.contract();
+  }.bind(this), 10 * 1000);
+};
+
+Target.prototype.refuseHandoff = function() {
+  if (this._handoffTimeout) {
+    clearTimeout(this._handoffTimeout);
+    delete this._handoffTimeout;
+  }
+  this._otherController = null;
+  this._controlState = this._controlStates.NORMAL;
+  this.contract();
+};
+
+Target.prototype.handoffRefused = function() {
+  if (this._handoffTimeout) {
+    clearTimeout(this._handoffTimeout);
+    delete this._handoffTimeout;
+  }
+  this._otherController = null;
+  this._controlState = this._controlStates.OWNED;
+  if (scope.sounds())
+    new Audio('/sounds/Error.wav').play();
+};
+
+Target.prototype.inboundHandoff = function(fromController) {
+  if (this._handoffTimeout) {
+    clearTimeout(this._handoffTimeout);
+    delete this._handoffTimeout;
+  }
+  this._otherController = fromController;
+  this._controlState = this._controlStates.INBOUND_HANDOFF;
+  this.expand();
+  if (scope.sounds())
+    new Audio('/sounds/HandoffRequest.wav').play();
+  this._handoffTimeout = setTimeout(function() {
+    this._otherController = null;
+    this._controlState = this._controlStates.NORMAL;
+    this.contract();
+  }.bind(this), 10 * 1000);
+};
+
+Target.prototype.otherController = function() {
+  return this._otherController;
+};
+
+Target.prototype.updateFromBlip = function(blip) {
+  this.update(blip.callsign, blip.mode, blip.type, blip.arrival, blip.position, blip.altitude, blip.speed, blip.squawk, blip.controller);
+  if (this._radarReturnTimeout)
+    clearTimeout(this._radarReturnTimeout);
+  this._radarReturnTimeout = setTimeout(function() {
+    this.noRadarReturn();
+  }.bind(this), 7 * 1000);
+};
+
+Target.prototype.update = function(callsign, mode, type, arrival, position, altitude, speed, squawk, controller) {
   this.setCallsign(callsign);
   this.setMode(mode);
   this.setType(type);
@@ -42,6 +152,10 @@ Target.prototype.update = function(callsign, mode, type, arrival, position, alti
   this.setAltitude(altitude);
   this.setSpeed(speed);
   this.setSquawk(squawk);
+
+  var currentController = this.controller();
+  if (!currentController || currentController.getIdentifier() !== controller)
+    this.setController(scope.getControllerByIdentifier(controller));
 
   this.radarReturn();
 };
@@ -83,10 +197,12 @@ Target.prototype.setSquawk = function(squawk) {
 
 Target.prototype.setController = function(controller) {
   this._controller = controller;
-  if (this._controller)
-    this.expand();
-  else
-    this.contract();
+  if (this._controlState !== this._controlStates.POST_HANDOFF) {
+    if (this.isOwned())
+      this.expand();
+    else
+      this.contract();
+  }
 };
 
 Target.prototype.addHistory = function(position) {
@@ -182,10 +298,12 @@ Target.prototype.select = function() {
   if (!this.isExpanded()) {
     this.expand();
     setTimeout(function() {
-      if (!this.isControlled())
+      if (!this.isOwned())
         this.contract();
     }.bind(this), 3000);
   }
+  if (this._controlState === this._controlStates.POST_HANDOFF)
+    this.clearPostHandoff();
 };
 
 Target.prototype.deselect = function() {
@@ -259,6 +377,18 @@ Target.prototype.isAwaitingPurge = function() {
   return this._isAwaitingPurge;
 };
 
+Target.prototype.isOwned = function() {
+  return this.isControlled() && this.controller() === scope.controller();
+};
+
 Target.prototype.isControlled = function() {
   return this.controller() !== null;
+};
+
+Target.prototype.isUndergoingHandoff = function() {
+  return this._controlState === this._controlStates.HANDOFF;
+};
+
+Target.prototype.isUndergoingInboundHandoff = function() {
+  return this._controlState === this._controlStates.INBOUND_HANDOFF;
 };

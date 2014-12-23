@@ -95,8 +95,6 @@ Command.cleanupIn = function(milliseconds) {
 };
 
 Command.run = function(e, args) {
-  if (args[0] === '')
-    return;
   var fn = Command.manualProcess(e, args),
       command = [];
   if (!fn) {
@@ -129,12 +127,68 @@ Command.run = function(e, args) {
 
 Command.manualProcess = function(e, args) {
   var command = args[0],
+      emptySelect = /^$/,
       coneCommand = /^\*P\d+$/,
       jRingCommand = /^\*J\d+$/;
+  if (command.length === 2) {
+    var controller = scope.getControllerByIdentifier(command);
+    if (controller) {
+      return function(e, args) {
+        if (e.type === 'click') {
+          var target = scope.select(e);
+          if (target) {
+            if (target.isUndergoingHandoff()) {
+              scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+              Command.registerCleanupFunction(function() {
+                scope.textOverlay().clearPreviewAreaMessage();
+              });
+            } else {
+              socket.emit('ATC.requestHandoff', {
+                controller: scope.controller().getIdentifier(),
+                to: command,
+                aircraft: target.callsign()
+              }, function(success) {
+                if (!success) {
+                  scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+                  Command.registerCleanupFunction(function() {
+                    scope.textOverlay().clearPreviewAreaMessage();
+                  });
+                } else
+                  target.handoff(controller);
+              });
+            }
+            return;
+          }
+        }
+        throw Command.ERROR.FORMAT;
+      };
+    }
+  }
   switch (true) {
+    case emptySelect.test(command):
+      return function(e, args) {
+        if (e.type === 'click') {
+          var target = scope.select(e);
+          if (target && target.isUndergoingInboundHandoff()) {
+            socket.emit('ATC.acceptHandoff', {
+              controller: target.otherController().getIdentifier(),
+              to: scope.controller().getIdentifier(),
+              aircraft: target.callsign()
+            }, function(success) {
+              if (success) {
+                target.acceptHandoff();
+              } else {
+                scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+                Command.registerCleanupFunction(function() {
+                  scope.textOverlay().clearPreviewAreaMessage();
+                });
+              }
+            });
+          }
+        }
+      };
     case coneCommand.test(command):
       return function(e, args) {
-        debugger
         if (e.type === 'click') {
           var aircraft = scope.select(e);
           if (aircraft)
@@ -177,7 +231,24 @@ Command[Command.SEGMENT.INITIATE_CONTROL] = function(e, args) {
   if (e.type === 'click') {
     var target = scope.select(e);
     if (target) {
-      target.setController(scope._controller);
+      if (target.isUndergoingHandoff()) {
+        scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+        Command.registerCleanupFunction(function() {
+          scope.textOverlay().clearPreviewAreaMessage();
+        });
+      } else {
+        socket.emit('ATC.initiateControl', {
+          aircraft: target.callsign(),
+          controller: scope.controller().getIdentifier()
+        }, function(success) {
+          if (!success) {
+            scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+            Command.registerCleanupFunction(function() {
+              scope.textOverlay().clearPreviewAreaMessage();
+            });
+          }
+        });
+      }
       return;
     }
   }
@@ -188,7 +259,39 @@ Command[Command.SEGMENT.TERMINATE_CONTROL] = function(e, args) {
   if (e.type === 'click') {
     var target = scope.select(e);
     if (target) {
-      target.setController(null);
+      if (target.isUndergoingHandoff()) {
+        scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+        Command.registerCleanupFunction(function() {
+          scope.textOverlay().clearPreviewAreaMessage();
+        });
+      } else if (target.isUndergoingInboundHandoff()) {
+        socket.emit('ATC.refuseHandoff', {
+          controller: target.otherController().getIdentifier(),
+          to: scope.controller().getIdentifier(),
+          aircraft: target.callsign()
+        }, function(success) {
+          if (success) {
+            target.refuseHandoff();
+          } else {
+            scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+            Command.registerCleanupFunction(function() {
+              scope.textOverlay().clearPreviewAreaMessage();
+            });
+          }
+        });
+      } else {
+        socket.emit('ATC.terminateControl', {
+          aircraft: target.callsign(),
+          controller: scope.controller().getIdentifier()
+        }, function(success) {
+          if (!success) {
+            scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+            Command.registerCleanupFunction(function() {
+              scope.textOverlay().clearPreviewAreaMessage();
+            });
+          }
+        });
+      }
       return;
     }
   }

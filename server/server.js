@@ -3,7 +3,7 @@ var express = require('express'),
     http = require('http').Server(app),
     io = require('socket.io')(http),
     request = require('request'),
-    ClientManager = require('./ClientManager.js'),
+    SessionManager = require('./SessionManager.js'),
     NavigationAPI = require('./NavigationAPI.js'),
     NavigationAPIV2 = require('./NavigationAPIV2.js'),
     WeatherAPI = require('./WeatherAPI.js'),
@@ -15,9 +15,13 @@ var express = require('express'),
 // var currentFlow = new Flow();
 // currentFlow.loadRecent();
 
-io.on('connection', function(socket) {
-  new ClientManager(socket, null/*currentFlow*/);
-});
+// this should do the trick
+var sessionManager = new SessionManager(io);
+sessionManager.createSession();
+
+// io.on('connection', function(socket) {
+//   new ClientManager(socket, null/*currentFlow*/);
+// });
 
 app.get('/proxy', function(req, res) {
   request.get(req.query.url, function(error, response, body) {
@@ -37,6 +41,18 @@ app.get('/api/coastline', function(req, res) {
 app.get('/api/fixes', function(req, res) {
   NavigationAPIV2.fixes(req.query.lat, req.query.lon, req.query.radius, function(fixes) {
     res.send(fixes);
+  });
+});
+app.get('/api/navaids', function(req, res) {
+  NavigationAPIV2.navaids(req.query.lat, req.query.lon, req.query.radius, function(navaids) {
+    res.send(navaids);
+  });
+});
+
+app.set('view engine', 'jade');
+app.get('/s/*', function(req, res) {
+  res.render('index', {
+    id: req.params[0]
   });
 });
 

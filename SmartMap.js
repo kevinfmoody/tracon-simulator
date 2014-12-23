@@ -10,11 +10,13 @@ function SmartMap(id, name, scope) {
     RUNWAY: [],
     LOCALIZER: [],
     COASTLINE: [],
-    FIX: []
+    FIX: [],
+    NAVAID: []
   };
   this._yields = {
     RUNWAY: [],
     LOCALIZER: [],
+    NAVAID: [],
     FIX: [],
     COASTLINE: [
       'RUNWAY',
@@ -50,7 +52,8 @@ SmartMap.prototype.configure = function() {
     this._primaryAirport = airport;
     this.generatePrimaryAirport();
     this.generateCoastline();
-    this.generateFixes();
+    //this.generateFixes();
+    this.generateNavaids();
     this._enabled = true;
   }.bind(this));
 };
@@ -108,7 +111,7 @@ SmartMap.prototype.generateCoastline = function() {
   }.bind(this));
 };
 
-SmartMap.prototype.generateFixes = function(cb) {
+SmartMap.prototype.generateFixes = function() {
   $.get('/api/fixes', {
     lat: this._primaryAirport.lat(),
     lon: this._primaryAirport.lon(),
@@ -119,7 +122,25 @@ SmartMap.prototype.generateFixes = function(cb) {
           fixPos = new LatLon(fix.lat, fix.lon);
       this.layer([fixPos, fixPos.destinationPoint(Math.random() * 360, 1)], 'FIX');
     }
-    cb();
+  }.bind(this));
+};
+
+SmartMap.prototype.generateNavaids = function() {
+  $.get('/api/navaids', {
+    lat: this._primaryAirport.lat(),
+    lon: this._primaryAirport.lon(),
+    radius: 60
+  }, function(navaids) {
+    for (var i in navaids) {
+      var navaid = navaids[i],
+          navaidPos = new LatLon(navaid.lat, navaid.lon);
+
+      var pts = [];
+      for (var p = 0; p < 12; p++)
+        pts.push(navaidPos.destinationPoint(p * 30, 0.7));
+      pts.push(pts[0]);
+      this.layer(pts, 'NAVAID');
+    }
   }.bind(this));
 };
 

@@ -195,6 +195,18 @@ TextOverlay.prototype.renderTime = function(r, airports) {
  //  this._previewLine = 6 + ICAOs.length;
 };
 
+TextOverlay.prototype.renderControllers = function(r, controllers) {
+  r.context().beginPath();
+  r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+  r.context().textAlign = 'left';
+  r.context().textBaseline = 'top';
+  r.context().fillStyle = this.brite();
+  var textLeft = r.scope().width - 200;
+  controllers.forEach(function(controller, line) {
+    r.context().fillText(controller.getIdentifier() + ' ' + controller.getName() , textLeft, this.line(r, 0.2, line));
+  }.bind(this));
+};
+
 TextOverlay.prototype.renderLACAMCI = function(r, cde) {
   r.context().beginPath();
   r.context().font = 'bold ' + 14 + 'px Oxygen Mono';

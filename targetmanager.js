@@ -37,12 +37,24 @@ TargetManager.prototype.getTargetsByController = function(controller) {
   return targetsByController;
 };
 
+TargetManager.prototype.massHandoff = function(fromController, toController) {
+  this.getTargetsByController(fromController).forEach(function(target) {
+    target.setController(toController);
+  });
+};
+
 TargetManager.prototype.getTargetByCallsign = function(callsign) {
   for (var i = 0; i < this._targets.length; i++) {
     if (this._targets[i].callsign() === callsign)
       return this._targets[i];
-  };
+  }
   return null;
+};
+
+TargetManager.prototype.purgeTargets = function() {
+  for (var i = 0; i < this._targets.length; i++)
+    if (target.isAwaitingPurge())
+      this._targets.splice(i, 1);
 };
 
 TargetManager.prototype.noRadarReturn = function(callsign) {
@@ -79,7 +91,7 @@ TargetManager.prototype.render = function(r) {
   for (var d in targetsInRange)
     targetsInRange[d].renderTarget(r);
   for (var e in targetsInRange)
-    targetsInRange[e].renderPosition(r);
+    targetsInRange[e].renderPosition(r, elapsedRenderer);
   for (var f in targetsInRange)
     targetsInRange[f].renderDataBlock(r, elapsedRenderer);
 };

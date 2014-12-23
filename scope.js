@@ -1,11 +1,13 @@
-function Scope() {
+function Scope(socket) {
+	this._socket = socket;
 	this._maps = {};
 	this._airports = {};
 	// this._trafficSimulator = new TrafficSimulator;
 	this._targetManager = new TargetManager();
 	this._facilityManager = new FacilityManager();
 	//this._mapManager = new MapManager(this);
-	this._controller = new Controller('A', 'SR', 'BOS_APP', '118.25');
+	this._controller = null;
+  this._controllers = [];
 	//this._feed = new Feed;
 	this._radar = new Radar();
 
@@ -20,6 +22,7 @@ function Scope() {
 	this._isOn = false;
 
 	this._crda = null;
+  this._sounds = true;
 
 	this._measureDistanceStartPosition = null;
 	this._renderPoints = [];
@@ -42,6 +45,62 @@ function Scope() {
 // 	}
 // };
 
+Scope.prototype.setControllers = function(controllers) {
+  controllers.sort(function(a, b) {
+    if (a.getIdentifier() < b.getIdentifier())
+      return -1;
+    else
+      return 1;
+  }.bind(this));
+  if (this._controller) {
+    this._controllers = [this._controller];
+    controllers.forEach(function(controller) {
+      if (controller.getIdentifier() !== this._controller.getIdentifier())
+        this._controllers.push(controller);
+    }.bind(this));
+  } else
+    this._controllers = controllers;
+};
+
+Scope.prototype.getControllerByIdentifier = function(identifier) {
+  for (var i in this._controllers)
+    if (this._controllers[i].getIdentifier() === identifier)
+      return this._controllers[i];
+  return null;
+};
+
+Scope.prototype.controllers = function() {
+  return this._controllers;
+};
+
+Scope.prototype.setControllerPosition = function(position) {
+  if (!this._controller) {
+    this._socket.emit('ATC.addController', {
+      position: position
+    }, function(data) {
+      this.setController(new Controller(data.position, data.targetCode, data.identifier, data.name, '199.98', null));
+    }.bind(this));
+  } else {
+    this._socket.emit('ATC.deleteController', function() {
+      this._targetManager.massHandoff(this._controller, null);
+      this.setController(null);
+      this.setControllerPosition(position);
+    }.bind(this));
+  }
+};
+
+Scope.prototype.sounds = function() {
+  return this._sounds;
+};
+
+Scope.prototype.setController = function(controller) {
+	this._controller = controller;
+};
+
+Scope.prototype.controller = function() {
+  return this._controller;
+};
+
 Scope.prototype.facilityManager = function() {
 	return this._facilityManager;
 };
@@ -59,7 +118,6 @@ Scope.prototype.turnOn = function() {
 		this._isOn = true;
 
 		var batchRender = _.throttle(this.render.bind(this), 200);
-
 		socket.on('blip', function(blip) {
 			this._radar.sync(blip, this._targetManager);
 			batchRender();
@@ -201,12 +259,17 @@ Scope.prototype.renderBackground = function() {
 	this._renderer.context().strokeRect(0, 0, this._renderer.scope().width, this._renderer.scope().height);
 };
 
+Scope.prototype.renderRangeRings = function() {
+	this._renderer.context().moveTo();
+};
+
 Scope.prototype.renderOverlays = function() {
 	this._textOverlay.renderTime(this._renderer, this._airports);
 	//this._textOverlay.renderTowerList(this._renderer, this._airports, this._situation.aircraft());
 	//this._textOverlay.renderLACAMCI(this._renderer, this._situation.CDE());
 	//this._textOverlay.renderCRDAStatus(this._renderer, this._situation.CRDA());
 	this._textOverlay.renderPreviewArea(this._renderer);
+  this._textOverlay.renderControllers(this._renderer, this._controllers);
 };
 
 Scope.prototype.renderRenderPoints = function() {

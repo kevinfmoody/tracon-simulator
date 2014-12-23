@@ -2,8 +2,8 @@ var AircraftPerformance,
 		Autopilot,
 		LatLon;
 
-var VATSIM = require('../server/vatsim/vatsim.js'),
-		Flow = require('../server/Flow.js');
+//var VATSIM = require('../server/vatsim/vatsim.js'),
+//		Flow = require('../server/Flow.js');
 
 if (typeof module !== 'undefined' && module.exports) {
   AircraftPerformance = require('./aircraftperformance.js');
@@ -11,10 +11,12 @@ if (typeof module !== 'undefined' && module.exports) {
   LatLon = require('../latlon.js');
 }
 
-function Aircraft(aircraftString, socket, currentFlow) {
-	this._v = new VATSIM();
-	this._v.client().connect();
-	this._flow = currentFlow;
+function Aircraft(aircraftString, mio, pio) {
+	// this._v = new VATSIM();
+	// this._v.client().connect();
+	// this._flow = currentFlow;
+	this._mio = mio;
+	this._pio = pio;
 
 	this._conflicting = false;
 	this._selected = false;
@@ -40,6 +42,7 @@ function Aircraft(aircraftString, socket, currentFlow) {
 	this._performance = new AircraftPerformance();
 	this._autopilot = new Autopilot(this);
 	this._controlled = false;
+	this._controller = null;
 	this._assignments = {
 		// altitude: {
 		// 	value: 5000,
@@ -64,12 +67,12 @@ function Aircraft(aircraftString, socket, currentFlow) {
 	if (typeof aircraftString == 'string') {
 		this.loadFromString(aircraftString);
 
-		this._v.pilot().addPilot({
-			from: this.callsign(),
-			cid: '5!MP!L0T',
-			password: '5!MTR@C0N',
-			name: 'Captain Sim'
-		});
+		// this._v.pilot().addPilot({
+		// 	from: this.callsign(),
+		// 	cid: '5!MP!L0T',
+		// 	password: '5!MTR@C0N',
+		// 	name: 'Captain Sim'
+		// });
 	}
 
 	if (this.callsign() === 'ICE98') {
@@ -81,18 +84,25 @@ function Aircraft(aircraftString, socket, currentFlow) {
 
 	setInterval(function() {
 		var blip = this.blip();
-		if (blip)
-			this._v.pilot().sendPosition({
-				identFlag: 'N',
-				from: blip.callsign,
-				squawk: blip.squawk,
-				latitude: blip.position._lat,
-				longitude: blip.position._lon,
-				altitude: blip.altitude,
-				groundSpeed: blip.speed
-			});
+		if (blip) {
+			this._mio.emit('blip', blip);
+			this._pio.emit('blip', blip);
+		}
 	}.bind(this), 5000);
 }
+
+Aircraft.prototype.controller = function() {
+	return this._controller;
+};
+
+Aircraft.prototype.controllerIdentifier = function() {
+	var controller = this.controller();
+	return controller ? controller.getIdentifier() : '';
+};
+
+Aircraft.prototype.setController = function(controller) {
+	this._controller = controller;
+};
 
 Aircraft.prototype.autopilot = function() {
 	return this._autopilot;
@@ -123,7 +133,8 @@ Aircraft.prototype.blip = function() {
 					position: this.position(),
 					altitude: this.altitude(),
 					speed: this.groundspeed(),
-					squawk: this.squawk()
+					squawk: this.squawk(),
+					controller: this.controllerIdentifier()
 				};
 	// 		default:
 	// 			return null;

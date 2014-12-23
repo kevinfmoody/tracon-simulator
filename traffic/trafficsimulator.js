@@ -1,9 +1,10 @@
 var fs = require('fs');
 var Aircraft = require('./aircraft.js');
 
-function TrafficSimulator(socket, currentFlow) {
+function TrafficSimulator(mio, pio, currentFlow) {
   this._currentFlow = currentFlow;
-  this._s = socket;
+  this._mio = mio;
+  this._pio = pio;
 
   this._aircraft = [];
   this._lastRun = 0;
@@ -35,6 +36,12 @@ TrafficSimulator.prototype.getAircraftByCallsign = function(callsign) {
   return null;
 };
 
+TrafficSimulator.prototype.getAllAircraftByController = function(controller) {
+  return this.getAllAircraft().filter(function(aircraft) {
+    return aircraft.controller() === controller;
+  });
+};
+
 TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
   if (typeof module !== 'undefined' && module.exports) {
     fs.readFile(filename, function(err, data) {
@@ -43,15 +50,18 @@ TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
       var situation = data.toString().split('\n');
       this._aircraft = [];
       for (var i in situation)
-        this._aircraft.push(new Aircraft(situation[i], this._s, this._currentFlow));
+        this._aircraft.push(new Aircraft(situation[i], this._mio, this._pio));
       loadedFn();
     }.bind(this));
+    // setTimeout(function() {
+    //   this._aircraft.splice(0, 1);
+    // }.bind(this), 20000);
   } else {
     $.get(filename, function(data) {
       var situation = data.split('\n');
       this._aircraft = [];
       for (var i in situation)
-        this._aircraft.push(new Aircraft(situation[i], this._s, this._currentFlow));
+        this._aircraft.push(new Aircraft(situation[i], this._mio, this._pio));
       loadedFn();
     }.bind(this));
   }

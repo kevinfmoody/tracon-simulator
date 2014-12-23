@@ -2,7 +2,8 @@ var VATSIM = require('./vatsim/vatsim.js'),
     TrafficSimulator = require('../traffic/TrafficSimulator.js'),
     SimulationCommands = require('./SimulationCommands.js');
 
-function ClientManager(socket, currentFlow) {
+function ClientManager(socket) {
+  currentFlow = null;
   this._s = socket;
   this._v = new VATSIM(this._s);
   this._v.client().connect();
@@ -23,6 +24,7 @@ function ClientManager(socket, currentFlow) {
       latitude: 42.3629722,
       longitude: -71.0064167
     });
+    console.log('atc sent');
   }.bind(this), 5000);
 
   this.bindSocketListeners();

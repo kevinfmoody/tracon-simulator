@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var scope = new Scope();
+var scope = new Scope(socket);
 var connectionDelegate = new ConnectionDelegate(scope, socket);
 
 $(document).ready(function() {
@@ -57,6 +57,8 @@ function initScope() {
   // scope._trafficSimulator.loadSituation('situations/a90.sit', function() {
     //scope._trafficSimulator.run(scope.renderer());
     scope.turnOn();
+    scope.setControllerPosition('FINAL');
+    //scope.setController(new Controller('F', 'F1', 'BOS_F_APP', '199.98'));
   // });
 	//scope.situation().run();
 }
@@ -70,7 +72,7 @@ function initSanFransiscoAirport() {
 }
 
 function initBostonAirport() {
-  scope.facilityManager().setPrimaryAirport('KSRQ');
+  scope.facilityManager().setPrimaryAirport('KMHT');
   var KBOS = new Airport('KBOS', 'BOS', 42.3629722, -71.0064167, 20);
   var R9 = new Runway('9', 42.3557542, -71.0128938, 17, 7000, 150, 93);
   var R27 = new Runway('27', 42.3602168, -70.9877037, 15, 7000, 150, 273);

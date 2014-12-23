@@ -37,7 +37,7 @@ body {
 
 .scope-settings {
 	height: 54px;
-	margin-left: 250px;
+	margin-left: 0;
 }
 
 .button-group, .scope-button-group {
@@ -116,7 +116,7 @@ body {
 
 #scope {
 	cursor:url(cross_cursor.png) 10 10, crosshair;
-	margin-left: 250px;
+	margin-left: 0;
 }
 
 #previewArea {
