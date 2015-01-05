@@ -122,6 +122,15 @@ Keyboard.KEYS = {
   SINGLE_QUOTE: 222
 };
 
+Keyboard.KEYS.MULTIFUNC = Keyboard.KEYS.F7;
+
+Keyboard.MODES = {
+  NONE: 1,
+  MULTIFUNC: 2
+};
+
+Keyboard.MODE = Keyboard.MODES.NONE;
+
 Keyboard[Keyboard.KEYS.ESCAPE] = {};
 Keyboard[Keyboard.KEYS.ESCAPE][Keyboard.COMBO_KEYS.NONE] = function(e) {
   scope.textOverlay().clearPreview();
@@ -137,6 +146,19 @@ Keyboard[Keyboard.KEYS.F4] = {};
 Keyboard[Keyboard.KEYS.F4][Keyboard.COMBO_KEYS.NONE] = function(e) {
   scope.textOverlay().clearPreview();
   scope.textOverlay().addPreviewChar('TC');
+};
+
+Keyboard[Keyboard.KEYS.MULTIFUNC] = {};
+Keyboard[Keyboard.KEYS.MULTIFUNC][Keyboard.COMBO_KEYS.NONE] = function(e) {
+  scope.textOverlay().clearPreview();
+  scope.textOverlay().addPreviewChar('F');
+  Keyboard.MODE = Keyboard.MODES.MULTIFUNC;
+};
+
+Keyboard[Keyboard.KEYS.F11] = {};
+Keyboard[Keyboard.KEYS.F11][Keyboard.COMBO_KEYS.NONE] = function(e) {
+  scope.textOverlay().clearPreview();
+  scope.textOverlay().addPreviewChar('CA');
 };
 
 Keyboard[Keyboard.KEYS.S] = {};
@@ -195,10 +217,6 @@ Keyboard[Keyboard.KEYS.THREE][Keyboard.COMBO_KEYS.CTRL | Keyboard.COMBO_KEYS.ALT
 Keyboard[Keyboard.KEYS.THREE][Keyboard.COMBO_KEYS.CTRL] = function(e) {
   scope.renderer().selectPreset(3);
 };
-Keyboard[Keyboard.KEYS.THREE][Keyboard.COMBO_KEYS.CMD] = function(e) {
-  scope.textOverlay().clearPreview();
-  scope.textOverlay().addPreviewChar('IC');
-};
 
 Keyboard[Keyboard.KEYS.FOUR] = {};
 Keyboard[Keyboard.KEYS.FOUR][Keyboard.COMBO_KEYS.CTRL | Keyboard.COMBO_KEYS.ALT] = function(e) {
@@ -206,10 +224,6 @@ Keyboard[Keyboard.KEYS.FOUR][Keyboard.COMBO_KEYS.CTRL | Keyboard.COMBO_KEYS.ALT]
 };
 Keyboard[Keyboard.KEYS.FOUR][Keyboard.COMBO_KEYS.CTRL] = function(e) {
   scope.renderer().selectPreset(4);
-};
-Keyboard[Keyboard.KEYS.FOUR][Keyboard.COMBO_KEYS.CMD] = function(e) {
-  scope.textOverlay().clearPreview();
-  scope.textOverlay().addPreviewChar('TC');
 };
 
 Keyboard[Keyboard.KEYS.FIVE] = {};

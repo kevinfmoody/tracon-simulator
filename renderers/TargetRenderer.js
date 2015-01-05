@@ -186,8 +186,14 @@ TargetRenderer.prototype.renderTarget = function(r) {
   r.context().lineTo(acPos.x + boxTL.x, acPos.y + boxTL.y);
   r.context().lineTo(acPos.x + boxTR.x, acPos.y + boxTR.y);
   r.context().lineTo(acPos.x + boxBR.x, acPos.y + boxBR.y);
-  r.context().fillStyle = '#2d82ed';
-  r.context().fill();
+  if (radarDistance < 40) {
+    r.context().fillStyle = '#2d82ed';
+    r.context().fill();
+  } else {
+    r.context().strokeStyle = '#2d82ed';
+    r.context().lineWidth = 1;
+    r.context().stroke();
+  }
 };
 
 TargetRenderer.prototype.renderPosition = function(r, elapsed) {
@@ -230,7 +236,10 @@ TargetRenderer.prototype.renderFullDataBlock = function(r, elapsed) {
   r.context().textAlign = 'left';
   r.context().textBaseline = 'middle';
   r.context().fillStyle = this.renderDataBlockColor(elapsed);
-  r.context().fillText(this._target.callsign(), acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - leaderTipOffset.y);
+  var callsignText = this._target.callsign();
+  if (this._target.conflictState() === Target.CONFLICT_STATES.INHIBITED)
+    callsignText += ' ' + String.fromCharCode(parseInt('25B3', 16));
+  r.context().fillText(callsignText, acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - leaderTipOffset.y);
   r.context().imageSmoothingEnabled = true;
   // Draw the target aircraft, altitude, and speed data block
   r.context().beginPath();
@@ -247,7 +256,21 @@ TargetRenderer.prototype.renderFullDataBlock = function(r, elapsed) {
     scopeText = 'CST' + spacing + (elapsed % 4000 < 2000 ? r.pad(scopeSpeed, 2) : this._target.type());
   else
     scopeText = elapsed % 4000 < 2000 ? r.pad(scopeAltitude, 3) + spacing + r.pad(scopeSpeed, 2) : this._target.arrival() + spacing + this._target.type();
-  r.context().fillText(scopeText, acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - (leaderTipOffset.y - 15));
+  r.context().fillText(scopeText, acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - (leaderTipOffset.y - 17));
+};
+
+TargetRenderer.prototype.renderConflictAlert = function(r) {
+  var acPos = r.gtoc(this._target.position()._lat, this._target.position()._lon),
+      leaderTipOffset = TargetRenderer.getLeaderTipOffset();
+  if (this._target.conflictState() === Target.CONFLICT_STATES.CONFLICTING ||
+      this._target.conflictState() === Target.CONFLICT_STATES.SUPPRESSED) {
+    r.context().beginPath();
+    r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+    r.context().textAlign = 'left';
+    r.context().textBaseline = 'middle';
+    r.context().fillStyle = '#f00';
+    r.context().fillText('CA', acPos.x + leaderTipOffset.x + 5, acPos.y - 10 - (leaderTipOffset.y + 17));
+  }
 };
 
 TargetRenderer.prototype.renderDataBlock = function(r, elapsed) {
@@ -264,4 +287,5 @@ TargetRenderer.prototype.renderDataBlock = function(r, elapsed) {
     this.renderFullDataBlock(r, elapsed);
   else
     this.renderPartialDataBlock(r, elapsed);
+  this.renderConflictAlert(r);
 };

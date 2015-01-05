@@ -1,3 +1,15 @@
+var FacilitiesAPI,
+    Airport,
+    Runway,
+    NODE = false;
+
+if (typeof module !== 'undefined' && module.exports) {
+  FacilitiesAPI = require('./server/FacilitiesAPI.js');
+  Airport = require('./facilities/airport.js');
+  Runway = require('./facilities/runway.js');
+  NODE = true;
+}
+
 function FacilityManager() {
   this._airports = {};
   this._primaryAirport = '';
@@ -7,17 +19,17 @@ FacilityManager.prototype.setPrimaryAirport = function(icao) {
   this._primaryAirport = icao;
 };
 
-FacilityManager.prototype.primaryAirport = function(cb) {
+FacilityManager.prototype.primaryAirport = function(cb, cbOnlyIfAvailable) {
   if (this._primaryAirport)
-    return this.airport(this._primaryAirport, cb);
+    return this.airport(this._primaryAirport, cb, cbOnlyIfAvailable);
   cb(null);
 };
 
-FacilityManager.prototype.airport = function(icao, cb) {
+FacilityManager.prototype.airport = function(icao, cb, cbOnlyIfAvailable) {
   var airport = this._airports[icao];
   if (airport)
     return cb(airport);
-  $.get('/api/airports/' + icao, function(airport) {
+  var airportCallback = function(airport) {
     if (airport) {
       this._airports[airport.icao] = new Airport(
         airport.icao,
@@ -40,8 +52,16 @@ FacilityManager.prototype.airport = function(icao, cb) {
           runway.ILSCapable
         ));
       }
-      return cb(this._airports[airport.icao]);
+      return cbOnlyIfAvailable || cb(this._airports[airport.icao]);
     }
     cb(null);
-  }.bind(this));
+  }.bind(this);
+  if (NODE)
+    FacilitiesAPI.airport(icao, airportCallback);
+  else
+    $.get('/api/airports/' + icao, airportCallback);
 };
+
+if (NODE) {
+  module.exports = FacilityManager;
+}

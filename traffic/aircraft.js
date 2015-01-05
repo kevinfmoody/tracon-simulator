@@ -261,10 +261,7 @@ Aircraft.prototype.flyQuick = function(elapsedSituation, r) {
 };
 
 Aircraft.prototype.updateHistory = function() {
-	this._history.unshift({
-		lat: this._lat,
-		lon: this._lon
-	});
+	this._history.unshift(this.position());
 	if (this._history.length > 5)
 		this._history.pop();
 };
@@ -435,6 +432,15 @@ Aircraft.prototype.speed = function() {
 
 Aircraft.prototype.heading = function() {
 	return this._heading;
+};
+
+Aircraft.prototype.track = function() {
+	var pos2 = this._history[0],
+			pos1 = this._history[1];
+	if (pos1 && pos2)
+		return pos1.bearingTo(pos2);
+	else
+		return heading;
 };
 
 Aircraft.prototype.performance = function() {

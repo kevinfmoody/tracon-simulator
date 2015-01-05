@@ -1,6 +1,7 @@
 var Runway = require('../facilities/runway.js');
 
-function SimulationCommands(simulation) {
+function SimulationCommands(simulation, facilityManager) {
+  this._facilityManager = facilityManager;
   this._simulation = simulation;
 }
 
@@ -26,18 +27,31 @@ SimulationCommands.prototype.speed = function(data) {
 };
 
 SimulationCommands.prototype.ILS = function(data) {
-  var aircraft = this._simulation.getAircraftByCallsign(data.callsign),
-      runway = data.runway ? new Runway(
-        data.runway._id,
-        data.runway._lat,
-        data.runway._lon,
-        data.runway._elevation,
-        data.runway._length,
-        data.runway._width,
-        data.runway._course
-      ) : null;
-  if (aircraft && runway)
-    aircraft.autopilot().engageILS(runway);
+  var aircraft = this._simulation.getAircraftByCallsign(data.callsign);
+  if (aircraft) {
+    this._facilityManager.airport(data.icao, function(airport) {
+      if (airport) {
+        var runway = airport.runway(data.runway);
+        if (runway) {
+          aircraft.autopilot().engageILS(runway);
+        }
+      }
+    });
+  }
+};
+
+SimulationCommands.prototype.visualApproach = function(data) {
+  var aircraft = this._simulation.getAircraftByCallsign(data.callsign);
+  if (aircraft) {
+    this._facilityManager.airport(data.icao, function(airport) {
+      if (airport) {
+        var runway = airport.runway(data.runway);
+        if (runway) {
+          aircraft.autopilot().engageVisualApproach(runway);
+        }
+      }
+    });
+  }
 };
 
 module.exports = SimulationCommands;

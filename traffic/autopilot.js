@@ -19,7 +19,7 @@ function Autopilot(aircraft) {
   this._currentAction = this._action.INACTIVE;
   this._currentState = this._state.INACTIVE;
 
-  this.ACTIVE_LEGS = [
+  this.ACTIVE_LEGS = [];/*[
     {
       startPosition: new LatLon(42.53728102399617, -69.99036947154653),
       endPosition: new LatLon(42.44679377265025, -70.47755508601381)
@@ -32,7 +32,7 @@ function Autopilot(aircraft) {
       startPosition: new LatLon(42.52755728169469, -70.61846177278272),
       endPosition: new LatLon(42.72859260197211, -70.48297467454829)
     }
-  ];
+  ];*/
 }
 
 Autopilot.prototype.engageILS = function(runway) {
@@ -43,11 +43,11 @@ Autopilot.prototype.engageILS = function(runway) {
 Autopilot.prototype.engageVisualApproach = function(runway) {
   this._runway = runway;
   this._currentAction = this._action.VISUAL_APPROACH;
+  this.setupVisualApproach(runway);
 };
 
 Autopilot.prototype.fly = function(r) {
-
-  if (this._aircraft._callsign === 'ICE98') {
+  if (this.ACTIVE_LEGS.length) {
     this.track(r);
     return false;
   } else {
@@ -66,14 +66,14 @@ Autopilot.prototype.fly = function(r) {
 
 Autopilot.prototype.flyILS = function(r) {
   var acTrack = this._aircraft.position().bearingTo(this._runway.position()),
-      rwyTrack = this._runway.course() + r.magVar(),
+      rwyTrack = this._runway.course(),
       delta = this.angleBetween(rwyTrack, acTrack);
   if (delta < 3) {
-    var hdgDelta = this.angleBetween(this._aircraft.heading(), this._runway.course()),
+    var hdgDelta = this.angleBetween(this._aircraft.heading(), this._runway.course() - r.magVar()),
         maxInterceptAngle = delta * 10,
         sign = acTrack - rwyTrack < 0 ? -1 : 1,
         interceptAngle = Math.min(hdgDelta, maxInterceptAngle),
-        trackHeading = this._runway.course() + interceptAngle * sign,
+        trackHeading = this._runway.course() - r.magVar() + interceptAngle * sign,
         distanceInKm = this._aircraft.position().distanceTo(this._runway.position()),
         distanceInFeet = distanceInKm * 3280.84,
         distanceInNm = distanceInFeet * 0.000164579,
@@ -102,6 +102,69 @@ Autopilot.prototype.flyVisualApproach = function() {
       // issue climb to 3000 agl at rwy heading and go inactive
       break;
   }
+};
+
+Autopilot.prototype.setupVisualApproach = function() {
+  var path = this.generateClassicVisualApproachPath(5 + Math.pow(Math.random() * 3, 2) / 3);
+  if (path.length === 0) {
+    path = this.generateClassicVisualApproachPath(5);
+    //if (path.length === 0)
+      //path = this.generateFailSafeVisualApproachPath();
+  }
+  if (path.length) {
+    console.log('var path = new Path(\'VIS\');');
+    console.log('path.addWaypoint(\'\', new LatLon(' + path[0].startPosition._lat + ',' + path[0].startPosition._lon + '));');
+    for (var i = 0; i < path.length; i++)
+      console.log('path.addWaypoint(\'\', new LatLon(' + path[i].endPosition._lat + ',' + path[i].endPosition._lon + '));');
+    console.log('scope.pathManager().setPath(path);');
+    console.log('scope.pathManager().showPath(\'VIS\');');
+  }
+  this.ACTIVE_LEGS = path;
+};
+
+Autopilot.prototype.generateClassicVisualApproachPath = function(finalApproachDistance) {
+  var finalApproachFix = this._runway.position().destinationPoint(this._runway.course() + 180, finalApproachDistance / 0.539957),
+      path = [{
+        startPosition: finalApproachFix,
+        endPosition: this._runway.position()
+      }];
+  for (var i = 0; i < 3; i++) {
+    var nextLeg = path[0],
+        bearingToNextLeg = this._aircraft.position().bearingTo(nextLeg.startPosition),
+        nextLegBearing = nextLeg.startPosition.bearingTo(nextLeg.endPosition),
+        angleBetweenBearings = this.angleBetween(bearingToNextLeg, nextLegBearing);
+    if (angleBetweenBearings < 90) {
+      var distanceToNextLeg = this._aircraft.position().distanceTo(nextLeg.startPosition) * 0.539957;
+      if (distanceToNextLeg > Math.sin(angleBetweenBearings * Math.PI / 180) * 3) {
+        var angleBetweenTrackAndLeg = this.angleBetween(bearingToNextLeg, this._aircraft.track());
+        if (angleBetweenTrackAndLeg < Math.sin(Math.min(3, distanceToNextLeg) * 30 * Math.PI / 180) * 90) {
+          path.unshift({
+            startPosition: this._aircraft.position(),
+            endPosition: nextLeg.startPosition
+          });
+          return path;
+        }
+      }
+    }
+    var leftProbe = nextLeg.startPosition.destinationPoint(nextLegBearing + 90, 1),
+        leftProbeBearing = nextLeg.startPosition.bearingTo(leftProbe),
+        rightProbe = nextLeg.startPosition.destinationPoint(nextLegBearing - 90, 1),
+        rightProbeBearing = nextLeg.startPosition.bearingTo(rightProbe),
+        probeToAircraftBearing = (bearingToNextLeg + 180) % 360,
+        turnDirection = 1;
+    if (this.angleBetween(probeToAircraftBearing, leftProbeBearing) <
+        this.angleBetween(probeToAircraftBearing, rightProbeBearing)) {
+      turnDirection = -1;
+    }
+    var legBackcourseBearing = nextLegBearing + 180 + (turnDirection * (90 - Math.pow(Math.random() * 20, 2) / 20)),
+        legDistance = 4 + Math.random() * 2,
+        legStartPosition = nextLeg.startPosition.destinationPoint(legBackcourseBearing, legDistance / 0.539957);
+    path.unshift({
+      startPosition: legStartPosition,
+      endPosition: nextLeg.startPosition
+    });
+  }
+  return [];
 };
 
 Autopilot.prototype.perpendicularDistanceToLeg = function(leg) {

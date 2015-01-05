@@ -68,12 +68,11 @@ var fs = require('fs'),
                 opposingLat = parseInt(line.substr(baseRecriprocalOffset[1 - i] + 38, 12), 10) / 3600,
                 opposingLon = -parseInt(line.substr(baseRecriprocalOffset[1 - i] + 65, 12), 10) / 3600,
                 exactCourse = new LatLon(lat, lon).bearingTo(new LatLon(opposingLat, opposingLon)),
-                course = isNaN(exactCourse) ? exactCourse : parseInt(line.substr(offset + 3, 3), 10),
+                course = !isNaN(exactCourse) ? exactCourse : parseInt(line.substr(offset + 3, 3), 10),
                 elevation = parseFloat(line.substr(offset + 77, 7)),
                 thresholdCrossingHeight = parseInt(line.substr(offset + 84, 3), 10),
                 visualGlidePathAngle = parseFloat(line.substr(offset + 87, 4)),
                 ILSCapable = instrumentLandingSystemType.indexOf('ILS') >= 0;
-            console.log(exactCourse);
             r.hmset(
               'airports.' + icao + '.runways.' + id,
               'id', id,

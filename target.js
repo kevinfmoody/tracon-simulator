@@ -40,7 +40,56 @@ function Target(callsign) {
     ALTITUDE: 3,
     IDENT: 4
   };
+
+  this._conflicts = {};
+  this._conflictState = Target.CONFLICT_STATES.NONE;
 }
+
+Target.CONFLICT_STATES = {
+  NONE: 1,
+  CONFLICTING: 2,
+  SUPPRESSED: 3,
+  INHIBITED: 4
+};
+
+Target.prototype.toggleConflictAlerts = function() {
+  this._conflictState = this._conflictState === Target.CONFLICT_STATES.INHIBITED ?
+    Target.CONFLICT_STATES.NONE : Target.CONFLICT_STATES.INHIBITED;
+};
+
+Target.prototype.setTargetsInConflict = function(targets) {
+  if (this._conflictState !== Target.CONFLICT_STATES.INHIBITED) {
+    var conflicts = {};
+    this._conflictState = Target.CONFLICT_STATES.NONE;
+    targets.forEach(function(target) {
+      var callsign = target.callsign();
+      if (this._conflicts[callsign]) {
+        conflicts[callsign] = this._conflicts[callsign];
+        if (!conflicts[callsign]['isSuppressed'])
+          this._conflictState = Target.CONFLICT_STATES.CONFLICTING;
+        else if (this._conflictState !== Target.CONFLICT_STATES.CONFLICTING)
+          this._conflictState = Target.CONFLICT_STATES.SUPPRESSED;
+      } else {
+        this._conflictState = Target.CONFLICT_STATES.CONFLICTING;
+        conflicts[callsign] = {
+          target: target,
+          isSuppressed: false
+        };
+      }
+    }.bind(this));
+    this._conflicts = conflicts;
+  } else
+    this._conflicts = {};
+  return this._conflictState;
+};
+
+Target.prototype.conflicts = function() {
+  return this._conflicts;
+};
+
+Target.prototype.conflictState = function() {
+  return this._conflictState;
+};
 
 Target.prototype.clearPostHandoff = function() {
   if (this._handoffTimeout) {
@@ -128,6 +177,39 @@ Target.prototype.inboundHandoff = function(fromController) {
     this._controlState = this._controlStates.NORMAL;
     this.contract();
   }.bind(this), 10 * 1000);
+};
+
+Target.prototype.assignHeading = function(heading) {
+  if (0 <= heading && heading <= 360) {
+    socket.emit('TS.heading', {
+      callsign: this.callsign(),
+      heading: heading
+    });
+    return true;
+  }
+  return false;
+};
+
+Target.prototype.assignAltitude = function(altitude) {
+  if (0 <= altitude && altitude <= 99999) {
+    socket.emit('TS.altitude', {
+      callsign: this.callsign(),
+      altitude: altitude
+    });
+    return true;
+  }
+  return false;
+};
+
+Target.prototype.assignSpeed = function(speed) {
+  if (0 <= speed && speed <= 9999) {
+    socket.emit('TS.speed', {
+      callsign: this.callsign(),
+      speed: speed
+    });
+    return true;
+  }
+  return false;
 };
 
 Target.prototype.otherController = function() {
@@ -304,6 +386,13 @@ Target.prototype.select = function() {
   }
   if (this._controlState === this._controlStates.POST_HANDOFF)
     this.clearPostHandoff();
+  if (this._conflictState === Target.CONFLICT_STATES.CONFLICTING) {
+    this._conflictState = Target.CONFLICT_STATES.SUPPRESSED;
+    for (var i in this._conflicts) {
+      this._conflicts[i].isSuppressed = true;
+      this._conflicts[i].target.conflicts()[this.callsign()].isSuppressed = true;
+    }
+  }
 };
 
 Target.prototype.deselect = function() {

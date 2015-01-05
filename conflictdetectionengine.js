@@ -137,16 +137,16 @@ ConflictDetectionEngine.prototype.classifyMinima = function(localTarget, foreign
   for (var i in this._separationMinima) {
     var m = this._separationMinima[i];
     if (
-      (m.lateral > minima.lateral 
-        || m.vertical > m.vertical)
-      && (!m.anchor
-        || m.anchor)
-      && (!m.minAltitude 
-        || (localTarget.altitude() >= m.minAltitude 
-          || foreignTarget.altitude() >= m.minAltitude))
-      && (!m.maxAltitude
-        || (localTarget.altitude() <= m.maxAltitude
-          || foreignTarget.altitude() <= m.maxAltitude))
+      (m.lateral > minima.lateral ||
+        m.vertical > m.vertical) &&
+      (!m.anchor ||
+        m.anchor) &&
+      (!m.minAltitude ||
+        (localTarget.altitude() >= m.minAltitude ||
+          foreignTarget.altitude() >= m.minAltitude)) &&
+      (!m.maxAltitude ||
+        (localTarget.altitude() <= m.maxAltitude ||
+          foreignTarget.altitude() <= m.maxAltitude))
     ) {
       minima.lateral = Math.max(m.lateral, minima.lateral);
       minima.vertical = Math.max(m.vertical, minima.vertical);

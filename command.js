@@ -29,7 +29,9 @@ Command.SEGMENT = {
   TYPE_PATH: 'TYPEPATH',
   SHOW_PATH: 'SHOWPATH',
   HIDE_PATH: 'HIDEPATH',
-  MEASURE_DISTANCE: '*'
+  MEASURE_DISTANCE: '*',
+  TOGGLE_CONFLICT_ALERTS: 'CAK',
+  MANAGE_CRDA: 'FN'
 };
 
 Command.SEGMENT_RAW = {
@@ -42,7 +44,9 @@ Command.SEGMENT_RAW = {
   SPD: true,
   TYPE_PATH: true,
   FIXPATH: true,
-  '*': true
+  '*': true,
+  CAK: true,
+  FN: true
 };
 
 Command.ALIAS = {
@@ -61,6 +65,16 @@ Command.currentCommand = [];
 Command.lastCommand = [];
 
 Command.cleanupFunction = null;
+
+Command.clickable = function(e) {
+  if (e.type !== 'click')
+    throw Command.ERROR.FORMAT;
+};
+
+Command.enterable = function(e) {
+  if (e.type === 'click')
+    throw Command.ERROR.FORMAT;
+};
 
 Command.registerCleanupFunction = function(fn, skipOnCurrent) {
   Command.cleanup(skipOnCurrent);
@@ -129,7 +143,8 @@ Command.manualProcess = function(e, args) {
   var command = args[0],
       emptySelect = /^$/,
       coneCommand = /^\*P\d+$/,
-      jRingCommand = /^\*J\d+$/;
+      jRingCommand = /^\*J\d+$/,
+      addRemoveCRDACommand = /^FN([A-Z]{3,4})(\d{2}[A-Z]{0,1})\/(\d{2}[A-Z]{0,1})$/;
   if (command.length === 2) {
     var controller = scope.getControllerByIdentifier(command);
     if (controller) {
@@ -203,11 +218,43 @@ Command.manualProcess = function(e, args) {
             aircraft.enableJRing(parseInt(args[0].substr(2), 10));
         }
       };
+    case addRemoveCRDACommand.test(command):
+      return function(e, args) {
+        Command.enterable(e);
+        var result = addRemoveCRDACommand.exec(command),
+            icao = result[1].length === 3 ? 'K' + result[1] : result[1],
+            master = result[2],
+            slave = result[3];
+        scope.facilityManager().airport(icao, function(airport) {
+          if (airport) {
+            try {
+              scope.CRDAManager().addCRDA(airport, master, slave);
+              scope.textOverlay().clearPreview();
+            } catch (err) {
+              scope.textOverlay().setPreviewAreaMessage('ILL RWY');
+              Command.registerCleanupFunction(function() {
+                scope.textOverlay().clearPreviewAreaMessage();
+              });
+            }
+          } else {
+            scope.textOverlay().setPreviewAreaMessage('ILL APT');
+            Command.registerCleanupFunction(function() {
+              scope.textOverlay().clearPreviewAreaMessage();
+            });
+          }
+        });
+        throw Command.ERROR.TAKE_NO_ACTION;
+      };
   }
   return null;
 };
 
 Command[Command.SEGMENT_TYPE.PLACEHOLDER] = {};
+
+Command[Command.SEGMENT.MANAGE_CRDA] = function(e, args) {
+  Command.enterable(e);
+  scope.CRDAManager().toggle();
+};
 
 Command[Command.SEGMENT.MEASURE_DISTANCE] = function(e, args) {
   if (e.type === 'click') {
@@ -298,26 +345,67 @@ Command[Command.SEGMENT.TERMINATE_CONTROL] = function(e, args) {
   throw Command.ERROR.FORMAT;
 };
 
-
-Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.ILS] = {};
-Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.ILS][Command.SEGMENT_TYPE.RUNWAY] = function(e, args) {
-  var callsign = args[0],
-      runwayID = args[2],
-      target = scope.targetManager().getTargetByCallsign(callsign),
-      runway = scope.airport('KBOS').runway(runwayID);
-  if (target && runway) {
-    socket.emit('TS.ILS', {
-      callsign: callsign,
-      runway: runway
-    });
-    return;
+Command[Command.SEGMENT.TOGGLE_CONFLICT_ALERTS] = function(e, args) {
+  if (e.type === 'click') {
+    var target = scope.select(e);
+    if (target)
+      return target.toggleConflictAlerts();
   }
   throw Command.ERROR.FORMAT;
 };
 
+Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.ILS] = {};
+Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.ILS][Command.SEGMENT_TYPE.RUNWAY] = function(e, args) {
+  var FORMAT_ERROR = false;
+  scope.facilityManager().primaryAirport(function(airport) {
+    if (airport) {
+      var callsign = args[0],
+          runwayID = args[2],
+          target = scope.targetManager().getTargetByCallsign(callsign),
+          runway = airport.runway(runwayID);
+      if (target && runway) {
+        socket.emit('TS.ILS', {
+          callsign: callsign,
+          icao: airport.icao(),
+          runway: runwayID
+        });
+        scope.textOverlay().clearPreview();
+        return;
+      }
+    }
+    scope.textOverlay().formatError();
+    FORMAT_ERROR = true;
+  });
+  if (FORMAT_ERROR)
+    throw Command.ERROR.FORMAT;
+  return;
+};
+
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.VISUAL_APPROACH] = {};
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.VISUAL_APPROACH][Command.SEGMENT_TYPE.RUNWAY] = function(e, args) {
-
+  var FORMAT_ERROR = false;
+  scope.facilityManager().primaryAirport(function(airport) {
+    if (airport) {
+      var callsign = args[0],
+          runwayID = args[2],
+          target = scope.targetManager().getTargetByCallsign(callsign),
+          runway = airport.runway(runwayID);
+      if (target && runway) {
+        socket.emit('TS.visualApproach', {
+          callsign: callsign,
+          icao: airport.icao(),
+          runway: runwayID
+        });
+        scope.textOverlay().clearPreview();
+        return;
+      }
+    }
+    scope.textOverlay().formatError();
+    FORMAT_ERROR = true;
+  });
+  if (FORMAT_ERROR)
+    throw Command.ERROR.FORMAT;
+  return;
 };
 
 Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.FLY_HEADING] = {};
@@ -325,13 +413,8 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.FLY_HEADING][Command.SEGM
   var callsign = args[0],
       heading = args[2],
       target = scope.targetManager().getTargetByCallsign(callsign);
-  if (target && 0 <= heading && heading <= 360) {
-    socket.emit('TS.heading', {
-      callsign: callsign,
-      heading: heading
-    });
+  if (target && target.assignHeading(heading))
     return;
-  }
   throw Command.ERROR.FORMAT;
 };
 
@@ -340,13 +423,8 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.MAINTAIN_ALTITUDE][Comman
   var callsign = args[0],
       altitude = args[2],
       target = scope.targetManager().getTargetByCallsign(callsign);
-  if (target && 0 <= altitude && altitude <= 99999) {
-    socket.emit('TS.altitude', {
-      callsign: callsign,
-      altitude: altitude
-    });
+  if (target && target.assignAltitude(altitude))
     return;
-  }
   throw Command.ERROR.FORMAT;
 };
 
@@ -355,13 +433,8 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.SPEED][Command.SEGMENT_TY
   var callsign = args[0],
       speed = args[2],
       target = scope.targetManager().getTargetByCallsign(callsign);
-  if (target && 0 <= speed && speed <= 9999) {
-    socket.emit('TS.speed', {
-      callsign: callsign,
-      speed: speed
-    });
+  if (target && target.assignSpeed(speed))
     return;
-  }
   throw Command.ERROR.FORMAT;
 };
 

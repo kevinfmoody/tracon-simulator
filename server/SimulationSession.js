@@ -1,6 +1,7 @@
 var VATSIM = require('./vatsim/vatsim.js'),
     TrafficSimulator = require('../traffic/TrafficSimulator.js'),
     SimulationCommands = require('./SimulationCommands.js'),
+    FacilityManager = require('../FacilityManager.js'),
     Controller = require('../controller.js');
 
 function SimulationSession(io, managerId, publicId) {
@@ -9,8 +10,9 @@ function SimulationSession(io, managerId, publicId) {
 
   this._terminal = 'BOS';
   this._enroute = 'ZBW';
+  this._facilityManager = new FacilityManager();
   this._simulation = new TrafficSimulator(this._mio, this._pio);
-  this._commands = new SimulationCommands(this._simulation);
+  this._commands = new SimulationCommands(this._simulation, this._facilityManager);
   this._controllers = {};
   this._sockets = {};
   this._controllerCounts = {
@@ -32,7 +34,7 @@ function SimulationSession(io, managerId, publicId) {
     this.bindDisconnectListeners(socket);
   }.bind(this));
 
-  this._simulation.loadSituation('../situations/a90.sit', function() {
+  this._simulation.loadSituation('../situations/crda.sit', function() {
     this._simulation.run({ magVar: function() { return -15.24; } });
   }.bind(this));
 }
@@ -40,6 +42,7 @@ function SimulationSession(io, managerId, publicId) {
 SimulationSession.prototype.bindManagerListeners = function(socket) {
   var TS = this._commands;
   socket.on('TS.ILS', TS.ILS.bind(TS));
+  socket.on('TS.visualApproach', TS.visualApproach.bind(TS));
   socket.on('TS.heading', TS.heading.bind(TS));
   socket.on('TS.altitude', TS.altitude.bind(TS));
   socket.on('TS.speed', TS.speed.bind(TS));

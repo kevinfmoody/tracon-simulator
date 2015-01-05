@@ -146,10 +146,10 @@ Renderer.prototype.radarCenterPosition = function() {
 	return new LatLon(lat, lon);
 };
 
-Renderer.prototype.setRadarCenter = function(lat, lon) {
+Renderer.prototype.setRadarCenter = function(position) {
 	this._radarCenter = {
-		lat: lat,
-		lon: lon
+		lat: position._lat,
+		lon: position._lon
 	};
 };
 

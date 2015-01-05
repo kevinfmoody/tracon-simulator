@@ -122,6 +122,7 @@ TextOverlay.prototype.processPreviewArea = function(aircraft, controller) {
 TextOverlay.prototype.clearPreview = function() {
   this._preview = [''];
   this._formatError = false;
+  Keyboard.MODE = Keyboard.MODES.NONE;
 };
 
 TextOverlay.prototype.addPreviewChar = function(character) {
@@ -217,44 +218,49 @@ TextOverlay.prototype.renderLACAMCI = function(r, cde) {
   r.context().fillText('LA/CA/MCI', textLeft, this.line(r, .8, 0));
   var conflicts = cde.conflicts();
   for (var i = 0; i < conflicts.length; i++)
-    r.context().fillText(conflicts[i] + ' CA', textLeft, this.line(r, .8, 1 + i));
+    r.context().fillText(conflicts[i] + ' CA', textLeft, this.line(r, 0.8, 1 + i));
 };
 
-TextOverlay.prototype.renderTowerList = function(r, airports, aircraft) {
-	var ICAOs = Object.keys(airports);
-	var airport = airports[ICAOs[0]];
-  var callsigns = Object.keys(aircraft);
-  var line = 0;
-  callsigns.sort(function(a, b) {
-		return aircraft[a].position().distanceTo(airport.position())
-		  - aircraft[b].position().distanceTo(airport.position());
-	});
-	r.context().beginPath();
-	r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
-	r.context().textAlign = 'left';
-	r.context().textBaseline = 'top';
-	r.context().fillStyle = this.brite();
-	r.context().fillText(airport.iata() + ' TOWER', 75, this.line(r, .45, line++));
-  if (callsigns.length > 6)
-    r.context().fillText('MORE: 6/' + callsigns.length, 75, this.line(r, .45, line++));
-  callsigns.splice(6);
-  for (var i = 0; i < callsigns.length; i++) {
-    var callsignString = callsigns[i];
-    for (var j = 0; j < 7 - callsigns[i].length; j++)
-      callsignString += ' ';
-    r.context().fillText(callsignString + ' '
-      + aircraft[callsigns[i]].type(), 75, this.line(r, .45, line + i));
-  }
+TextOverlay.prototype.renderTowerList = function(r, aircraft) {
+	this._scope.facilityManager().primaryAirport(function(airport) {
+    if (!airport)
+      return;
+    var aircraftList = aircraft.concat();
+    var line = 0;
+    aircraftList.sort(function(a, b) {
+      return a.position().distanceTo(airport.position()) -
+        b.position().distanceTo(airport.position());
+    });
+    r.context().beginPath();
+    r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+    r.context().textAlign = 'left';
+    r.context().textBaseline = 'top';
+    r.context().fillStyle = this.brite();
+    r.context().fillText(airport.iata() + ' TOWER', 75, this.line(r, 0.45, line++));
+    if (aircraftList.length > 6)
+      r.context().fillText('MORE: 6/' + aircraftList.length, 75, this.line(r, 0.45, line++));
+    aircraftList.splice(6);
+    for (var i = 0; i < aircraftList.length; i++) {
+      var callsignString = aircraftList[i].callsign();
+      for (var j = 0; j < 7 - aircraftList[i].callsign().length; j++)
+        callsignString += ' ';
+      r.context().fillText(callsignString + ' ' +
+        aircraftList[i].type(), 75, this.line(r, 0.45, line + i));
+    }
+  }.bind(this), true);
 };
 
-TextOverlay.prototype.renderCRDAStatus = function(r, crda) {
+TextOverlay.prototype.renderCRDAStatus = function(r, crdaManager) {
   r.context().beginPath();
-  r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
+  r.context().font = 'bold ' + 14 + 'px Monaco';
   r.context().textAlign = 'left';
   r.context().textBaseline = 'top';
   r.context().fillStyle = this.brite();
-  r.context().fillText('CRDA STATUS', 75, this.line(r, .8, 0));
-  if (crda)
-    r.context().fillText(' 1 ' + crda.airport().iata() + ' '
-      + crda.master().id() + '/' + crda.slave().id(), 75, this.line(r, .8, 1));
+  r.context().fillText('CRDA ' + (crdaManager.isEnabled() ? 'STATUS' : 'OFF'), 75, this.line(r, 0.8, 0));
+  crdaManager.CRDAs().forEach(function(crda, index) {
+    var line = index + 1,
+        enabled = crdaManager.isEnabled() && crda.isEnabled() ? '*' : ' ';
+    r.context().fillText(enabled + line + ' ' + crda.airport().iata() + ' ' +
+      crda.master().id() + '/' + crda.slave().id(), 75, this.line(r, 0.8, line));
+  }.bind(this));
 };

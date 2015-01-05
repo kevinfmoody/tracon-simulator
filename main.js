@@ -2,11 +2,23 @@
 
 var scope = new Scope(socket);
 var connectionDelegate = new ConnectionDelegate(scope, socket);
+var radio = new SpeechCommands();
+
+// var config = { 'worker_path': '/vendor/worker.min.js' };
+// AudioRecorder.init(config);
+
+// AudioRecorder.record();
+// setTimeout(function() {
+//   AudioRecorder.stopRecording(function(clip) {
+//     AudioRecorder.playClip(clip, 0, 0);
+
+//     console.log(clip.speex);
+//   });
+// }, 5000);
+
 
 $(document).ready(function() {
-  initBostonAirport();
 	initScope();
-  //initSanFransiscoAirport();
 	initScopeZoom();
 	initScopeResize();
 	initScopeDrag();
@@ -44,7 +56,7 @@ function initScope() {
   // scope.addMap('22L27', '', 'maps/a90.map', function() {
   //   scope.render();
   // });
-  scope.enableSmartMap();
+  
 	//scope.addMap('BOSMHT', '', 'maps/bosmht.map', function() {
 		scope.render();
 		setInterval(function() {
@@ -52,47 +64,16 @@ function initScope() {
 		}, 1000 / 30);
     //React.renderComponent(<MasterDCB />, document.getElementById('wahoo'));
 	//});
-	//scope.setSituation('situations/a90.sit');
-  scope._radar.setPosition(new LatLon(42.3629722, -71.0064167));
-  // scope._trafficSimulator.loadSituation('situations/a90.sit', function() {
-    //scope._trafficSimulator.run(scope.renderer());
-    scope.turnOn();
-    scope.setControllerPosition('FINAL');
-    //scope.setController(new Controller('F', 'F1', 'BOS_F_APP', '199.98'));
-  // });
-	//scope.situation().run();
-}
-
-function initSanFransiscoAirport() {
-  var KSFO = new Airport('KSFO', 'SFO', 37.6191050, -122.3752372, 13);
-  scope.addAirport(KSFO);
-  //scope.situation().setSlaveFeed(new RWTraffic(KSFO, scope.situation(), scope.renderer()));
-  //scope.situation().enableSlaveMode();
-  scope.renderer().setRadarCenter(KSFO.lat(), KSFO.lon());
-}
-
-function initBostonAirport() {
-  scope.facilityManager().setPrimaryAirport('KMHT');
-  var KBOS = new Airport('KBOS', 'BOS', 42.3629722, -71.0064167, 20);
-  var R9 = new Runway('9', 42.3557542, -71.0128938, 17, 7000, 150, 93);
-  var R27 = new Runway('27', 42.3602168, -70.9877037, 15, 7000, 150, 273);
-  var R22L = new Runway('22L', 42.37690005, -70.9992913, 15, 10005, 150, 216);
-  var R4R = new Runway('4R', 42.351059, -71.0117953, 19, 10005, 150, 36);
-  R27.enableILS();
-  R22L.enableILS();
-  R4R.enableILS();
-  KBOS.addRunway(R9);
-  KBOS.addRunway(R27);
-  KBOS.addRunway(R4R);
-  KBOS.addRunway(R22L);
-  scope.addAirport(KBOS);
-  var R27R22L = new CRDA(scope.airport('KBOS'), '27', '22L');
-  scope.setCRDA(R27R22L);
-  //var R4R27 = new CRDA(KBOS, '4R', '27', scope.renderer());
-  //scope.situation().setCRDA(R4R27);
-  //scope.situation().setSlaveFeed(new RWTraffic(KBOS, scope.situation(), scope.renderer()));
-  //scope.situation().enableSlaveMode();
-  scope.renderer().setRadarCenter(KBOS.lat(), KBOS.lon());
+  scope.facilityManager().setPrimaryAirport('KBOS');
+  scope.facilityManager().primaryAirport(function(airport) {
+    scope.enableSmartMap();
+    scope.radar().setPosition(airport.position());
+    scope.renderer().setRadarCenter(scope.radar().position());
+    scope.CRDAManager().addCRDA(airport, '27', '22L');
+    scope.setControllerPosition('FINAL', function() {
+      scope.turnOn();
+    });
+  });
 }
 
 function initScopeZoom() {
@@ -157,6 +138,9 @@ function initKeyDetection() {
     if (e.which === Keyboard.KEYS.ENTER) {
       e.preventDefault();
       Command.run(e, scope.textOverlay().previewSegments());
+    } else if (e.which === Keyboard.KEYS.SELECT_KEY) {
+      e.preventDefault();
+      radio.transmit();
     } else {
       Command.cleanup();
       var keyCommands = Keyboard[e.which];
@@ -170,6 +154,12 @@ function initKeyDetection() {
       }
     }
 	});
+  $(document).keyup(function(e) {
+    if (e.which === Keyboard.KEYS.SELECT_KEY) {
+      e.preventDefault();
+      radio.release();
+    }
+  });
 }
 
 function initSettings() {

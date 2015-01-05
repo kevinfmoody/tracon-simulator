@@ -21,8 +21,8 @@ function Scope(socket) {
 	this._radarManager = null;
 	this._isOn = false;
 
-	this._crda = null;
-  this._sounds = true;
+  this._CRDAManager = new CRDAManager();
+  this._sounds = false;
 
 	this._measureDistanceStartPosition = null;
 	this._renderPoints = [];
@@ -44,6 +44,10 @@ function Scope(socket) {
 // 		this._cde.manageAlarm();
 // 	}
 // };
+
+Scope.prototype.radar = function() {
+  return this._radar;
+};
 
 Scope.prototype.setControllers = function(controllers) {
   controllers.sort(function(a, b) {
@@ -73,18 +77,20 @@ Scope.prototype.controllers = function() {
   return this._controllers;
 };
 
-Scope.prototype.setControllerPosition = function(position) {
+Scope.prototype.setControllerPosition = function(position, cb) {
   if (!this._controller) {
     this._socket.emit('ATC.addController', {
       position: position
     }, function(data) {
       this.setController(new Controller(data.position, data.targetCode, data.identifier, data.name, '199.98', null));
+      if (cb)
+        cb();
     }.bind(this));
   } else {
     this._socket.emit('ATC.deleteController', function() {
       this._targetManager.massHandoff(this._controller, null);
       this.setController(null);
-      this.setControllerPosition(position);
+      this.setControllerPosition(position, cb);
     }.bind(this));
   }
 };
@@ -105,12 +111,8 @@ Scope.prototype.facilityManager = function() {
 	return this._facilityManager;
 };
 
-Scope.prototype.setCRDA = function(crda) {
-	this._crda = crda;
-};
-
-Scope.prototype.CRDA = function() {
-	return this._crda;
+Scope.prototype.CRDAManager = function() {
+	return this._CRDAManager;
 };
 
 Scope.prototype.turnOn = function() {
@@ -265,9 +267,9 @@ Scope.prototype.renderRangeRings = function() {
 
 Scope.prototype.renderOverlays = function() {
 	this._textOverlay.renderTime(this._renderer, this._airports);
-	//this._textOverlay.renderTowerList(this._renderer, this._airports, this._situation.aircraft());
+	this._textOverlay.renderTowerList(this._renderer, this.targetManager().getAllTargets());
 	//this._textOverlay.renderLACAMCI(this._renderer, this._situation.CDE());
-	//this._textOverlay.renderCRDAStatus(this._renderer, this._situation.CRDA());
+	this._textOverlay.renderCRDAStatus(this._renderer, this.CRDAManager());
 	this._textOverlay.renderPreviewArea(this._renderer);
   this._textOverlay.renderControllers(this._renderer, this._controllers);
 };
@@ -301,7 +303,7 @@ Scope.prototype.render = function() {
 	//this.detectAndRenderConflicts();
 	this.renderRenderPoints();
 	this._targetManager.render(this._renderer);
-	if (this._crda)
-			this._crda.ghostTargets(this._targetManager, this._renderer);
+  if (this._CRDAManager.isEnabled())
+    this._CRDAManager.ghostTargets(this._targetManager, this._renderer);
 	this.renderOverlays();
 };

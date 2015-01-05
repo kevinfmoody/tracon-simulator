@@ -20,7 +20,7 @@ html
     script(src='/weatheroverlay.js', type='text/javascript')
     
     //-
-      < script(src='http://www.bdcc.co.uk/Gmaps/WorldMagneticModel.js', type='text/javascript') 
+      < script(src='https://www.bdcc.co.uk/Gmaps/WorldMagneticModel.js', type='text/javascript') 
       <script type="text/javascript">
         // var m = new WorldMagneticModel();
         // for (var i = 0; i < 20; i++) {
@@ -38,6 +38,7 @@ html
     script(src='/controller.js', type='text/javascript')
     script(src='/conflictdetectionengine.js', type='text/javascript')
     script(src='/crda.js', type='text/javascript')
+    script(src='/CRDAManager.js', type='text/javascript')
     script(src='/map.js', type='text/javascript')
     script(src='/textoverlay.js', type='text/javascript')
     script(src='/PathManager.js', type='text/javascript')
@@ -56,7 +57,13 @@ html
 
     script(src='/keyboard.js', type='text/javascript')
     script(src='/command.js', type='text/javascript')
+
     script(src='/ConnectionDelegate.js', type='text/javascript')
+
+    script(src='/vendor/annyang.js', type='text/javascript')
+    script(src='/SpeechCommands.js', type='text/javascript')
+    //- script(src='/vendor/audiorecorder.min.js' type='text/javascript')
+      
     script(src='/main.js', type='text/jsx')
 
     script(src='/vendor/JSXTransformer.js', type='text/javascript')
@@ -65,7 +72,7 @@ html
     script(src='/components/MainDCB.js', type='text/jsx')
     script(src='/components/DCB.js', type='text/jsx')
 
-    link(rel='stylesheet', type='text/css', href='http://fonts.googleapis.com/css?family=Oxygen+Mono')
+    link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Oxygen+Mono')
     link(rel='stylesheet', type='text/css', href='/scope.css')
     link(rel='stylesheet', type='text/css', href='/settings.css')
   body

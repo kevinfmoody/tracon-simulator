@@ -2,7 +2,32 @@ function CRDA(airport, masterRunwayID, slaveRunwayID) {
   this._airport = airport;
   this._master = airport.runway(masterRunwayID);
   this._slave = airport.runway(slaveRunwayID);
+
+  if (!this._master || !this._slave)
+    throw CRDA.ERROR.INVALID_RUNWAYS;
+
+  this._enabled = true;
 }
+
+CRDA.ERROR = {
+  INVALID_RUNWAYS: 1
+};
+
+CRDA.prototype.enable = function() {
+  this._enabled = true;
+};
+
+CRDA.prototype.disable = function() {
+  this._enabled = false;
+};
+
+CRDA.prototype.isEnabled = function() {
+  return this._enabled;
+};
+
+CRDA.prototype.toggle = function() {
+  this._enabled = !this._enabled;
+};
 
 CRDA.prototype.ghostTargets = function(targetManager, r) {
   var targets = targetManager.getAllTargets();
