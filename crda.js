@@ -31,19 +31,43 @@ CRDA.prototype.toggle = function() {
 
 CRDA.prototype.ghostTargets = function(targetManager, r) {
   var targets = targetManager.getAllTargets();
-  for (var i in targets)
-    this.ghostTarget(targets[i], r);
+  targets.forEach(function(target) {
+    if (target.ghostState() !== Target.GHOST_STATES.INHIBITED)
+      this.ghostTarget(target, r);
+  }.bind(this));
+};
+
+CRDA.prototype.select = function(x, y, r) {
+  var targets = scope.targetManager().getAllTargets();
+  for (var i in targets) {
+    var target = targets[i];
+    if (this.shouldGhostTarget(target, r)) {
+      var pos = this.ghostPosition(target, r);
+      var coordinates = r.gtoc(pos._lat, pos._lon);
+      var dx = coordinates.x - x;
+      var dy = coordinates.y - y;
+      var distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      if (distance < 15) {
+        return target;
+      }
+    }
+  }
+  return null;
 };
 
 CRDA.prototype.ghostTarget = function(target, r) {
-  if (this._master && this.inMasterZone(target, r))
+  if (this.shouldGhostTarget(target, r))
     this.renderGhost(target, this.ghostPosition(target, r), r);
 };
 
+CRDA.prototype.shouldGhostTarget = function(target, r) {
+  return this._master && (target.ghostState() === Target.GHOST_STATES.FORCED || this.inMasterZone(target, r));
+};
+
 CRDA.prototype.ghostPosition = function(target, r) {
-  var bearingOffset = 360 - (this._master.course() + r.magVar()) + this._master.position().bearingTo(target.position());
+  var bearingOffset = 360 - this._master.course() + this._master.position().bearingTo(target.position());
   var distance = this._master.position().distanceTo(target.position());
-  return this._slave.position().destinationPoint(this._slave.course() + r.magVar() + bearingOffset, distance);
+  return this._slave.position().destinationPoint(this._slave.course() + bearingOffset, distance);
 };
 
 CRDA.prototype.renderGhost = function(target, position, r) {
@@ -98,9 +122,9 @@ CRDA.prototype.inMasterZone = function(target, r) {
   var distanceInFeet = target.position().distanceTo(this._master.position()) * 3280.84;
   var radioAltitude = target.altitude() - this._master.elevation();
   var gsAltitude = Math.tan(3 * Math.PI / 180) * distanceInFeet;
-  if (target.altitude() < gsAltitude + 1000
-      && this.angleBetween(target.course(), this._master.course()) < 90
-      && this.inMasterFunnel(target, r))
+  if (target.altitude() < gsAltitude + 1000 &&
+      this.angleBetween(target.course(), this._master.course()) < 90 &&
+      this.inMasterFunnel(target, r))
     return true;
   return false;
 };
@@ -111,7 +135,7 @@ CRDA.prototype.angleBetween = function(primaryHeading, secondaryHeading) {
 };
 
 CRDA.prototype.inMasterFunnel = function(target, r) {
-  var bearingOffset = (360 - (this._master.course() + r.magVar()) + this._master.position().bearingTo(target.position())) % 360;
+  var bearingOffset = (360 - this._master.course() + this._master.position().bearingTo(target.position())) % 360;
   var distance = this._master.position().distanceTo(target.position()) * 0.539957;
   return 150 <= bearingOffset && bearingOffset <= 210 && distance <= 30;
 };

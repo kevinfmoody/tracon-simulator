@@ -30,8 +30,13 @@ Command.SEGMENT = {
   SHOW_PATH: 'SHOWPATH',
   HIDE_PATH: 'HIDEPATH',
   MEASURE_DISTANCE: '*',
+  SHOW_COORDINATES: 'FD*',
   TOGGLE_CONFLICT_ALERTS: 'CAK',
-  MANAGE_CRDA: 'FN'
+  MANAGE_CRDA: 'FN',
+  CLEAR_JRING: '*J',
+  CLEAR_ALL_JRINGS: '**J',
+  CLEAR_CONE: '*P',
+  CLEAR_ALL_CONES: '**P'
 };
 
 Command.SEGMENT_RAW = {
@@ -45,8 +50,13 @@ Command.SEGMENT_RAW = {
   TYPE_PATH: true,
   FIXPATH: true,
   '*': true,
+  'FD*': true,
   CAK: true,
-  FN: true
+  FN: true,
+  '*J': true,
+  '**J': true,
+  '*P': true,
+  '**P': true
 };
 
 Command.ALIAS = {
@@ -142,9 +152,10 @@ Command.run = function(e, args) {
 Command.manualProcess = function(e, args) {
   var command = args[0],
       emptySelect = /^$/,
-      coneCommand = /^\*P\d+$/,
-      jRingCommand = /^\*J\d+$/,
-      addRemoveCRDACommand = /^FN([A-Z]{3,4})(\d{2}[A-Z]{0,1})\/(\d{2}[A-Z]{0,1})$/;
+      coneCommand = /^\*P(\d{1,2}(\.\d|))$/,
+      jRingCommand = /^\*J(\d{1,2}(\.\d|))$/,
+      addRemoveCRDACommand = /^FN([A-Z]{3,4})(\d{2}[A-Z]{0,1})\/(\d{2}[A-Z]{0,1})$/,
+      toggleCRDACommand = /^FN(\d)$/;
   if (command.length === 2) {
     var controller = scope.getControllerByIdentifier(command);
     if (controller) {
@@ -205,17 +216,27 @@ Command.manualProcess = function(e, args) {
     case coneCommand.test(command):
       return function(e, args) {
         if (e.type === 'click') {
+          var result = coneCommand.exec(command),
+              dist = parseFloat(result[1]);
+          if (dist < 1 || dist > 30)
+            throw Command.ERROR.FORMAT;
           var aircraft = scope.select(e);
-          if (aircraft)
-            aircraft.enableCone(parseInt(args[0].substr(2), 10));
+          if (aircraft) {
+            aircraft.enableCone(dist);
+          }
         }
       };
     case jRingCommand.test(command):
       return function(e, args) {
         if (e.type === 'click') {
+          var result = jRingCommand.exec(command),
+              dist = parseFloat(result[1]);
+          if (dist < 1 || dist > 30)
+            throw Command.ERROR.FORMAT;
           var aircraft = scope.select(e);
-          if (aircraft)
-            aircraft.enableJRing(parseInt(args[0].substr(2), 10));
+          if (aircraft) {
+            aircraft.enableJRing(dist);
+          }
         }
       };
     case addRemoveCRDACommand.test(command):
@@ -228,7 +249,7 @@ Command.manualProcess = function(e, args) {
         scope.facilityManager().airport(icao, function(airport) {
           if (airport) {
             try {
-              scope.CRDAManager().addCRDA(airport, master, slave);
+              scope.CRDAManager().addRemoveCRDA(airport, master, slave);
               scope.textOverlay().clearPreview();
             } catch (err) {
               scope.textOverlay().setPreviewAreaMessage('ILL RWY');
@@ -245,15 +266,86 @@ Command.manualProcess = function(e, args) {
         });
         throw Command.ERROR.TAKE_NO_ACTION;
       };
+    case toggleCRDACommand.test(command):
+      return function(e, args) {
+        Command.enterable(e);
+        var result = toggleCRDACommand.exec(command),
+            num = parseInt(result[1], 10);
+        scope.CRDAManager().toggleCRDA(num);
+      };
   }
   return null;
 };
 
 Command[Command.SEGMENT_TYPE.PLACEHOLDER] = {};
 
-Command[Command.SEGMENT.MANAGE_CRDA] = function(e, args) {
+Command[Command.SEGMENT.SHOW_COORDINATES] = function(e, args) {
+  if (e.type === 'click') {
+    var pos = scope.selectPosition(e);
+    scope.addRenderPoint(pos);
+    scope.textOverlay().setPreviewAreaMessage(pos._lat.toFixed(4) + ',' + pos._lon.toFixed(4));
+    Command.registerCleanupFunction(function() {
+      scope.textOverlay().clearPreviewAreaMessage();
+      scope.clearRenderPoints();
+    });
+    Command.cleanupIn(15000);
+    return;
+  }
+  throw Command.ERROR.FORMAT;
+};
+
+Command[Command.SEGMENT.CLEAR_JRING] = function(e, args) {
+  if (e.type === 'click') {
+    var target = scope.select(e);
+    if (target) {
+      target.disableJRing();
+      return;
+    }
+  }
+  throw Command.ERROR.FORMAT;
+};
+
+Command[Command.SEGMENT.CLEAR_ALL_JRINGS] = function(e, args) {
   Command.enterable(e);
-  scope.CRDAManager().toggle();
+  scope.targetManager().getAllTargets().forEach(function(target) {
+    target.disableJRing();
+  });
+};
+
+Command[Command.SEGMENT.CLEAR_CONE] = function(e, args) {
+  if (e.type === 'click') {
+    var target = scope.select(e);
+    if (target) {
+      target.disableCone();
+      return;
+    }
+  }
+  throw Command.ERROR.FORMAT;
+};
+
+Command[Command.SEGMENT.CLEAR_ALL_CONES] = function(e, args) {
+  Command.enterable(e);
+  scope.targetManager().getAllTargets().forEach(function(target) {
+    target.disableCone();
+  });
+};
+
+Command[Command.SEGMENT.MANAGE_CRDA] = function(e, args) {
+  if (e.type === 'click') {
+    var target = scope.select(e);
+    if (target) {
+      target.promoteGhosting();
+      return;
+    }
+    target = scope.CRDAManager().select(e);
+    if (target) {
+      target.demoteGhosting();
+      return;
+    }
+    throw Command.ERROR.FORMAT;
+  } else {
+    scope.CRDAManager().toggle();
+  }
 };
 
 Command[Command.SEGMENT.MEASURE_DISTANCE] = function(e, args) {

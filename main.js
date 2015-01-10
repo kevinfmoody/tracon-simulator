@@ -58,7 +58,7 @@ function initScope() {
   // });
   
 	//scope.addMap('BOSMHT', '', 'maps/bosmht.map', function() {
-		scope.render();
+		//scope.render();
 		setInterval(function() {
 			scope.render();
 		}, 1000 / 30);
@@ -69,7 +69,7 @@ function initScope() {
     scope.enableSmartMap();
     scope.radar().setPosition(airport.position());
     scope.renderer().setRadarCenter(scope.radar().position());
-    scope.CRDAManager().addCRDA(airport, '27', '22L');
+    //scope.CRDAManager().addRemoveCRDA(airport, '27', '22L');
     scope.setControllerPosition('FINAL', function() {
       scope.turnOn();
     });

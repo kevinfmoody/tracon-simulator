@@ -20,6 +20,7 @@ function Target(callsign) {
   this._isDisplayingJRing = false;
   this._isCoasting = false;
   this._isAwaitingPurge = false;
+  this._ghostState = Target.GHOST_STATES.ENABLED;
 
   this._otherController = null;
   this._controlStates = {
@@ -44,6 +45,12 @@ function Target(callsign) {
   this._conflicts = {};
   this._conflictState = Target.CONFLICT_STATES.NONE;
 }
+
+Target.GHOST_STATES = {
+  ENABLED: 1,
+  FORCED: 2,
+  INHIBITED: 3
+};
 
 Target.CONFLICT_STATES = {
   NONE: 1,
@@ -260,8 +267,7 @@ Target.prototype.setArrival = function(arrival) {
 
 Target.prototype.setPosition = function(position) {
   position = new LatLon(position._lat, position._lon);
-  if (this._position)
-    this.addHistory(position);
+  this.addHistory(position);
   this._position = position;
 };
 
@@ -289,6 +295,8 @@ Target.prototype.setController = function(controller) {
 
 Target.prototype.addHistory = function(position) {
   this._history.unshift(position);
+  if (this._callsign === 'SWA115')
+    console.log(this._history);
   if (this._history.length > 6)
     this._history.length = 6;
 };
@@ -338,6 +346,7 @@ Target.prototype.course = function() {
 };
 
 Target.prototype.enableCone = function(size) {
+  this.disableJRing();
   this._coneSize = size;
   this._isDisplayingCone = true;
 };
@@ -351,6 +360,7 @@ Target.prototype.isDisplayingCone = function() {
 };
 
 Target.prototype.enableJRing = function(size) {
+  this.disableCone();
   this._jRingSize = size;
   this._isDisplayingJRing = true;
 };
@@ -373,6 +383,32 @@ Target.prototype.contract = function() {
 
 Target.prototype.isExpanded = function() {
   return this._isExpanded;
+};
+
+Target.prototype.demoteGhosting = function() {
+  switch (this._ghostState) {
+    case Target.GHOST_STATES.ENABLED:
+      this._ghostState = Target.GHOST_STATES.INHIBITED;
+      break;
+    case Target.GHOST_STATES.FORCED:
+      this._ghostState = Target.GHOST_STATES.ENABLED;
+      break;
+  }
+};
+
+Target.prototype.promoteGhosting = function() {
+  switch (this._ghostState) {
+    case Target.GHOST_STATES.INHIBITED:
+      this._ghostState = Target.GHOST_STATES.ENABLED;
+      break;
+    case Target.GHOST_STATES.ENABLED:
+      this._ghostState = Target.GHOST_STATES.FORCED;
+      break;
+  }
+};
+
+Target.prototype.ghostState = function() {
+  return this._ghostState;
 };
 
 Target.prototype.select = function() {

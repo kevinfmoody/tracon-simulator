@@ -28,11 +28,9 @@ Airport.prototype.enterSync = function() {
 };
 
 Airport.prototype.sync = function() {
-  $.get('/api/metars/' + this.icao(), function(data) {
-    if (data.metar) {
-      this._metar = data.metar;
-      scope.render();
-    }
+  $.get('/api/metars/' + this.icao(), function(metar) {
+    if (metar)
+      this._metar = metar;
   }.bind(this));
 };
 
@@ -121,13 +119,17 @@ Airport.prototype.magVar = function() {
   return this._magVar;
 };
 
-Airport.prototype.metar = function(tryAgain) {
+Airport.prototype.metar = function() {
   this.enterSync();
   return this._metar;
 };
 
-Airport.prototype.altimeter = function(tryAgain) {
+Airport.prototype.altimeter = function() {
   return this.metar() ? this.metar().altimeter : '--.--';
+};
+
+Airport.prototype.windText = function(r) {
+  return this.metar() ? r.pad(this.metar().wind.direction, 3) + '' + r.pad(this.metar().wind.speed, 2) : '';
 };
 
 if (typeof module !== 'undefined' && module.exports) {

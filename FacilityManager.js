@@ -25,6 +25,10 @@ FacilityManager.prototype.primaryAirport = function(cb, cbOnlyIfAvailable) {
   cb(null);
 };
 
+FacilityManager.prototype.airports = function() {
+  return this._airports;
+};
+
 FacilityManager.prototype.airport = function(icao, cb, cbOnlyIfAvailable) {
   var airport = this._airports[icao];
   if (airport)

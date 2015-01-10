@@ -68,46 +68,67 @@ TargetRenderer.prototype.renderCone = function(r) {
   if (this._target.isDisplayingCone()) {
     var magCourse = this._target.course() - r.magVar(),
         len = r.distanceToPixels(this._target.position(), this._target.course(), this._target._coneSize),
-        width = r.distanceToPixels(this._target.position(), this._target.course(), 0.5),
+        width = len / 12,
         pos = r.gtoc(this._target.position()._lat, this._target.position()._lon),
         theta = -magCourse * Math.PI / 180,
-        minLeft = r.rotate(-width / 2 * 0.4, -len * 0.4, 0, 0, theta),
-        minRight = r.rotate(width / 2 * 0.4, -len * 0.4, 0, 0, theta),
-        midLeft = r.rotate(-width / 2 * 0.6, -len * 0.6, 0, 0, theta),
-        midRight = r.rotate(width / 2 * 0.6, -len * 0.6, 0, 0, theta),
         maxLeft = r.rotate(-width / 2, -len, 0, 0, theta),
         maxRight = r.rotate(width / 2, -len, 0, 0, theta),
         distanceLabel = r.rotate(0, -len / 2, 0, 0, theta);
-    r.context().strokeStyle = '#369';
-    r.context().lineWidth = 1;
     r.context().beginPath();
-    r.context().moveTo(pos.x + minLeft.x, pos.y + minLeft.y);
-    r.context().lineTo(pos.x, pos.y);
-    r.context().lineTo(pos.x + minRight.x, pos.y + minRight.y);
-    r.context().stroke();
-    r.context().beginPath();
-    r.context().moveTo(pos.x + midLeft.x, pos.y + midLeft.y);
-    r.context().lineTo(pos.x + maxLeft.x, pos.y + maxLeft.y);
-    r.context().lineTo(pos.x + maxRight.x, pos.y + maxRight.y);
-    r.context().lineTo(pos.x + midRight.x, pos.y + midRight.y);
-    r.context().stroke();
-    r.context().beginPath();
-    r.context().font = 'bold ' + width + 'px Oxygen Mono';
+    r.context().font = 'bold 14px Oxygen Mono';
     r.context().textAlign = 'center';
     r.context().textBaseline = 'middle';
     r.context().fillStyle = '#369';
     r.context().fillText('' + this._target._coneSize, pos.x + distanceLabel.x, pos.y + distanceLabel.y);
+    var tWidth = r.context().measureText('' + this._target._coneSize).width / 2,
+        tHeight = 6,
+        minX = Math.min(pos.x + maxLeft.x, pos.x + maxRight.x, pos.x),
+        maxX = Math.max(pos.x + maxLeft.x, pos.x + maxRight.x, pos.x),
+        minY = Math.min(pos.y + maxLeft.y, pos.y + maxRight.y, pos.y),
+        maxY = Math.max(pos.y + maxLeft.y, pos.y + maxRight.y, pos.y);
+    r.context().save();
+    r.context().beginPath();
+    r.context().moveTo(minX, minY);
+    r.context().lineTo(pos.x + distanceLabel.x, minY);
+    r.context().lineTo(pos.x + distanceLabel.x, pos.y + distanceLabel.y - tHeight - 4);
+    r.context().lineTo(pos.x + distanceLabel.x - tWidth - 4, pos.y + distanceLabel.y - tHeight - 4);
+    r.context().lineTo(pos.x + distanceLabel.x - tWidth - 4, pos.y + distanceLabel.y + tHeight + 4);
+    r.context().lineTo(pos.x + distanceLabel.x + tWidth + 4, pos.y + distanceLabel.y + tHeight + 4);
+    r.context().lineTo(pos.x + distanceLabel.x + tWidth + 4, pos.y + distanceLabel.y - tHeight - 4);
+    r.context().lineTo(pos.x + distanceLabel.x, pos.y + distanceLabel.y - tHeight - 4);
+    r.context().lineTo(pos.x + distanceLabel.x, minY);
+    r.context().lineTo(maxX, minY);
+    r.context().lineTo(maxX, maxY);
+    r.context().lineTo(minX, maxY);
+    r.context().lineTo(minX, minY);
+    r.context().clip();
+    r.context().strokeStyle = '#369';
+    r.context().lineWidth = 1;
+    r.context().beginPath();
+    r.context().moveTo(pos.x, pos.y);
+    r.context().lineTo(pos.x + maxLeft.x, pos.y + maxLeft.y);
+    r.context().lineTo(pos.x + maxRight.x, pos.y + maxRight.y);
+    r.context().lineTo(pos.x, pos.y);
+    r.context().stroke();
+    r.context().restore();
   }
 };
 
 TargetRenderer.prototype.renderJRing = function(r) {
   if (this._target.isDisplayingJRing()) {
-    var pos = r.gtoc(this._target.position()._lat, this._target.position()._lon);
+    var pos = r.gtoc(this._target.position()._lat, this._target.position()._lon),
+        radius = r.distanceToPixels(this._target.position(), this._target.course(), this._target._jRingSize);
     r.context().strokeStyle = '#369';
     r.context().lineWidth = 1;
     r.context().beginPath();
-    r.context().arc(pos.x, pos.y, r.distanceToPixels(this._target.position(), this._target.course(), this._target._jRingSize), 0, 2 * Math.PI);
+    r.context().arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
     r.context().stroke();
+    r.context().beginPath();
+    r.context().font = 'bold 14px Oxygen Mono';
+    r.context().textAlign = 'center';
+    r.context().textBaseline = 'bottom';
+    r.context().fillStyle = '#369';
+    r.context().fillText('' + this._target._jRingSize, pos.x, pos.y + radius);
   }
 };
 
@@ -146,11 +167,11 @@ TargetRenderer.prototype.renderExtras = function(r) {
 
 TargetRenderer.prototype.renderHistory = function(r) {
   if (r.targetHistory()) {
-    r.context().fillStyle = '#00f';
-    for (var i in this._target.history().slice(1)) {
+    r.context().fillStyle = '#26c';
+    for (var i in this._target.history()) {
       var historyPos = r.gtoc(this._target.history()[i]._lat, this._target.history()[i]._lon);
       r.context().beginPath();
-      r.context().arc(historyPos.x, historyPos.y, 5 - Math.floor((i - 1) / 2), 0, 2 * Math.PI);
+      r.context().arc(historyPos.x, historyPos.y, 2.5 - Math.floor((i - 1) / 4), 0, 2 * Math.PI);
       r.context().globalAlpha = 0.5 - (i - 1) / 10;
       r.context().fill();
     }
@@ -162,38 +183,36 @@ TargetRenderer.prototype.renderTarget = function(r) {
   if (this._target.isCoasting())
     return;
   // Determine size of beacon based on distance from radar site
-  var radarDistance = r.radarCenterPosition().distanceTo(this._target.position()) * 0.539957;
-  var beaconWidth = Math.min(Math.max(4 * Math.sqrt(radarDistance), 4), 32);
-  var acPos = r.gtoc(this._target.position()._lat, this._target.position()._lon);
-  var radarCenter = r.radarCenter();
-  var theta = r.angleBetween(acPos.x, acPos.y, radarCenter.x, radarCenter.y) + Math.PI / 2;
+  var radarDistance = r.radarCenterPosition().distanceTo(this._target.position()) * 0.539957,
+      beaconWidth = (Math.min(Math.max(radarDistance, 5), 40) - 5) / 35 * 2.5 + 0.5,
+      acPos = r.gtoc(this._target.position()._lat, this._target.position()._lon),
+      radarCenter = r.radarCenter(),
+      theta = r.angleBetween(acPos.x, acPos.y, radarCenter.x, radarCenter.y) + Math.PI / 2,
+      unit = r.distanceToPixels(this._target.position(), 0, 0.01),
+      width = r.distanceToPixels(this._target.position(), 0, 0.25),
+      bHeight = Math.max(beaconWidth * width, 4.5),
+      bWidth = Math.max(width, 3);
   // Draw the beacon line
-  var lineL = r.rotate(-beaconWidth, 0, 0, 0, theta);
-  var lineR = r.rotate(beaconWidth, 0, 0, 0, theta);
+  var lineL = r.rotate(-bHeight * 2, 0, 0, 0, theta);
+  var lineR = r.rotate(bHeight * 2, 0, 0, 0, theta);
   r.context().beginPath();
   r.context().moveTo(acPos.x + lineL.x, acPos.y + lineL.y);
   r.context().lineTo(acPos.x + lineR.x, acPos.y + lineR.y);
   r.context().strokeStyle = '#1e582f';
-  r.context().lineWidth = 2;
+  r.context().lineWidth = Math.max(1.5, unit);
   r.context().stroke();
   // Draw the beacon target
-  var boxBL = r.rotate(-beaconWidth / 2, 0, 0, 0, theta);
-  var boxTL = r.rotate(-beaconWidth / 2, 9, 0, 0, theta);
-  var boxTR = r.rotate(beaconWidth / 2, 9, 0, 0, theta);
-  var boxBR = r.rotate(beaconWidth / 2, 0, 0, 0, theta);
+  var boxBL = r.rotate(-bHeight, 0, 0, 0, theta);
+  var boxTL = r.rotate(-bHeight, bWidth, 0, 0, theta);
+  var boxTR = r.rotate(bHeight, bWidth, 0, 0, theta);
+  var boxBR = r.rotate(bHeight, 0, 0, 0, theta);
   r.context().beginPath();
   r.context().moveTo(acPos.x + boxBL.x, acPos.y + boxBL.y);
   r.context().lineTo(acPos.x + boxTL.x, acPos.y + boxTL.y);
   r.context().lineTo(acPos.x + boxTR.x, acPos.y + boxTR.y);
   r.context().lineTo(acPos.x + boxBR.x, acPos.y + boxBR.y);
-  if (radarDistance < 40) {
-    r.context().fillStyle = '#2d82ed';
-    r.context().fill();
-  } else {
-    r.context().strokeStyle = '#2d82ed';
-    r.context().lineWidth = 1;
-    r.context().stroke();
-  }
+  r.context().fillStyle = '#2d82ed';
+  r.context().fill();
 };
 
 TargetRenderer.prototype.renderPosition = function(r, elapsed) {

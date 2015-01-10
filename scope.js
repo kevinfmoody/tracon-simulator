@@ -302,8 +302,8 @@ Scope.prototype.render = function() {
 	//this._situation.render(this._renderer);
 	//this.detectAndRenderConflicts();
 	this.renderRenderPoints();
-	this._targetManager.render(this._renderer);
+  this.renderOverlays();
   if (this._CRDAManager.isEnabled())
     this._CRDAManager.ghostTargets(this._targetManager, this._renderer);
-	this.renderOverlays();
+	this._targetManager.render(this._renderer);
 };

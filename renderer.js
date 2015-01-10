@@ -315,6 +315,11 @@ Renderer.prototype.distanceToPixels = function(position, course, distance) {
 	return Math.sqrt(Math.pow(nPos.x - pos.x, 2) + Math.pow(nPos.y - pos.y, 2));
 };
 
+Renderer.prototype.range = function() {
+	var scale = this.distanceToPixels(new LatLon(this._midLat, this._midLon), 0, 1);
+	return Math.round(this._scope.height / scale);
+};
+
 Renderer.prototype.setPreset = function(slot) {
 	this._presets[slot] = {
 		scale: this._globalScale,
