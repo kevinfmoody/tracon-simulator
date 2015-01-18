@@ -268,7 +268,7 @@ Scope.prototype.renderRangeRings = function() {
 Scope.prototype.renderOverlays = function() {
 	this._textOverlay.renderTime(this._renderer, this._airports);
 	this._textOverlay.renderTowerList(this._renderer, this.targetManager().getAllTargets());
-	//this._textOverlay.renderLACAMCI(this._renderer, this._situation.CDE());
+	this._textOverlay.renderLACAMCI(this._renderer);
 	this._textOverlay.renderCRDAStatus(this._renderer, this.CRDAManager());
 	this._textOverlay.renderPreviewArea(this._renderer);
   this._textOverlay.renderControllers(this._renderer, this._controllers);

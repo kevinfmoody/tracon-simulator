@@ -29,6 +29,7 @@ Command.SEGMENT = {
   TYPE_PATH: 'TYPEPATH',
   SHOW_PATH: 'SHOWPATH',
   HIDE_PATH: 'HIDEPATH',
+  RELOCATE_TARGET: 'RELOCATE',
   MEASURE_DISTANCE: '*',
   SHOW_COORDINATES: 'FD*',
   TOGGLE_CONFLICT_ALERTS: 'CAK',
@@ -56,7 +57,8 @@ Command.SEGMENT_RAW = {
   '*J': true,
   '**J': true,
   '*P': true,
-  '**P': true
+  '**P': true,
+  RELOCATE: 'true'
 };
 
 Command.ALIAS = {
@@ -68,7 +70,8 @@ Command.ALIAS = {
   DP: Command.SEGMENT.DRAW_PATH,
   TP: Command.SEGMENT.TYPE_PATH,
   SP: Command.SEGMENT.SHOW_PATH,
-  HP: Command.SEGMENT.HIDE_PATH
+  HP: Command.SEGMENT.HIDE_PATH,
+  RELOC: Command.SEGMENT.RELOCATE_TARGET
 };
 
 Command.currentCommand = [];
@@ -348,6 +351,35 @@ Command[Command.SEGMENT.MANAGE_CRDA] = function(e, args) {
   }
 };
 
+Command[Command.SEGMENT.RELOCATE_TARGET] = (function() {
+  var selectedTarget = null;
+  return function(e, args) {
+    if (e.type === 'click') {
+      var target = scope.select(e);
+      if (target) {
+        selectedTarget = target;
+        throw Command.ERROR.TAKE_NO_ACTION;
+      } else if (selectedTarget) {
+        var newPos = scope.selectPosition(e);
+        console.log('emitting:');
+        console.log('TS.relocate');
+        console.log({
+          callsign: selectedTarget.callsign(),
+          lat: newPos._lat,
+          lon: newPos._lon
+        });
+        socket.emit('TS.relocate', {
+          callsign: selectedTarget.callsign(),
+          lat: newPos._lat,
+          lon: newPos._lon
+        });
+        return;
+      }
+    }
+    throw Command.ERROR.FORMAT;
+  };
+})();
+
 Command[Command.SEGMENT.MEASURE_DISTANCE] = function(e, args) {
   if (e.type === 'click') {
     var headingAndDistance = scope.measureHeadingAndDistance(e);
@@ -505,8 +537,10 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.FLY_HEADING][Command.SEGM
   var callsign = args[0],
       heading = args[2],
       target = scope.targetManager().getTargetByCallsign(callsign);
-  if (target && target.assignHeading(heading))
-    return;
+  if (target && target.assignHeading(heading)) {
+    scope.textOverlay().keepFirstLine();
+    throw Command.ERROR.TAKE_NO_ACTION;
+  }
   throw Command.ERROR.FORMAT;
 };
 
@@ -515,8 +549,10 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.MAINTAIN_ALTITUDE][Comman
   var callsign = args[0],
       altitude = args[2],
       target = scope.targetManager().getTargetByCallsign(callsign);
-  if (target && target.assignAltitude(altitude))
-    return;
+  if (target && target.assignAltitude(altitude)) {
+    scope.textOverlay().keepFirstLine();
+    throw Command.ERROR.TAKE_NO_ACTION;
+  }
   throw Command.ERROR.FORMAT;
 };
 
@@ -525,8 +561,10 @@ Command[Command.SEGMENT_TYPE.CALLSIGN][Command.SEGMENT.SPEED][Command.SEGMENT_TY
   var callsign = args[0],
       speed = args[2],
       target = scope.targetManager().getTargetByCallsign(callsign);
-  if (target && target.assignSpeed(speed))
-    return;
+  if (target && target.assignSpeed(speed)) {
+    scope.textOverlay().keepFirstLine();
+    throw Command.ERROR.TAKE_NO_ACTION;
+  }
   throw Command.ERROR.FORMAT;
 };
 

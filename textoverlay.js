@@ -125,6 +125,11 @@ TextOverlay.prototype.clearPreview = function() {
   Keyboard.MODE = Keyboard.MODES.NONE;
 };
 
+TextOverlay.prototype.keepFirstLine = function() {
+  this._preview = this._preview.slice(0, 1);
+  this.addPreviewChar(' ');
+};
+
 TextOverlay.prototype.addPreviewChar = function(character) {
   if (character == ' ') {
     if (this._preview[this._preview.length - 1] != '')
@@ -183,17 +188,17 @@ TextOverlay.prototype.renderTime = function(r) {
     (minutes.length == 1 ? '0' + minutes : minutes) + '/' +
     (seconds.length == 1 ? '0' + seconds : seconds);
 	r.context().fillText(timeString, 75, this.line(r, 0.14, 0));
-  scope.facilityManager().primaryAirport(function(airport) {
-    if (airport)
-      r.context().fillText(airport.altimeter(), 75 + r.context().measureText(timeString + ' ').width, this.line(r, 0.14, 0));
-  }.bind(this), true);
+  // scope.facilityManager().primaryAirport(function(airport) {
+  //   if (airport)
+  //     r.context().fillText(airport.altimeter(), 75 + r.context().measureText(timeString + ' ').width, this.line(r, 0.14, 0));
+  // }.bind(this), true);
   r.context().fillStyle = this.brite('green');
 	r.context().fillText('OK/OK/NA ', 75, this.line(r, 0.14, 1));
   r.context().fillStyle = this.brite();
-  scope.facilityManager().primaryAirport(function(airport) {
-    if (airport)
-      r.context().fillText(airport.iata(), 75 + r.context().measureText('OK/OK/NA ').width, this.line(r, 0.14, 1));
-  }.bind(this), true);
+  // scope.facilityManager().primaryAirport(function(airport) {
+  //   if (airport)
+  //     r.context().fillText(airport.iata(), 75 + r.context().measureText('OK/OK/NA ').width, this.line(r, 0.14, 1));
+  // }.bind(this), true);
 	r.context().fillText(r.range() + 'NM PTL: -.-', 75, this.line(r, 0.14, 2));
 	r.context().fillText('N99 999 U N99 999 A', 75, this.line(r, 0.14, 3));
   var airports = scope.facilityManager().airports(),
@@ -217,17 +222,17 @@ TextOverlay.prototype.renderControllers = function(r, controllers) {
   }.bind(this));
 };
 
-TextOverlay.prototype.renderLACAMCI = function(r, cde) {
+TextOverlay.prototype.renderLACAMCI = function(r) {
   r.context().beginPath();
   r.context().font = 'bold ' + 14 + 'px Oxygen Mono';
   r.context().textAlign = 'left';
   r.context().textBaseline = 'top';
   r.context().fillStyle = this.brite();
   var textLeft = r.scope().width - 200;
-  r.context().fillText('LA/CA/MCI', textLeft, this.line(r, .8, 0));
-  var conflicts = cde.conflicts();
-  for (var i = 0; i < conflicts.length; i++)
-    r.context().fillText(conflicts[i] + ' CA', textLeft, this.line(r, 0.8, 1 + i));
+  r.context().fillText('LA/CA/MCI', textLeft, this.line(r, 0.8, 0));
+  scope.targetManager().conflicts().forEach(function(conflict, i) {
+    r.context().fillText(conflict + ' CA', textLeft, this.line(r, 0.8, 1 + i));
+  }.bind(this));
 };
 
 TextOverlay.prototype.renderTowerList = function(r, aircraft) {

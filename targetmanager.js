@@ -3,8 +3,12 @@ function TargetManager() {
   this._airlines = {};
   this._callsigns = {};
 
+  this._conflicts = [];
+
   this._alarmSounding = false;
   this._alarm = new Audio('/sounds/ConflictAlert.wav');
+
+  this._targetPurger = setInterval(this.purgeTargets.bind(this), 5 * 1000);
 }
 
 TargetManager.SEPARATION_MINIMA = [
@@ -148,6 +152,7 @@ TargetManager.prototype.detectConflicts = function() {
   var targets = this.getAllTargets(),
       conflicts = Array(targets.length),
       alarmShouldSound = false;
+  this._conflicts = [];
   for (var i = 0; i < targets.length; i++) {
     var localTarget = targets[i];
     if (localTarget.conflictState() !== Target.CONFLICT_STATES.INHIBITED) {
@@ -155,6 +160,10 @@ TargetManager.prototype.detectConflicts = function() {
         var foreignTarget = targets[j];
         if (foreignTarget.conflictState() !== Target.CONFLICT_STATES.INHIBITED) {
           if (this.isInConflict(localTarget, foreignTarget)) {
+            if (localTarget.callsign() < foreignTarget.callsign())
+              this._conflicts.push(localTarget.callsign() + '*' + foreignTarget.callsign());
+            else
+              this._conflicts.push(foreignTarget.callsign() + '*' + localTarget.callsign());
             if (conflicts[i])
               conflicts[i].push(foreignTarget);
             else
@@ -168,6 +177,7 @@ TargetManager.prototype.detectConflicts = function() {
       }
     }
   }
+  this._conflicts.sort();
   targets.forEach(function(target, index) {
     if (!conflicts[index])
       conflicts[index] = [];
@@ -178,12 +188,32 @@ TargetManager.prototype.detectConflicts = function() {
   this.manageAlarm(alarmShouldSound);
 };
 
-TargetManager.prototype.purgeTargets = function() {
-  for (var i = 0; i < this._targets.length; i++)
-    if (target.isAwaitingPurge()) {
+TargetManager.prototype.conflicts = function() {
+  return this._conflicts;
+};
+
+TargetManager.prototype.purgeTarget = function(target) {
+  for (var i = 0; i < this._targets.length; i++) {
+    var t = this._targets[i];
+    if (t === target) {
       this._targets.splice(i, 1);
-      this.updateCallsigns();
+      return;
     }
+  }
+};
+
+TargetManager.prototype.purgeTargets = function() {
+  var purged = false;
+  for (var i = 0; i < this._targets.length; i++) {
+    var target = this._targets[i];
+    if (target.isAwaitingPurge()) {
+      purged = true;
+      this._targets.splice(i, 1);
+      i--;
+    }
+  }
+  if (purged)
+    this.updateCallsigns();
 };
 
 TargetManager.prototype.noRadarReturn = function(callsign) {

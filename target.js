@@ -229,7 +229,7 @@ Target.prototype.updateFromBlip = function(blip) {
     clearTimeout(this._radarReturnTimeout);
   this._radarReturnTimeout = setTimeout(function() {
     this.noRadarReturn();
-  }.bind(this), 7 * 1000);
+  }.bind(this), 6 * 1000);
 };
 
 Target.prototype.update = function(callsign, mode, type, arrival, position, altitude, speed, squawk, controller) {
@@ -295,8 +295,6 @@ Target.prototype.setController = function(controller) {
 
 Target.prototype.addHistory = function(position) {
   this._history.unshift(position);
-  if (this._callsign === 'SWA115')
-    console.log(this._history);
   if (this._history.length > 6)
     this._history.length = 6;
 };
@@ -472,13 +470,16 @@ Target.prototype.noRadarReturn = function() {
   if (this.controller() && !this.isCoasting()) {
     this.coast();
     var purgeTrack = setTimeout(function() {
-      this.awaitPurge();
+      scope.targetManager().purgeTarget(this);
     }.bind(this), 30000);
   }
   if (!this.controller())
-    this.awaitPurge();
+    return scope.targetManager().purgeTarget(this);
   if (this.isCoasting())
     this.coastPosition();
+  this._radarReturnTimeout = setTimeout(function() {
+    this.noRadarReturn();
+  }.bind(this), 5 * 1000);
 };
 
 Target.prototype.coastPosition = function() {

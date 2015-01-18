@@ -34,7 +34,7 @@ function SimulationSession(io, managerId, publicId) {
     this.bindDisconnectListeners(socket);
   }.bind(this));
 
-  this._simulation.loadSituation('../situations/a90.sit', function() {
+  this._simulation.loadSituation('../situations/crda.sit', function() {
     this._simulation.run({ magVar: function() { return -15.24; } });
   }.bind(this));
 }
@@ -46,6 +46,7 @@ SimulationSession.prototype.bindManagerListeners = function(socket) {
   socket.on('TS.heading', TS.heading.bind(TS));
   socket.on('TS.altitude', TS.altitude.bind(TS));
   socket.on('TS.speed', TS.speed.bind(TS));
+  socket.on('TS.relocate', TS.relocate.bind(TS));
 };
 
 SimulationSession.prototype.bindPublicListeners = function(socket) {

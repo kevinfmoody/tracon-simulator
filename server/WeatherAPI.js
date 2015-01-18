@@ -14,6 +14,8 @@ WeatherAPI.metar = (function() {
     request.get({
       url: 'https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=' + icao + '&mostRecentForEachStation=constraint&hoursBeforeNow=1.25'
     }, function(error, response, body) {
+      if (error)
+        return cb(null);
       xml2js.parseString(body, function(error, result) {
         var numResults = parseInt(result.response.data[0]['$'].num_results, 10);
         if (numResults > 0) {

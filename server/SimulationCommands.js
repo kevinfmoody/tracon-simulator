@@ -54,4 +54,15 @@ SimulationCommands.prototype.visualApproach = function(data) {
   }
 };
 
+SimulationCommands.prototype.relocate = function(data) {
+  console.log('relocating!');
+  var aircraft = this._simulation.getAircraftByCallsign(data.callsign),
+      lat = parseFloat(data.lat),
+      lon = parseFloat(data.lon);
+  if (!isNaN(lat) && !isNaN(lon) && aircraft) {
+    aircraft.setLat(lat);
+    aircraft.setLon(lon);
+  }
+};
+
 module.exports = SimulationCommands;
