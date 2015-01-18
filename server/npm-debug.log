@@ -1,0 +1,91 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'socketio',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.34
+4 warn package.json TRACONSimulatorServer@0.0.1 No description
+5 warn package.json TRACONSimulatorServer@0.0.1 No repository field.
+6 warn package.json TRACONSimulatorServer@0.0.1 No README data
+7 verbose readDependencies using package.json deps
+8 verbose cache add [ 'socketio', null ]
+9 verbose cache add name=undefined spec="socketio" args=["socketio",null]
+10 verbose parsed url { protocol: null,
+10 verbose parsed url   slashes: null,
+10 verbose parsed url   auth: null,
+10 verbose parsed url   host: null,
+10 verbose parsed url   port: null,
+10 verbose parsed url   hostname: null,
+10 verbose parsed url   hash: null,
+10 verbose parsed url   search: null,
+10 verbose parsed url   query: null,
+10 verbose parsed url   pathname: 'socketio',
+10 verbose parsed url   path: 'socketio',
+10 verbose parsed url   href: 'socketio' }
+11 silly lockFile be461470-socketio socketio
+12 verbose lock socketio /root/.npm/be461470-socketio.lock
+13 silly lockFile be461470-socketio socketio
+14 silly lockFile be461470-socketio socketio
+15 verbose addNamed [ 'socketio', '' ]
+16 verbose addNamed [ null, '*' ]
+17 silly lockFile fa004f70-socketio socketio@
+18 verbose lock socketio@ /root/.npm/fa004f70-socketio.lock
+19 silly addNameRange { name: 'socketio', range: '*', hasData: false }
+20 verbose request where is /socketio
+21 verbose request registry https://registry.npmjs.org/
+22 verbose request id e8a5620f693b7478
+23 verbose url raw /socketio
+24 verbose url resolving [ 'https://registry.npmjs.org/', './socketio' ]
+25 verbose url resolved https://registry.npmjs.org/socketio
+26 verbose request where is https://registry.npmjs.org/socketio
+27 info trying registry request attempt 1 at 15:51:20
+28 http GET https://registry.npmjs.org/socketio
+29 http 404 https://registry.npmjs.org/socketio
+30 verbose headers { date: 'Sun, 18 Jan 2015 20:51:21 GMT',
+30 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+30 verbose headers   'content-type': 'application/json',
+30 verbose headers   'cache-control': 'max-age=0',
+30 verbose headers   'content-length': '52',
+30 verbose headers   'accept-ranges': 'bytes',
+30 verbose headers   via: '1.1 varnish',
+30 verbose headers   age: '0',
+30 verbose headers   'x-served-by': 'cache-lax1422-LAX',
+30 verbose headers   'x-cache': 'MISS',
+30 verbose headers   'x-cache-hits': '0',
+30 verbose headers   'x-timer': 'S1421614280.958312,VS0,VE42',
+30 verbose headers   'keep-alive': 'timeout=10, max=50',
+30 verbose headers   connection: 'Keep-Alive' }
+31 silly registry.get cb [ 404,
+31 silly registry.get   { date: 'Sun, 18 Jan 2015 20:51:21 GMT',
+31 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+31 silly registry.get     'content-type': 'application/json',
+31 silly registry.get     'cache-control': 'max-age=0',
+31 silly registry.get     'content-length': '52',
+31 silly registry.get     'accept-ranges': 'bytes',
+31 silly registry.get     via: '1.1 varnish',
+31 silly registry.get     age: '0',
+31 silly registry.get     'x-served-by': 'cache-lax1422-LAX',
+31 silly registry.get     'x-cache': 'MISS',
+31 silly registry.get     'x-cache-hits': '0',
+31 silly registry.get     'x-timer': 'S1421614280.958312,VS0,VE42',
+31 silly registry.get     'keep-alive': 'timeout=10, max=50',
+31 silly registry.get     connection: 'Keep-Alive' } ]
+32 silly lockFile fa004f70-socketio socketio@
+33 silly lockFile fa004f70-socketio socketio@
+34 error 404 404 Not Found: socketio
+34 error 404
+34 error 404 'socketio' is not in the npm registry.
+34 error 404 You should bug the author to publish it
+34 error 404 It was specified as a dependency of 'TRACONSimulatorServer'
+34 error 404
+34 error 404 Note that you can also install from a
+34 error 404 tarball, folder, or http url, or git url.
+35 error System Linux 3.13.0-37-generic
+36 error command "/usr/local/bin/node" "/usr/local/bin/npm" "install" "socketio" "--save"
+37 error cwd /var/www/simtracon/server
+38 error node -v v0.10.34
+39 error npm -v 1.4.28
+40 error code E404
+41 verbose exit [ 1, true ]
