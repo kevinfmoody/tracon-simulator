@@ -1,4 +1,4 @@
-var fs = require('fs'),
+var lineReader = require('line-reader'),
     LatLon = require('../../latlon.js'),
     magVarDeclination = require('../../MagVar.js'),
     redis = require('redis'),
@@ -102,9 +102,8 @@ var fs = require('fs'),
           break;
       }
     };
-fs.readFile('data/APT.txt', function(err, data) {
-  var lines = data.toString().split('\r\n');
-  for (var i in lines)
-    processLine(lines[i]);
-  process.exit();
+lineReader.eachLine('data/APT.txt', function(line, last) {
+  processLine(line);
+  if (last)
+    process.exit();
 });
