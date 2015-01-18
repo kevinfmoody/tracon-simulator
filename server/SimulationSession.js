@@ -1,5 +1,5 @@
 var VATSIM = require('./vatsim/vatsim.js'),
-    TrafficSimulator = require('../traffic/TrafficSimulator.js'),
+    TrafficSimulator = require('../traffic/trafficsimulator.js'),
     SimulationCommands = require('./SimulationCommands.js'),
     FacilityManager = require('../FacilityManager.js'),
     Controller = require('../controller.js');

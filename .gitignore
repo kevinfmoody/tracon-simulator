@@ -1,4 +1,6 @@
 sloc.sh
 .DS_Store
-server/providers/data
 server/node_modules
+server/redis-2.8.19
+server/nodebb
+server/providers/data

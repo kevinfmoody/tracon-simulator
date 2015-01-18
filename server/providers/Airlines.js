@@ -1,4 +1,4 @@
-var fs = require('fs'),
+var lineReader = require('line-reader'),
     redis = require('redis'),
     
     r = redis.createClient(),
@@ -10,9 +10,8 @@ var fs = require('fs'),
         r.set('callsigns.' + icao[1], callsign[1]);
     };
 
-fs.readFile('data/airlines.dat', function(err, data) {
-  var lines = data.toString().split('\n');
-  for (var i in lines)
-    processLine(lines[i]);
-  process.exit();
+lineReader.eachLine('data/airlines.dat', function(line, last) {
+  processLine(line);
+  if (last)
+    process.exit();
 });

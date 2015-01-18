@@ -1,4 +1,4 @@
-var fs = require('fs'),
+var lineReader = require('line-reader'),
     LatLon = require('../../latlon.js'),
     navUtils = require('../../utils/navigation.js'),
     redis = require('redis'),
@@ -23,9 +23,8 @@ var fs = require('fs'),
         }
       }
     };
-fs.readFile('data/FIX.txt', function(err, data) {
-  var lines = data.toString().split('\r\n');
-  for (var i in lines)
-    processLine(lines[i]);
-  process.exit();
+lineReader.eachLine('data/FIX.txt', function(line, last) {
+  processLine(line);
+  if (last)
+    process.exit();
 });

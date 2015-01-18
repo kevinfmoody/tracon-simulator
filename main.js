@@ -66,6 +66,8 @@ function initScope() {
 	//});
   scope.facilityManager().setPrimaryAirport('KBOS');
   scope.facilityManager().primaryAirport(function(airport) {
+    if (!airport)
+      return;
     scope.enableSmartMap();
     scope.radar().setPosition(airport.position());
     scope.renderer().setRadarCenter(scope.radar().position());
