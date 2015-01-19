@@ -1,14 +1,14 @@
 var express = require('express'),
     app = express(),
     pem = require('pem'),
-    https = require('https');
-    //http = require('http').Server(app),;
+    //https = require('https');
+    http = require('http').Server(app);
 
-pem.createCertificate({days:1, selfSigned:true}, function(err, keys) {
+//pem.createCertificate({days:1, selfSigned:true}, function(err, keys) {
 
-  https = https.createServer({key: keys.serviceKey, cert: keys.certificate}, app);
+ // https = https.createServer({key: keys.serviceKey, cert: keys.certificate}, app);
 
-  var io = require('socket.io')(https),
+  var io = require('socket.io')(http),
       request = require('request'),
       SessionManager = require('./SessionManager.js'),
       NavigationAPI = require('./NavigationAPI.js'),
@@ -71,6 +71,6 @@ pem.createCertificate({days:1, selfSigned:true}, function(err, keys) {
 
   app.use('/', express.static('../'));
 
-  https.listen(8080);
+  http.listen(8080, 'localhost');
 
-});
+//});

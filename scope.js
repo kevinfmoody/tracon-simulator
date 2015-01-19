@@ -22,7 +22,7 @@ function Scope(socket) {
 	this._isOn = false;
 
   this._CRDAManager = new CRDAManager();
-  this._sounds = false;
+  this._sounds = true;
 
 	this._measureDistanceStartPosition = null;
 	this._renderPoints = [];
