@@ -1,99 +1,79 @@
 <html>
 <head>
-	<title>Boston ARTCC</title>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-	<link href='http://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css'>
-</head>
-<style type="text/css">
-
-body {
-	background:#69d;
-	font-family:'Quicksand', sans-serif;
-}
-
-.cloud {
-	position:fixed;
-}
-
-#control-tower {
-	position:fixed;
-	bottom:-188;
-	left:55%;
-	cursor:hand;
-	cursor:pointer;
-}
-
-#plane {
-	position:fixed;
-	bottom:188;
-	right:-192;
-	cursor:hand;
-	cursor:pointer;
-}
-
-#controller {
-	color:#fff;
-	position:fixed;
-	bottom:30;
-	left:55%;
-	margin-left:138px;
-	font-size:36px;
-}
-
-</style>
-<script type="text/javascript">
-
-$(document).ready(function() {
-	
-	function addCloud() {
-		var cloudType = Math.floor(Math.random() * 4 + 1);
-		var cloud = $('<img>').addClass('cloud').attr('src', '/img/cloud' + cloudType + '.png').hide().load(function() {
-			$('#sky').append(cloud);
-			drift(cloud);
-		});
-		setTimeout(addCloud, 200 + Math.floor(Math.random() * 101));
-	}
-
-	function drift(cloud) {
-		var speed = $(window).width() / (500 + Math.floor(Math.random() * 501)) * 2500;
-		var altitude = $(window).height() / 2 + Math.floor(Math.random() * ($(window).height() / 2 - cloud.height() * .3));
-		var direction = Math.random() >= .5 ? 'left' : 'left';
-		var horizontalFlip = Math.random() >= .5 ? 1 : -1;
-		var verticalFlip = Math.random() >= .5 ? 1 : -1;
-		var initialSetup = {'bottom': altitude, 'transform': 'scale(' + horizontalFlip + ', ' + verticalFlip + ')'};
-		initialSetup[direction] = -cloud.width();
-		var finalSetup = {};
-		finalSetup[direction] = $(window).width();
-		cloud.css(initialSetup).show().animate(finalSetup, speed, 'linear', function() {
-			$(this).fadeOut();
-		});
-	}
-	
-	addCloud();
-  
-  $(document).keydown(function(e) {
-    if (e.keyCode == 38) {
-      $('#plane').css({'bottom': parseFloat($('#plane').css('bottom')) + 5});
-    } else if (e.keyCode == 40) {
-      $('#plane').css({'bottom': parseFloat($('#plane').css('bottom')) - 5});
+  <title>simTRACON</title>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:300,900' rel='stylesheet' type='text/css'>
+  <script src="/vendor/jquery.js" type="text/javascript"></script>
+  <style type="text/css">
+    * {
+      padding: 0;
+      margin: 0;
     }
-    console.log(planePos);
-  });
-});
 
-var planePos = 488;
+    body {
+      background: #000;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+      background: url(/img/bg.jpg);
+      background-size: cover;
+    }
 
-$(window).load(function() {
-	
-	$('#control-tower').animate({'bottom': 0});
-	$('#plane').animate({'bottom': 488 + 0.174 * $(window).width() * .55, 'right': '55%'}, 1000);
-});
+    .container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin-left: -150px;
+      margin-top: -70px;
+    	text-align: center;
+    	width: 300px;
+    }
 
-</script>
+    .logo {
+    	width: 300px;
+    	height: 36px;
+    	background: url(/img/logo.png);
+    	background-size: cover;
+    	margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: #fff;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    a {
+    	color: #fff;
+    	text-decoration: none;
+    }
+
+    .button {
+    	margin: 0 auto;
+    	width: 120px;
+    	border-radius: 3px;
+    	border: 1px solid #999;
+    	font-size: 16px;
+    	padding: 10px 20px;
+    	color: #999;
+    	text-transform: uppercase;
+    	text-align: center;
+    }
+
+    .button:hover {
+    	color: #fff;
+    	border-color: #fff;
+    }
+  </style>
+</head>
 <body>
-<div id="sky"></div>
-<img id="control-tower" src="/img/control-tower.png">
-<img id="plane" src="/img/plane.png">
+	<div class="container">
+    <div class="logo"></div>
+    <a href="http://forum.simtracon.com/">
+    	<div class="button">
+	  		Enter Forum
+	  	</div>
+	  </a>	  
+	</div>
 </body>
 </html>
