@@ -10,61 +10,63 @@ html
     script(type='text/javascript')
      = 'var socket = io(\'/' + id + '\');'
 
-    //- Real World Feeds and Flow
-    script(src='/feeds/rwtraffic.js', type='text/javascript')
-    script(src='/feeds/flow.js', type='text/javascript')
+    //- //- Real World Feeds and Flow
+    //- script(src='/feeds/rwtraffic.js', type='text/javascript')
+    //- script(src='/feeds/flow.js', type='text/javascript')
 
-    //- Utilities
-    script(src='/latlon.js', type='text/javascript')
-    script(src='/bdffont.js', type='text/javascript')
-    script(src='/weatheroverlay.js', type='text/javascript')
+    //- //- Utilities
+    //- script(src='/latlon.js', type='text/javascript')
+    //- script(src='/bdffont.js', type='text/javascript')
+    //- script(src='/weatheroverlay.js', type='text/javascript')
     
-    //-
-      < script(src='https://www.bdcc.co.uk/Gmaps/WorldMagneticModel.js', type='text/javascript') 
-      <script type="text/javascript">
-        // var m = new WorldMagneticModel();
-        // for (var i = 0; i < 20; i++) {
-        //  console.log(m.declination(i, 43, -71, 2010));
-        // }
-      </script>**/
+    //- //-
+    //-   < script(src='https://www.bdcc.co.uk/Gmaps/WorldMagneticModel.js', type='text/javascript') 
+    //-   <script type="text/javascript">
+    //-     // var m = new WorldMagneticModel();
+    //-     // for (var i = 0; i < 20; i++) {
+    //-     //  console.log(m.declination(i, 43, -71, 2010));
+    //-     // }
+    //-   </script>**/
 
-    //- Facilities Engine
-    script(src='/facilities/airport.js', type='text/javascript')
-    script(src='/facilities/runway.js', type='text/javascript')
-    script(src='/FacilityManager.js', type='text/javascript')
+    //- //- Facilities Engine
+    //- script(src='/facilities/airport.js', type='text/javascript')
+    //- script(src='/facilities/runway.js', type='text/javascript')
+    //- script(src='/FacilityManager.js', type='text/javascript')
 
-    //- Radar Scope Engine
-    script(src='/compass.js', type='text/javascript')
-    script(src='/controller.js', type='text/javascript')
-    script(src='/conflictdetectionengine.js', type='text/javascript')
-    script(src='/crda.js', type='text/javascript')
-    script(src='/CRDAManager.js', type='text/javascript')
-    script(src='/map.js', type='text/javascript')
-    script(src='/textoverlay.js', type='text/javascript')
-    script(src='/PathManager.js', type='text/javascript')
-    script(src='/Path.js', type='text/javascript')
-    script(src='/radar.js', type='text/javascript')
-    script(src='/target.js', type='text/javascript')
-    script(src='/targetmanager.js', type='text/javascript')
-    script(src='/scope.js', type='text/javascript')
+    //- //- Radar Scope Engine
+    //- script(src='/compass.js', type='text/javascript')
+    //- script(src='/controller.js', type='text/javascript')
+    //- script(src='/conflictdetectionengine.js', type='text/javascript')
+    //- script(src='/crda.js', type='text/javascript')
+    //- script(src='/CRDAManager.js', type='text/javascript')
+    //- script(src='/map.js', type='text/javascript')
+    //- script(src='/textoverlay.js', type='text/javascript')
+    //- script(src='/PathManager.js', type='text/javascript')
+    //- script(src='/Path.js', type='text/javascript')
+    //- script(src='/radar.js', type='text/javascript')
+    //- script(src='/target.js', type='text/javascript')
+    //- script(src='/targetmanager.js', type='text/javascript')
+    //- script(src='/scope.js', type='text/javascript')
 
-    script(src='/SmartMap.js', type='text/javascript')
+    //- script(src='/SmartMap.js', type='text/javascript')
 
-    //- Renderers
-    script(src='/renderer.js', type='text/javascript')
-    script(src='/renderers/TargetRenderer.js', type='text/javascript')
-    script(src='/renderers/PathRenderer.js', type='text/javascript')
+    //- //- Renderers
+    //- script(src='/renderer.js', type='text/javascript')
+    //- script(src='/renderers/TargetRenderer.js', type='text/javascript')
+    //- script(src='/renderers/PathRenderer.js', type='text/javascript')
 
-    script(src='/keyboard.js', type='text/javascript')
-    script(src='/command.js', type='text/javascript')
+    //- script(src='/keyboard.js', type='text/javascript')
+    //- script(src='/command.js', type='text/javascript')
 
-    script(src='/ConnectionDelegate.js', type='text/javascript')
+    //- script(src='/ConnectionDelegate.js', type='text/javascript')
 
-    script(src='/vendor/annyang.js', type='text/javascript')
-    script(src='/SpeechCommands.js', type='text/javascript')
-    //- script(src='/vendor/audiorecorder.min.js' type='text/javascript')
+    //- //- script(src='/vendor/annyang.js', type='text/javascript')
+    //- //- script(src='/SpeechCommands.js', type='text/javascript')
+    //- //- script(src='/vendor/audiorecorder.min.js' type='text/javascript')
       
-    script(src='/main.js', type='text/jsx')
+    //- script(src='/main.js', type='text/javascript')
+
+    script(src='/sim.min.js', type='text/javascript')
 
     script(src='/vendor/JSXTransformer.js', type='text/javascript')
     script(src='/vendor/react.js', type='text/javascript')

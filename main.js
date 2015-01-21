@@ -1,8 +1,6 @@
-/** @jsx React.DOM */
-
 var scope = new Scope(socket);
 var connectionDelegate = new ConnectionDelegate(scope, socket);
-var radio = new SpeechCommands();
+//var radio = new SpeechCommands();
 
 // var config = { 'worker_path': '/vendor/worker.min.js' };
 // AudioRecorder.init(config);
@@ -142,7 +140,7 @@ function initKeyDetection() {
       Command.run(e, scope.textOverlay().previewSegments());
     } else if (e.which === Keyboard.KEYS.SELECT_KEY) {
       e.preventDefault();
-      radio.transmit();
+      //radio.transmit();
     } else {
       Command.cleanup();
       var keyCommands = Keyboard[e.which];
@@ -159,7 +157,7 @@ function initKeyDetection() {
   $(document).keyup(function(e) {
     if (e.which === Keyboard.KEYS.SELECT_KEY) {
       e.preventDefault();
-      radio.release();
+      //radio.release();
     }
   });
 }
