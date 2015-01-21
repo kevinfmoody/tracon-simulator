@@ -48,7 +48,7 @@ $(document).ready(function() {
 	
 	function addCloud() {
 		var cloudType = Math.floor(Math.random() * 4 + 1);
-		var cloud = $('<img>').addClass('cloud').attr('src', '<?=THEME?>img/cloud' + cloudType + '.png').hide().load(function() {
+		var cloud = $('<img>').addClass('cloud').attr('src', '/img/cloud' + cloudType + '.png').hide().load(function() {
 			$('#sky').append(cloud);
 			drift(cloud);
 		});
@@ -93,7 +93,7 @@ $(window).load(function() {
 </script>
 <body>
 <div id="sky"></div>
-<img id="control-tower" src="<?=THEME?>img/control-tower.png">
-<img id="plane" src="<?=THEME?>img/plane.png">
+<img id="control-tower" src="/img/control-tower.png">
+<img id="plane" src="/img/plane.png">
 </body>
 </html>
