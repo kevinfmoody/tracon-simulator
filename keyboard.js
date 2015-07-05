@@ -358,8 +358,8 @@ Keyboard[Keyboard.KEYS.EQUAL_SIGN][Keyboard.COMBO_KEYS.NONE] = function(e) {
   scope.textOverlay().addPreviewChar(' ');
 };
 
-Keyboard[Keyboard.KEYS.EQUAL_SIGN] = {};
-Keyboard[Keyboard.KEYS.EQUAL_SIGN][Keyboard.COMBO_KEYS.NONE] = function(e) {
-  scope.textOverlay().addPreviewChar('ILS');
+Keyboard[Keyboard.KEYS.DASH] = {};
+Keyboard[Keyboard.KEYS.DASH][Keyboard.COMBO_KEYS.NONE] = function(e) {
+  scope.textOverlay().addPreviewChar('VA');
   scope.textOverlay().addPreviewChar(' ');
 };

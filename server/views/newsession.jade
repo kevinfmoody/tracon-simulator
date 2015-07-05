@@ -1,0 +1,46 @@
+doctype html
+html
+  head
+    title Create Session
+    script(type='text/javascript', src='https://code.jquery.com/jquery-2.1.3.min.js')
+    script.
+      $(document).ready(function() {
+        $('#create-session').click(function() {
+          $(this).hide();
+          $('#info').text('Creating session...');
+          $.get('/api/session', function(data) {
+            $('#info')
+              .html('')
+              .append(
+                $('<p>')
+                  .text('Session created! It will be open for 12 hours.')
+              )
+              .append(
+                $('<p>')
+                  .html(
+                    $('<a>')
+                    .attr('href', 'http://simtracon.com/alpha/s/' + data.manager_id)
+                    .attr('target', '_blank')
+                    .text('Open Manager URL in new tab - ' + data.manager_id + ' (can send aircraft commands)')
+                  )
+              ).append(
+                $('<p>')
+                  .html(
+                    $('<a>')
+                      .attr('href', 'http://simtracon.com/alpha/s/' + data.public_id)
+                      .attr('target', '_blank')
+                      .text('Open Public URL in new tab - ' + data.public_id + ' (cannot send aircraft commands)')
+                  )
+              ).append(
+                $('<p>')
+                  .text('Refresh to create another session.')
+              );
+          });
+        });
+      });
+  body
+    h1 simTRACON Alpha Testing
+    h2 Session Creation
+    hr
+    div#info
+    button#create-session Create Session

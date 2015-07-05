@@ -34,7 +34,7 @@ function SimulationSession(io, managerId, publicId) {
     this.bindDisconnectListeners(socket);
   }.bind(this));
 
-  this._simulation.loadSituation('../situations/crda.sit', function() {
+  this._simulation.loadSituation('../situations/a90.sit', function() {
     this._simulation.run({ magVar: function() { return -15.24; } });
   }.bind(this));
 }

@@ -42,6 +42,10 @@ TrafficSimulator.prototype.getAllAircraftByController = function(controller) {
   });
 };
 
+TrafficSimulator.prototype.loadReadWorldSituation = function(icao) {
+  
+};
+
 TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
   if (typeof module !== 'undefined' && module.exports) {
     fs.readFile(filename, function(err, data) {
@@ -53,9 +57,6 @@ TrafficSimulator.prototype.loadSituation = function(filename, loadedFn) {
         this._aircraft.push(new Aircraft(situation[i], this._mio, this._pio));
       loadedFn();
     }.bind(this));
-    // setTimeout(function() {
-    //   this._aircraft.splice(0, 1);
-    // }.bind(this), 20000);
   } else {
     $.get(filename, function(data) {
       var situation = data.split('\n');

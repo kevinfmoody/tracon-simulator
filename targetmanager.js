@@ -243,7 +243,7 @@ TargetManager.prototype.updateCallsigns = _.throttle(function() {
   this._targets.forEach(function(target) {
     airlines[target.callsign().substr(0, 3)] = true;
   });
-  $.get('https://localhost:8080/api/callsigns', {
+  $.get('/api/callsigns', {
     airlines: Object.keys(airlines)
   }, function(callsigns) {
     var airlines = {};

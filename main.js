@@ -70,7 +70,7 @@ function initScope() {
     scope.radar().setPosition(airport.position());
     scope.renderer().setRadarCenter(scope.radar().position());
     //scope.CRDAManager().addRemoveCRDA(airport, '27', '22L');
-    scope.setControllerPosition('FINAL', function() {
+    scope.setControllerPosition('FEEDER', function() {
       scope.turnOn();
     });
   });

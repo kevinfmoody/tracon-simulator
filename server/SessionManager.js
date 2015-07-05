@@ -22,7 +22,7 @@ SessionManager.prototype.generateUniqueId = function() {
 
 SessionManager.prototype.generateId = function() {
   var text = '',
-      possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      possible = 'abcdefghijkmnopqrstuvwxyz023456789';
   for (var i = 0; i < 12; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
@@ -33,14 +33,15 @@ SessionManager.prototype.createSession = function() {
   this._managerSessions[id.m] = id.s;
   this._publicSessions[id.p] = id.s;
   this._sessions[id.s] = new SimulationSession(this._io, id.m, id.p);
-  console.log('Session created.');
-  console.log('Manager id: ' + id.m);
-  console.log('Public id: ' + id.p);
   setTimeout(function() {
     delete this._managerSessions[id.m];
     delete this._publicSessions[id.p];
     delete this._sessions[id.s];
   }.bind(this), 1000 * 60 * 60 * 12); // Session is automatically killed after 12 hours
+  return {
+    manager_id: id.m,
+    public_id: id.p
+  };
 };
 
 SessionManager.prototype.isSessionValid = function(sessionId) {

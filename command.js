@@ -71,7 +71,8 @@ Command.ALIAS = {
   TP: Command.SEGMENT.TYPE_PATH,
   SP: Command.SEGMENT.SHOW_PATH,
   HP: Command.SEGMENT.HIDE_PATH,
-  RELOC: Command.SEGMENT.RELOCATE_TARGET
+  RELOC: Command.SEGMENT.RELOCATE_TARGET,
+  REPO: Command.SEGMENT.RELOCATE_TARGET
 };
 
 Command.currentCommand = [];

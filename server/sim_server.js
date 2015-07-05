@@ -23,7 +23,9 @@ var express = require('express'),
   // var currentFlow = new Flow();
   // currentFlow.loadRecent();
 
+  // this should do the trick
   var sessionManager = new SessionManager(io);
+  sessionManager.createSession();
 
   // io.on('connection', function(socket) {
   //   new ClientManager(socket, null/*currentFlow*/);
@@ -59,14 +61,9 @@ var express = require('express'),
       res.send(navaids);
     });
   });
-  app.get('/api/session', function(req, res) {
-    res.send(sessionManager.createSession());
-  });
+
   app.set('view engine', 'jade');
-  app.get('/alpha', function(req, res) {
-    res.render('newsession')
-  });
-  app.get('/alpha/s/*', function(req, res) {
+  app.get('/s/*', function(req, res) {
     res.render('index', {
       id: req.params[0]
     });
