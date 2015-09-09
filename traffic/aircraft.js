@@ -82,13 +82,15 @@ function Aircraft(aircraftString, mio, pio) {
 		});
 	}
 
-	setInterval(function() {
-		var blip = this.blip();
-		if (blip) {
-			this._mio.emit('blip', blip);
-			this._pio.emit('blip', blip);
-		}
-	}.bind(this), 5000);
+  if (this._mio || this._pio) {
+    setInterval(function() {
+      var blip = this.blip();
+      if (blip) {
+        this._mio.emit('blip', blip);
+        this._pio.emit('blip', blip);
+      }
+    }.bind(this), 5000);
+  }
 }
 
 Aircraft.prototype.controller = function() {

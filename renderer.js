@@ -26,7 +26,12 @@ function Renderer() {
 	};
 	this._presets = [];
 	this._mouseDown = false;
+	this._pixelRatio = window.devicePixelRatio || 1;
 }
+
+Renderer.prototype.pixelRatio = function() {
+	return this._pixelRatio;	
+};
 
 Renderer.prototype.bind = function(scope) {
 	this._scope = $(scope)[0];

@@ -409,17 +409,22 @@ Command[Command.SEGMENT.INITIATE_CONTROL] = function(e, args) {
           scope.textOverlay().clearPreviewAreaMessage();
         });
       } else {
-        socket.emit('ATC.initiateControl', {
-          aircraft: target.callsign(),
-          controller: scope.controller().getIdentifier()
-        }, function(success) {
-          if (!success) {
-            scope.textOverlay().setPreviewAreaMessage('ILL TRK');
-            Command.registerCleanupFunction(function() {
-              scope.textOverlay().clearPreviewAreaMessage();
-            });
-          }
-        });
+        debugger
+        if (scope.controller()) {
+          socket.emit('ATC.initiateControl', {
+            aircraft: target.callsign(),
+            controller: scope.controller().getIdentifier()
+          }, function(success) {
+            if (!success) {
+              scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+              Command.registerCleanupFunction(function() {
+                scope.textOverlay().clearPreviewAreaMessage();
+              });
+            }
+          });
+        } else {
+          target.enableQuickLook(); 
+        }
       }
       return;
     }
@@ -452,17 +457,21 @@ Command[Command.SEGMENT.TERMINATE_CONTROL] = function(e, args) {
           }
         });
       } else {
-        socket.emit('ATC.terminateControl', {
-          aircraft: target.callsign(),
-          controller: scope.controller().getIdentifier()
-        }, function(success) {
-          if (!success) {
-            scope.textOverlay().setPreviewAreaMessage('ILL TRK');
-            Command.registerCleanupFunction(function() {
-              scope.textOverlay().clearPreviewAreaMessage();
-            });
-          }
-        });
+        if (scope.controller()) {
+          socket.emit('ATC.terminateControl', {
+            aircraft: target.callsign(),
+            controller: scope.controller().getIdentifier()
+          }, function(success) {
+            if (!success) {
+              scope.textOverlay().setPreviewAreaMessage('ILL TRK');
+              Command.registerCleanupFunction(function() {
+                scope.textOverlay().clearPreviewAreaMessage();
+              });
+            }
+          });
+        } else {
+          target.disableQuickLook();
+        }
       }
       return;
     }

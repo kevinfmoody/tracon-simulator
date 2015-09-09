@@ -57,6 +57,12 @@ Radar.prototype.sync = function(blip, targetManager) {
   }
 };
 
+Radar.prototype.heartbeat = function(callsign, targetManager) {
+  var target = targetManager.getTargetByCallsign(callsign);
+  if (target)
+    target.heartbeat();
+};
+
 Radar.prototype.revSync = function(target, feed, targetManager) {
   var blip = feed.getBlipByCallsign(target.callsign());
   if (!blip)

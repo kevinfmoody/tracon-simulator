@@ -19,7 +19,7 @@ html
                 $('<p>')
                   .html(
                     $('<a>')
-                    .attr('href', 'http://simtracon.com/alpha/s/' + data.manager_id)
+                    .attr('href', '/alpha/s/' + data.manager_id)
                     .attr('target', '_blank')
                     .text('Open Manager URL in new tab - ' + data.manager_id + ' (can send aircraft commands)')
                   )
@@ -27,7 +27,7 @@ html
                 $('<p>')
                   .html(
                     $('<a>')
-                      .attr('href', 'http://simtracon.com/alpha/s/' + data.public_id)
+                      .attr('href', '/alpha/s/' + data.public_id)
                       .attr('target', '_blank')
                       .text('Open Public URL in new tab - ' + data.public_id + ' (cannot send aircraft commands)')
                   )

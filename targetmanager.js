@@ -15,7 +15,7 @@ TargetManager.SEPARATION_MINIMA = [
   {
     anchor: null,
     radius: null,
-    minAltitude: null,
+    minAltitude: 1500,
     maxAltitude: 17999,
     lateral: 3,
     vertical: 1000

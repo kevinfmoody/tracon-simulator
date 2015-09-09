@@ -20,6 +20,7 @@ function Target(callsign) {
   this._isDisplayingJRing = false;
   this._isCoasting = false;
   this._isAwaitingPurge = false;
+  this._isQuickLooked = false;
   this._ghostState = Target.GHOST_STATES.ENABLED;
 
   this._otherController = null;
@@ -223,7 +224,17 @@ Target.prototype.otherController = function() {
   return this._otherController;
 };
 
+Target.prototype.heartbeat = function() {
+  console.log(this._callsign + ' had heartbeat');
+  if (this._radarReturnTimeout)
+    clearTimeout(this._radarReturnTimeout);
+  this._radarReturnTimeout = setTimeout(function() {
+    this.noRadarReturn();
+  }.bind(this), 6 * 1000);
+};
+
 Target.prototype.updateFromBlip = function(blip) {
+  console.log(this._callsign + ' had blip');
   this.update(blip.callsign, blip.mode, blip.type, blip.arrival, blip.position, blip.altitude, blip.speed, blip.squawk, blip.controller);
   if (this._radarReturnTimeout)
     clearTimeout(this._radarReturnTimeout);
@@ -369,6 +380,18 @@ Target.prototype.disableJRing = function() {
 
 Target.prototype.isDisplayingJRing = function() {
   return this._isDisplayingJRing;
+};
+
+Target.prototype.enableQuickLook = function() {
+  this._isQuickLooked = true;
+};
+
+Target.prototype.disableQuickLook = function() {
+  this._isQuickLooked = false;
+};
+
+Target.prototype.isQuickLooked = function() {
+  return this._isQuickLooked;
 };
 
 Target.prototype.expand = function() {

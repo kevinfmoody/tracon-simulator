@@ -120,9 +120,13 @@ Scope.prototype.turnOn = function() {
 		this._isOn = true;
 
 		var batchRender = _.throttle(this.render.bind(this), 200);
-		socket.on('blip', function(blip) {
+    socket.on('blip', function(blip) {
 			this._radar.sync(blip, this._targetManager);
 			batchRender();
+    }.bind(this));
+    
+    socket.on('heartbeat', function(callsign) {
+			this._radar.heartbeat(callsign, this._targetManager);
     }.bind(this));
 
 		// this._radarManager = setInterval(function() {
@@ -249,8 +253,13 @@ Scope.prototype.textOverlay = function() {
 };
 
 Scope.prototype.fit = function() {
-	this._renderer.scope().width = $(window).width() - ($('.situation-controls').is(':visible') ? 250 : 0);
-	this._renderer.scope().height = $(window).height() - ($('.scope-settings').is(':visible') ? 54 : 0);
+	var width = $(window).width() - ($('.situation-controls').is(':visible') ? 250 : 0);
+	var height = $(window).height() - ($('.scope-settings').is(':visible') ? 54 : 0);
+	this._renderer.scope().width = width;
+	this._renderer.scope().height = height;
+	// this._renderer.scope().style.width = width + 'px';
+	// this._renderer.scope().style.height = height + 'px';
+	// this._renderer.context().scale(this._renderer.pixelRatio(), this._renderer.pixelRatio());
 };
 
 Scope.prototype.renderBackground = function() {

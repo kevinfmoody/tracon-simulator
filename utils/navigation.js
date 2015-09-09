@@ -1,6 +1,16 @@
 var LatLon = require('../latlon.js'),
     nagivation = {};
 
+nagivation.bounds = function(position, radius) {
+  var radiusInKm = radius * 1.852;
+  return {
+      minLat: position.destinationPoint(180, radiusInKm)._lat,
+      maxLat: position.destinationPoint(360, radiusInKm)._lat,
+      minLon: position.destinationPoint(270, radiusInKm)._lon,
+      maxLon: position.destinationPoint(90, radiusInKm)._lon
+  };
+};
+
 nagivation.geoTilesInRadius = function(type, position, radius, geo2Mode) {
   var radiusInKm = radius * 1.852,
       multiplier = geo2Mode ? 2 : 1,

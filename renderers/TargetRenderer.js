@@ -56,7 +56,7 @@ TargetRenderer.prototype.renderDataBlockColor = function(elapsed) {
     return elapsed % 1000 < 500 ? '#fff' : '#bbb';
   else if (this._target._controlState === this._target._controlStates.POST_HANDOFF)
     return elapsed % 1000 < 500 ? '#0c0' : '#080';
-  else if (this._target.isOwned())
+  else if (this._target.isOwned() || this._target.isQuickLooked())
     return '#fff';
   else
     return '#0c0';
@@ -302,7 +302,7 @@ TargetRenderer.prototype.renderDataBlock = function(r, elapsed) {
   r.context().lineWidth = 1;
   r.context().strokeStyle = this.renderDataBlockColor(elapsed);
   r.context().stroke();
-  if (this._target.isExpanded())
+  if (this._target.isExpanded() || this._target.isQuickLooked())
     this.renderFullDataBlock(r, elapsed);
   else
     this.renderPartialDataBlock(r, elapsed);

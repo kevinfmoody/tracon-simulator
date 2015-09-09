@@ -11,6 +11,7 @@ var express = require('express'),
   var io = require('socket.io')(http),
       request = require('request'),
       SessionManager = require('./SessionManager.js'),
+      LiveSessionManager = require('./LiveSessionManager.js'),
       NavigationAPI = require('./NavigationAPI.js'),
       NavigationAPIV2 = require('./NavigationAPIV2.js'),
       WeatherAPI = require('./WeatherAPI.js'),
@@ -24,6 +25,9 @@ var express = require('express'),
   // currentFlow.loadRecent();
 
   var sessionManager = new SessionManager(io);
+  var liveSessionManager = new LiveSessionManager(io);
+  
+  liveSessionManager.createSession('KBOS');
 
   // io.on('connection', function(socket) {
   //   new ClientManager(socket, null/*currentFlow*/);
@@ -67,6 +71,11 @@ var express = require('express'),
     res.render('newsession')
   });
   app.get('/alpha/s/*', function(req, res) {
+    res.render('index', {
+      id: req.params[0]
+    });
+  });
+  app.get('/alpha/live/*', function(req, res) {
     res.render('index', {
       id: req.params[0]
     });
